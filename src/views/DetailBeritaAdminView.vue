@@ -1,0 +1,141 @@
+<script setup>
+import axios from 'axios'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const token = localStorage.getItem('token')
+const announcement = ref({})
+const route = useRoute()
+const router = useRouter()
+const itemId = route.params.id
+const render = async () => {
+  try {
+    const responseBerita = await axios.get(`http://127.0.0.1:8000/api/announcements/${itemId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (responseBerita.status == 200) {
+      console.log(responseBerita.data.data)
+      announcement.value = responseBerita.data.data
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const goToDelete = async () => {
+  try {
+    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/announcements/${itemId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (responseDelete.status == 200) {
+      console.log(responseDelete.data.data)
+      router.push('/admin/home')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const goToEdit = (routePath) => {
+  router.push(routePath)
+}
+
+onMounted(() => {
+  render()
+})
+</script>
+
+<template>
+  <main>
+    <h1>Detail Berita Cattery</h1>
+    
+    <div class="container-detail">
+      <p class="title">{{ announcement.title }}</p>
+
+      <div class="container-description">
+        <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
+        <p>Isi Berita:</p>
+        <div class="description-detail">
+          <p class="description">{{ announcement.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-edit-delete">
+      <button type="button" class="edit" @click="goToEdit(`/admin/announcements/edit/${itemId}`)">
+        Edit
+      </button>
+
+      <button type="button" class="delete" @click="goToDelete()">Delete</button>
+    </div>
+  </main>
+</template>
+
+<style lang="scss" scoped>
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+main {
+  background-color: white;
+  color: black;
+  width: 100%;
+  padding: 10px 20px;
+  .container-detail {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffd482;
+    padding: 20px;
+    gap: 10px;
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container-description {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: fill;
+      }
+      .description-detail {
+        p {
+          width: 100%;
+          height: 100%;
+          padding: 5px 10px;
+          white-space: pre;
+          background-color: azure;
+        }
+      }
+    }
+  }
+  .container-edit-delete {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    gap: 5px;
+    button {
+      padding: 2px;
+      border-radius: 5px;
+    }
+    button:hover {
+      opacity: 80%;
+    }
+    .edit {
+      background-color: #9bb05d;
+    }
+    .delete {
+      background-color: #ff3c3c;
+    }
+  }
+}
+</style>

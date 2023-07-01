@@ -80,39 +80,53 @@ onMounted(() => {
 <template>
   <main class="tambah-kucing">
     <h1>Form Tambah Kucing</h1>
+
     <div class="container-form">
       <div class="alert-message"></div>
+
       <label for="name">Nama Kucing</label>
       <input type="text" placeholder="Masukkan Nama Kucing" v-model="dataTambahKucing.name" />
+
       <label for="">Gender</label>
-      <select id="gender" name="gender" v-model="dataTambahKucing.gender">
+      <select name="gender" v-model="dataTambahKucing.gender">
+        <option value="">Pilih Gender</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
+
       <label for="">Status Adopt</label>
       <select id="status_adopt" name="status_adopt" v-model="dataTambahKucing.status_adopt">
+        <option value="">Pilih Option</option>
         <option value="ready">Ready</option>
         <option value="adopted">Adopted</option>
       </select>
+
       <label for="certificate">Certificate</label>
       <input type="text" placeholder="Certificate" v-model="dataTambahKucing.certificate" />
+
       <label for="color">Color</label>
       <input type="text" placeholder="Color" v-model="dataTambahKucing.color" />
+
       <label for="">Categories</label>
       <select v-model="dataTambahKucing.categories_id">
-        <option value="">Pilih opsi</option>
+        <option value="">Pilih Kategori</option>
         <option v-for="option in options" :value="option.id" :key="option.id">
           {{ option.namecategory }}
         </option>
       </select>
+
       <label for="date_birth">Date Birth</label>
       <input type="date" v-model="dataTambahKucing.date_birth" />
+
       <label for="weight">Weight</label>
       <input type="text" placeholder="Weight" v-model="dataTambahKucing.weight" />
+
       <label for="description">Description</label>
-      <textarea name="" id="" cols="50" rows="10" v-model="dataTambahKucing.description" ></textarea>
+      <textarea name="" id="" cols="50" rows="10" v-model="dataTambahKucing.description"></textarea>
+
       <label for="">Upload Image</label>
       <input type="file" id="img" name="img" @change="handleFileChange" />
+
       <div class="button-container">
         <button type="button" @click="submit()">Tambah Kucing</button>
       </div>
@@ -133,7 +147,24 @@ main {
   width: 100%;
   padding: 10px 20px;
   .container-form {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
+    input {
+      padding: 5px;
+    }
+  }
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      padding: 10px;
+      background-color: #ffd482;
+      border-radius: 10px;
+    }
+    button:hover {
+      opacity: 70%;
+    }
   }
 }
 </style>

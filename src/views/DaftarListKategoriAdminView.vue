@@ -31,6 +31,7 @@ onMounted(() => {
 <template>
   <main>
     <h1>List Kategori Ras Kucing</h1>
+    
     <div class="container-list">
       <div class="box-list" v-for="category in categories" :key="category.id" @click="goDetail(`/admin/category/${category.id}`)">
         <p>{{ category.namecategory }}</p>

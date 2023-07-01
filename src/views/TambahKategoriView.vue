@@ -21,6 +21,7 @@ async function submit() {
     if (responseTambahKategori.status == 200) {
       const containerAlert = document.querySelector('.alert-message')
       containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Kategori</p>`
+      dataKategori.namecategory = ''
     }
   } catch (error) {
     const containerAlert = document.querySelector('.alert-message')
@@ -32,8 +33,10 @@ async function submit() {
 <template>
   <main class="tambah-kategori">
     <h1>Form Tambah Kategori Kucing</h1>
+
     <div class="container-form">
       <div class="alert-message"></div>
+
       <form action="">
         <label for="">Nama ras kucing</label>
         <input
@@ -41,6 +44,7 @@ async function submit() {
           placeholder="Masukan nama ras kucing"
           v-model="dataKategori.namecategory"
         />
+
         <div class="container-button">
           <button type="button" @click="submit()">Tambah</button>
         </div>

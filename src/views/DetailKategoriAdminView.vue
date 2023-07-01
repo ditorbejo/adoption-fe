@@ -5,7 +5,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const nama = ref({})
 const route = useRoute()
-const router = useRouter();
+const router = useRouter()
 const itemId = route.params.id
 
 const render = async () => {
@@ -26,19 +26,22 @@ const render = async () => {
 const goToDelete = async () => {
   try {
     const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/categories/${itemId}}`, {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
-    if(responseDelete.status == 200) {
-        console.log(responseDelete)
-        router.push('/admin/home')
+    if (responseDelete.status == 200) {
+      console.log(responseDelete)
+      router.push('/admin/home')
     }
   } catch (error) {
     console.log(error)
   }
 }
 
+const goToEdit = (routePath) => {
+  router.push(routePath)
+}
 
 onMounted(() => {
   render()
@@ -52,8 +55,12 @@ onMounted(() => {
       <p class="label-nama">Nama Ras Kucing</p>
       <p class="nama-category">{{ nama }}</p>
     </div>
+
     <div class="container-edit-delete">
-      <button type="button" class="btn-edit" @click="goToEdit(`/admin/category/edit/${itemId}`)">Edit</button>
+      <button type="button" class="btn-edit" @click="goToEdit(`/admin/category/edit/${itemId}`)">
+        Edit
+      </button>
+      
       <button type="button" class="btn-delete" @click="goToDelete()">Delete</button>
     </div>
   </main>

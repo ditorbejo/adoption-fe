@@ -41,11 +41,15 @@ async function submit() {
 <template>
   <main class="tambah-berita">
     <h1>Form Berita Kucing</h1>
+
     <div class="container-form">
       <p>Upload Thumbnail Berita</p>
+
       <div class="alert-message"></div>
+
       <label class="label-image" for="img">Upload image</label>
       <input type="file" id="img" name="img" @change="handleFileChange" />
+
       <label for="judul">Judul Berita</label>
       <input
         type="text"
@@ -54,6 +58,7 @@ async function submit() {
         placeholder="Tulis Judul Berita"
         v-model="dataBerita.title"
       />
+
       <label for="description">Description</label>
       <div class="container-input">
         <textarea name="" id="" cols="50" rows="10" v-model="dataBerita.description"></textarea>
@@ -66,7 +71,7 @@ async function submit() {
   </main>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;

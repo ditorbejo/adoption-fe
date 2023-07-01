@@ -52,13 +52,16 @@ onMounted(() => {
 <template>
   <main>
     <h1>Edit Kategori Ras Kucing</h1>
+
     <div class="container-detail">
       <div class="alert-message"></div>
+
       <p class="label-nama">Nama Ras Kucing Saat ini</p>
       <p class="nama-category">{{ nama}}</p>
       <p class="label-rename">Nama Ras Kucing Yang Akan Diganti</p>
       <input class="input-nama-category" type="text" v-model="dataEdit.namecategory" />
     </div>
+
     <div class="container-edit-delete">
       <button type="button" class="btn-edit" @click="simpanEdit()">Simpan Edit</button>
     </div>
@@ -94,7 +97,6 @@ main {
   }
   .container-edit-delete {
     margin-top: 5%;
-
     button {
       padding: 5px;
       width: 100%;

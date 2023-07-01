@@ -10,6 +10,12 @@ import TambahKucingView from '../views/TambahKucingView.vue'
 import DaftarListKategoriAdminView from '../views/DaftarListKategoriAdminView.vue'
 import DetailKategoriAdminView from '../views/DetailKategoriAdminView.vue'
 import EditKategoriAdminView from '../views/EditKategoriAdminView.vue'
+import DaftarListBeritaView from '../views/DaftarListBeritaView.vue'
+import DetailBeritaAdminView from '../views/DetailBeritaAdminView.vue'
+import EditBeritaAdminView from '../views/EditBeritaAdminView.vue'
+import DaftarListKucingAdminView from '../views/DaftarListKucingAdminView.vue'
+import DetailKucingAdminView from '../views/DetailKucingAdminView.vue'
+import EditKucingAdminView from '../views/EditKucingAdminView.vue'
 import axios from 'axios'
 
 const router = createRouter({
@@ -110,6 +116,54 @@ const router = createRouter({
       path: '/admin/category/edit/:id',
       name: 'edit-kategori',
       component: EditKategoriAdminView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/list-berita',
+      name: 'list-berita',
+      component: DaftarListBeritaView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/admin/announcements/:id',
+      name: 'detail-berita',
+      component: DetailBeritaAdminView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/admin/announcements/edit/:id',
+      name: 'edit-berita',
+      component: EditBeritaAdminView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/list-kucing',
+      name: 'list-kucing',
+      component: DaftarListKucingAdminView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/admin/pets/:id',
+      name: 'detail-kucing',
+      component: DetailKucingAdminView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/admin/pets/edit/:id',
+      name: 'edit-kucing',
+      component: EditKucingAdminView,
       meta: {
         roles : ['admin']
       }
