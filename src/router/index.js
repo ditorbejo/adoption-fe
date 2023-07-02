@@ -4,7 +4,6 @@ import HomeAdminView from '../views/HomeAdminView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import TambahKategoriView from '../views/TambahKategoriView.vue'
-import TambahAlbumView from '../views/TambahAlbumView.vue'
 import TambahBeritaView from '../views/TambahBeritaView.vue'
 import TambahKucingView from '../views/TambahKucingView.vue'
 import DaftarListKategoriAdminView from '../views/DaftarListKategoriAdminView.vue'
@@ -16,6 +15,13 @@ import EditBeritaAdminView from '../views/EditBeritaAdminView.vue'
 import DaftarListKucingAdminView from '../views/DaftarListKucingAdminView.vue'
 import DetailKucingAdminView from '../views/DetailKucingAdminView.vue'
 import EditKucingAdminView from '../views/EditKucingAdminView.vue'
+import DaftarListKategoriUserView from '../views/DaftarListKategoriUserView.vue'
+import DaftarKucingByKategoriUserView from '../views/DaftarKucingByKategoriUserView.vue'
+import DetailKucingUserView from '../views/DetailKucingUserView.vue'
+import TambahFormAdoptKucingUserView from '../views/TambahFormAdoptKucingUserView.vue'
+import DaftarListFormAdoptUserView from '../views/DaftarListFormAdoptUserView.vue'
+import DetailFormAdoptUserView from '../views/DetailFormAdoptUserView.vue'
+
 import axios from 'axios'
 
 const router = createRouter({
@@ -65,32 +71,24 @@ const router = createRouter({
       }
     },
     {
-      path: '/tambah-kategori',
-      name: 'tambah-kategori',
+      path: '/admin/tambah-kategori',
+      name: 'tambah-kategori-admin',
       component: TambahKategoriView,
       meta: {
         roles : ['admin']
       }
     },
     {
-      path: '/tambah-album',
-      name: 'tambah-album',
-      component: TambahAlbumView,
+      path: '/admin/tambah-berita',
+      name: 'tambah-berita-admin',
+      component: TambahBeritaView,
       meta: {
         roles : ['admin']
       }
     },
     {
-      path: '/tambah-berita',
-      name: 'tambah-berita',
-      component: TambahBeritaView,
-      meta: {
-        roles : ['user','admin']
-      }
-    },
-    {
-      path: '/tambah-kucing',
-      name: 'tambah-kucing',
+      path: '/admin/tambah-kucing',
+      name: 'tambah-kucing-admin',
       component: TambahKucingView,
       meta: {
         roles : ['admin']
@@ -106,7 +104,7 @@ const router = createRouter({
     },
     {
       path: '/admin/category/:id',
-      name: 'detail-kategori',
+      name: 'detail-kategori-admin',
       component: DetailKategoriAdminView,
       meta: {
         roles : ['admin']
@@ -114,15 +112,15 @@ const router = createRouter({
     },
     {
       path: '/admin/category/edit/:id',
-      name: 'edit-kategori',
+      name: 'edit-kategori-admin',
       component: EditKategoriAdminView,
       meta: {
         roles : ['admin']
       }
     },
     {
-      path: '/list-berita',
-      name: 'list-berita',
+      path: '/admin/list-berita',
+      name: 'list-berita-admin',
       component: DaftarListBeritaView,
       meta: {
         roles : ['admin']
@@ -130,7 +128,7 @@ const router = createRouter({
     },
     {
       path: '/admin/announcements/:id',
-      name: 'detail-berita',
+      name: 'detail-berita-admin',
       component: DetailBeritaAdminView,
       meta: {
         roles : ['admin']
@@ -138,15 +136,15 @@ const router = createRouter({
     },
     {
       path: '/admin/announcements/edit/:id',
-      name: 'edit-berita',
+      name: 'edit-berita-admin',
       component: EditBeritaAdminView,
       meta: {
         roles : ['admin']
       }
     },
     {
-      path: '/list-kucing',
-      name: 'list-kucing',
+      path: '/admin/list-kucing',
+      name: 'list-kucing-admin',
       component: DaftarListKucingAdminView,
       meta: {
         roles : ['admin']
@@ -154,7 +152,7 @@ const router = createRouter({
     },
     {
       path: '/admin/pets/:id',
-      name: 'detail-kucing',
+      name: 'detail-kucing-admin',
       component: DetailKucingAdminView,
       meta: {
         roles : ['admin']
@@ -162,10 +160,58 @@ const router = createRouter({
     },
     {
       path: '/admin/pets/edit/:id',
-      name: 'edit-kucing',
+      name: 'edit-kucing-admin',
       component: EditKucingAdminView,
       meta: {
         roles : ['admin']
+      }
+    },
+    {
+      path: '/user/list-kategori',
+      name: 'list-kategori-user',
+      component: DaftarListKategoriUserView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/user/category/:id',
+      name: 'list-pet-by-kategory-user',
+      component: DaftarKucingByKategoriUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/user/pets/:id',
+      name: 'detail-kucing-user',
+      component: DetailKucingUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/user/pets/adopt/:id',
+      name: 'tambah-form-adopt-user',
+      component: TambahFormAdoptKucingUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/user/list-form-adopt',
+      name: 'list-form-adopt-user',
+      component: DaftarListFormAdoptUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/user/adoptions/:id',
+      name: 'detail-form-adopt-user',
+      component: DetailFormAdoptUserView,
+      meta: {
+        roles : ['user','admin']
       }
     },
 

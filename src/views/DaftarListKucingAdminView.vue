@@ -7,14 +7,17 @@ const token = localStorage.getItem('token')
 const pets = ref({})
 const render = async () => {
   try {
-    const responsePets = await axios.get('http://127.0.0.1:8000/api/pets', {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const responsePetsByCategory = await axios.get(
+      `http://127.0.0.1:8000/api/pets`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
-    if (responsePets.status == 200) {
-      console.log(responsePets.data.data)
-      pets.value = responsePets.data.data
+    )
+    if (responsePetsByCategory.status == 200) {
+      console.log(responsePetsByCategory.data.data)
+      pets.value = responsePetsByCategory.data.data
     }
   } catch (error) {
     console.log(error)
@@ -35,7 +38,7 @@ onMounted(() => {
     <h1>List Kucing</h1>
 
     <div class="container-list">
-      <div class="container-detail" v-for="pet in pets" :key="pet.id" @click="goToDetail(`/admin/pet/${pet.id}`)">
+      <div class="container-detail" v-for="pet in pets" :key="pet.id" @click="goToDetail(`/admin/pets/${pet.id}`)">
         <img :src="`http://127.0.0.1:8000${pet.image}`" alt="" />
 
         <p>Nama: {{ pet.name }}</p>

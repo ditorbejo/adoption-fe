@@ -1,72 +1,39 @@
 <script setup>
 import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const token = localStorage.getItem('token')
 const route = useRoute()
 const router = useRouter()
-const itemId = route.params.id
+const petId = route.params.id
 const pets = ref({})
-
 const render = async () => {
   try {
-    const responsePets = await axios.get(`http://127.0.0.1:8000/api/pets/${itemId}`, {
+    const responseDetailKucing = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    if (responsePets.status == 200) {
-      console.log(responsePets.data.data)
-      pets.value = responsePets.data.data
-    }
-    fetchAlbum()
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const goToDelete = async () => {
-  try {
-    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/pets/${itemId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    if (responseDelete.status == 200) {
-      console.log(responseDelete)
-      router.push('/admin/home')
+    if (responseDetailKucing.status == 200) {
+      console.log(responseDetailKucing.data.data)
+      pets.value = responseDetailKucing.data.data
+    //   if (pets.value.status_adopt == 'adopted') {
+    //     const statusAdopt = document.querySelector('.status_adopt')
+    //     statusAdopt.style.backgroundColor = 'red'
+    //     const buttonAdopt = document.querySelector('.container-button')
+    //     buttonAdopt.innerHTML = ''
+    //   }
     }
   } catch (error) {
     console.log(error)
   }
 }
+const images = ref({})
 
-const inputFiles = reactive([])
-let counter = 0
-const tambahUpload = () => {
-  console.log(inputFiles)
-  const file = ref(null)
-  inputFiles.push({
-    file: file,
-    handler: (event) => {
-      file.value = event.target.files[0]
-    },
-    id: counter++
-  })
-}
-
-const removeFile = (id) => {
-  const targetIndex = inputFiles.findIndex((inputFile) => {
-    inputFile.id == id
-  })
-  inputFiles.splice(targetIndex, 1)
-}
-
-const images = ref()
 const fetchAlbum = async () => {
   try {
-    const responseAlbum = await axios.get(`http://127.0.0.1:8000/api/galleries?pet_id=${itemId}`, {
+    const responseAlbum = await axios.get(`http://127.0.0.1:8000/api/galleries?pet_id=${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -74,85 +41,49 @@ const fetchAlbum = async () => {
     if (responseAlbum.status == 200) {
       console.log(responseAlbum.data.data)
       images.value = responseAlbum.data.data
+      if (images.value.length == 0) {
+        const alertContainer = document.querySelector('.alert-message')
+        alertContainer.innerHTML = `
+        <p>Tidak ada Album Gambar</p>
+        <style>
+        p{
+            background-color: #D9D9D9;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        </style>
+        `
+      }
     }
   } catch (error) {
     console.log(error)
   }
 }
 
-const simpanAlbum = async () => {
-  const someFileIsNull = inputFiles.some((inputFile) => {
-    return inputFile.file == null
-  })
-  if (someFileIsNull) {
-    console.log('ada file input yang kosong')
-    return
-  }
-  const imageUploadPromises = inputFiles.map((inputFile) => {
-    const formData = new FormData()
-    formData.append('pet_id', itemId)
-    formData.append('image', inputFile.file)
-    return axios.post(`http://127.0.0.1:8000/api/galleries`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-  })
-  const imageUploadResponses = await Promise.all(imageUploadPromises)
-  imageUploadResponses.forEach((response) => {
-    if (response.status == 200) {
-      console.log('berhasil menyimpan gambar')
-    }
-    inputFiles.shift()
-  })
-  fetchAlbum()
-}
-const hapusGambar = async (imageId) => {
-  try {
-    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/galleries/${imageId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    if (responseDelete.status == 200) {
-      console.log(responseDelete)
-    }
-  } catch (error) {
-    console.log(error)
-  }
-  fetchAlbum()
-}
-
-const goToEdit = (routePath) => {
+function goToFormAdopt(routePath) {
   router.push(routePath)
 }
 
 onMounted(() => {
   render()
+  fetchAlbum()
 })
 </script>
 
 <template>
   <main>
-    <h1>Detail Kucing</h1>
+    <h1>Detail Kucing User</h1>
+
     <div class="container-detail">
       <img class="gambar-utama" :src="`http://127.0.0.1:8000${pets.image}`" alt="" />
 
       <label for="">Album Photo</label>
       <div class="container-album">
-        <button type="button" @click="tambahUpload()">Tambah Gambar</button>
-
-        <div class="container-tambah-gambar" v-for="inputFile in inputFiles" :key="inputFile.id">
-          <input type="file" @change="inputFile.handler" />
-          <button type="button" @click="removeFile(inputFile.id)">Remove</button>
-        </div>
-
-        <button type="button" @click="simpanAlbum()">Simpan Album</button>
+        <div class="alert-message"></div>
 
         <div class="container-gambar">
           <div class="container-loop-gambar" v-for="image in images" :key="image.id">
             <img class="gambar-album" :src="`http://127.0.0.1:8000${image.image}`" alt="" />
-            <button type="button" @click="hapusGambar(image.id)">Hapus</button>
           </div>
         </div>
       </div>
@@ -179,18 +110,28 @@ onMounted(() => {
       <p>{{ pets.weight }}</p>
 
       <label for="">Description</label>
-      <textarea disabled  class="description" id="" cols="50" rows="10" v-model="pets.description"></textarea>
+      <textarea
+        disabled
+        class="description"
+        id=""
+        cols="50"
+        rows="10"
+        v-model="pets.description"
+      ></textarea>
 
       <label for="">Status Adopt</label>
-      <p class="status_adopt">{{ pets.status_adopt }}</p>
+      <p class="status_adopt" v-if="pets.status_adopt == 'ready'">{{ pets.status_adopt }}</p>
+      <p class="status_adopt_adopted" v-else>{{ pets.status_adopt }}</p>
     </div>
 
-    <div class="container-button">
-      <button class="btn-edit-kucing" type="button" @click="goToEdit(`/admin/pets/edit/${itemId}`)">
-        Edit Kucing
+    <div  class="container-button" v-if="pets.status_adopt == 'ready'">
+      <button class="btn-adopt" type="button" @click="goToFormAdopt(`/user/pets/adopt/${petId}`)">
+        Adopt
       </button>
 
-      <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete Kucing</button>
+      <button class="btn-question" type="button" @click="goToDelete()">Delete Kucing</button>
+    </div>
+    <div  class="container-button" v-else>
     </div>
   </main>
 </template>
@@ -237,6 +178,13 @@ main {
       background-color: #85a675;
       text-transform: capitalize;
     }
+    .status_adopt_adopted {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: red;
+      text-transform: capitalize;
+    }
     .container-album {
       display: flex;
       flex-direction: column;
@@ -248,21 +196,12 @@ main {
         padding: 2px;
         border-radius: 5px;
       }
-      .container-tambah-gambar {
-        background-color: burlywood;
-        border-radius: 5px;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        padding: 5px;
-      }
       .container-gambar {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: minmax(1, 3);
         grid-column-gap: 20px;
         grid-row-gap: 20px;
-
         .container-loop-gambar {
           display: flex;
           flex-direction: column;
@@ -286,22 +225,24 @@ main {
     }
   }
   .container-button {
+    margin-top: 5%;
     display: flex;
     flex-direction: column;
-    margin-top: 5%;
     gap: 5px;
     button {
       padding: 5px;
-      border-radius: 10px;
+      border-radius: 5px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     }
     button:hover {
-      opacity: 80%;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
-    .btn-edit-kucing {
+    .btn-adopt {
       background-color: #85a675;
     }
-    .btn-delete-kucing {
-      background-color: #ff3c3c;
+    .btn-question {
+      background-color: #ffd482;
     }
   }
 }
