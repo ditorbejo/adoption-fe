@@ -51,7 +51,8 @@ onMounted(() => {
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>
         <p>Category: {{ pet.categories_name }}</p>
-        <p class="status-adopt">{{ pet.status_adopt }}</p>
+        <p class="status-adopt-ready" v-if="pet.status_adopt == 'ready'">{{ pet.status_adopt }}</p>
+        <p class="status-adopt-adopted" v-else>{{ pet.status_adopt }}</p>
       </div>
     </div>
   </main>
@@ -81,8 +82,17 @@ main {
         height: 300px;
         object-fit: fill;
       }
-      .status-adopt {
+      .status-adopt-ready {
         background-color: #85a675;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        font-size: medium;
+        text-transform: capitalize;
+      }
+      .status-adopt-adopted {
+        background-color: red;
         display: flex;
         align-items: center;
         justify-content: center;
