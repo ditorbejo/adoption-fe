@@ -6,12 +6,12 @@ import { useRoute, useRouter } from 'vue-router'
 const token = localStorage.getItem('token')
 const route = useRoute()
 const router = useRouter()
-const itemId = route.params.id
+const petId = route.params.id
 const pets = ref({})
 
 const render = async () => {
   try {
-    const responsePets = await axios.get(`http://127.0.0.1:8000/api/pets/${itemId}`, {
+    const responsePets = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -28,7 +28,7 @@ const render = async () => {
 
 const goToDelete = async () => {
   try {
-    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/pets/${itemId}`, {
+    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -66,7 +66,7 @@ const removeFile = (id) => {
 const images = ref()
 const fetchAlbum = async () => {
   try {
-    const responseAlbum = await axios.get(`http://127.0.0.1:8000/api/galleries?pet_id=${itemId}`, {
+    const responseAlbum = await axios.get(`http://127.0.0.1:8000/api/galleries?pet_id=${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -90,7 +90,7 @@ const simpanAlbum = async () => {
   }
   const imageUploadPromises = inputFiles.map((inputFile) => {
     const formData = new FormData()
-    formData.append('pet_id', itemId)
+    formData.append('pet_id', petId)
     formData.append('image', inputFile.file)
     return axios.post(`http://127.0.0.1:8000/api/galleries`, formData, {
       headers: {
@@ -179,19 +179,36 @@ onMounted(() => {
       <p>{{ pets.weight }}</p>
 
       <label for="">Description</label>
-      <textarea disabled  class="description" id="" cols="50" rows="10" v-model="pets.description"></textarea>
+      <textarea
+        disabled
+        class="description"
+        id=""
+        cols="50"
+        rows="10"
+        v-model="pets.description"
+      ></textarea>
 
       <label for="">Status Adopt</label>
       <p class="status_adopt">{{ pets.status_adopt }}</p>
     </div>
 
-    <div class="container-button">
-      <button class="btn-edit-kucing" type="button" @click="goToEdit(`/admin/pets/edit/${itemId}`)">
+    <div class="container-button" v-if="pets.status_adopt == 'ready'">
+      <button class="btn-adopt" type="button" @click="goToEdit(`/admin/pets/adopt/${petId}`)">
+        Mark As Adopt
+      </button>
+
+      <button class="btn-edit-kucing" type="button" @click="goToEdit(`/admin/pets/edit/${petI}`)">
         Edit Kucing
       </button>
 
       <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete Kucing</button>
     </div>
+
+    <div class="container-button" v-else>
+
+      <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete Kucing</button>
+    </div>
+
   </main>
 </template>
 

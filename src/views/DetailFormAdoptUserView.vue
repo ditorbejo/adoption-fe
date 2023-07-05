@@ -59,7 +59,7 @@ onMounted(() => {
 
       <label for="">Status Form</label>
       <p class="status-form-review" v-if="dataForm.status == 'review'">{{ dataForm.status }}</p>
-      <p class="status-form-approved"  v-else-if="dataForm.status == 'approved'">{{ dataForm.status }}</p>
+      <p class="status-form-approved"  v-else-if="dataForm.status == 'approve'">{{ dataForm.status }}</p>
       <p class="status-form-unavailable"  v-else>{{ dataForm.status }}</p>
     </div>
   </main>
