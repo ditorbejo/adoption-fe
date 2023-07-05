@@ -10,7 +10,7 @@ const pets = ref({})
 const render = async () => {
   try {
     const responsePetsByCategory = await axios.get(
-      `http://127.0.0.1:8000/api/pets?categories_id=${itemId}`,
+      `http://127.0.0.1:8000/api/pets?categories_id=${itemId}&status_adopt=ready`,
       {
         headers: {
           Authorization: `Bearer ${token}`
