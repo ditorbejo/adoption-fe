@@ -129,7 +129,7 @@ onMounted(() => {
         Adopt
       </button>
 
-      <button class="btn-question" type="button" @click="goToDelete()">Delete Kucing</button>
+      <button class="btn-question" type="button" @click="goToDelete()">Ask a Question</button>
     </div>
     <div  class="container-button" v-else>
     </div>
@@ -189,13 +189,6 @@ main {
       display: flex;
       flex-direction: column;
       gap: 5px;
-      button {
-        display: flex;
-        width: 40%;
-        background-color: #85a675;
-        padding: 2px;
-        border-radius: 5px;
-      }
       .container-gambar {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
