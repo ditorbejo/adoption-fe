@@ -38,7 +38,7 @@ onMounted(() => {
         class="box-list"
         v-for="announcement in announcements"
         :key="announcement.id"
-        @click="goDetail(`/admin/announcement/${announcement.id}`)"
+        @click="goDetail(`/admin/announcements/${announcement.id}`)"
       >
         <p class="title-berita">{{ announcement.title }}</p>
 
@@ -70,6 +70,7 @@ main {
 
     .box-list {
       background-color: #ffd482;
+      border-radius: 10px;
       padding: 20px;
       .title-berita {
         display: flex;
@@ -84,6 +85,7 @@ main {
         justify-content: center;
         gap: 10px;
         img {
+          border-radius: 10px;
           width: 100%;
           max-height: 300px;
           object-fit: fill;
@@ -94,6 +96,7 @@ main {
           padding: 5px 10px;
           background-color: azure;
           white-space: pre;
+          border-radius: 10px;
         }
       }
     }
