@@ -9,7 +9,7 @@ import TambahKucingView from '../views/TambahKucingView.vue'
 import DaftarListKategoriAdminView from '../views/DaftarListKategoriAdminView.vue'
 import DetailKategoriAdminView from '../views/DetailKategoriAdminView.vue'
 import EditKategoriAdminView from '../views/EditKategoriAdminView.vue'
-import DaftarListBeritaView from '../views/DaftarListBeritaView.vue'
+import DaftarListBeritaAdminView from '../views/DaftarListBeritaAdminView.vue'
 import DetailBeritaAdminView from '../views/DetailBeritaAdminView.vue'
 import EditBeritaAdminView from '../views/EditBeritaAdminView.vue'
 import DaftarListKucingAdminView from '../views/DaftarListKucingAdminView.vue'
@@ -21,6 +21,10 @@ import DetailKucingUserView from '../views/DetailKucingUserView.vue'
 import TambahFormAdoptKucingUserView from '../views/TambahFormAdoptKucingUserView.vue'
 import DaftarListFormAdoptUserView from '../views/DaftarListFormAdoptUserView.vue'
 import DetailFormAdoptUserView from '../views/DetailFormAdoptUserView.vue'
+import DaftarListFormAdoptAdminView from '../views/DaftarListFormAdoptAdminView.vue'
+import DetailFormAdoptAdminView from '../views/DetailFormAdoptAdminView.vue'
+import DaftarListHistoryAdoptAdminView from '../views/DaftarListHistoryAdoptAdminView.vue'
+import TambahMarkAsAdoptAdminView from '../views/TambahMarkAsAdoptAdminView.vue'
 
 import axios from 'axios'
 
@@ -121,7 +125,7 @@ const router = createRouter({
     {
       path: '/admin/list-berita',
       name: 'list-berita-admin',
-      component: DaftarListBeritaView,
+      component: DaftarListBeritaAdminView,
       meta: {
         roles : ['admin']
       }
@@ -210,6 +214,38 @@ const router = createRouter({
       path: '/user/adoptions/:id',
       name: 'detail-form-adopt-user',
       component: DetailFormAdoptUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/admin/list-form-adopt',
+      name: 'list-form-adopt-admin',
+      component: DaftarListFormAdoptAdminView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/admin/adoptions/:id',
+      name: 'detail-form-adopt-admin',
+      component: DetailFormAdoptAdminView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/admin/list-history-adopt',
+      name: 'list-history-adopt-admin',
+      component: DaftarListHistoryAdoptAdminView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/admin/pets/adopt/:id',
+      name: 'tambah-mark-as-adopt-admin',
+      component: TambahMarkAsAdoptAdminView,
       meta: {
         roles : ['user','admin']
       }
