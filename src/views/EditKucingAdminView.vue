@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import router from '../router';
 const token = localStorage.getItem('token')
 const route = useRoute()
 const itemId = route.params.id
@@ -64,6 +65,9 @@ const render = async () => {
       description.value = responseKucing.data.data.description
       image.value = responseKucing.data.data.image
     }
+    if (status_adopt.value == 'adopted'){
+        router.push('/')
+    }
   } catch (error) {
     console.log(error)
   }
@@ -78,6 +82,7 @@ const simpanEdit = async () => {
     formData.append('status_adopt', dataKucing.status_adopt)
     formData.append('color', dataKucing.color)
     formData.append('weight', dataKucing.weight)
+    formData.append('date_birth', dataKucing.date_birth)
     formData.append('categories_id', dataKucing.categories_id)
     formData.append('certificate', dataKucing.certificate)
     formData.append('gender', dataKucing.gender)
@@ -88,21 +93,29 @@ const simpanEdit = async () => {
     formData.append('status_adopt', dataKucing.status_adopt)
     formData.append('color', dataKucing.color)
     formData.append('weight', dataKucing.weight)
+    formData.append('date_birth', dataKucing.date_birth)
     formData.append('categories_id', dataKucing.categories_id)
     formData.append('certificate', dataKucing.certificate)
     formData.append('gender', dataKucing.gender)
   }
 
   try {
-    const responseBerita = await axios.post(`http://127.0.0.1:8000/api/pets/${itemId}}`, formData, {
+    const responseSimpan = await axios.post(`http://127.0.0.1:8000/api/pets/${itemId}}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    if (responseBerita.status == 200) {
+    if (responseSimpan.status == 200) {
+      console.log(responseSimpan)
       const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Menyimpan Update Berita</p>`
+      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Menyimpan Update Kucing</p>`
       console.log(file)
+      dataKucing.name = ''
+      dataKucing.description = ''
+      dataKucing.color = ''
+      dataKucing.weight = ''
+      dataKucing.date_birth = ''
+      dataKucing.certificate = ''
     }
   } catch (error) {
     console.log(error)
