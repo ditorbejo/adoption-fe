@@ -52,7 +52,7 @@ onMounted(() => {
 <template>
   <main>
     <h1>Detail Berita Cattery</h1>
-    
+
     <div class="container-detail">
       <p class="title">{{ announcement.title }}</p>
 
@@ -91,6 +91,7 @@ main {
     display: flex;
     flex-direction: column;
     background-color: #ffd482;
+    border-radius: 10px;
     padding: 20px;
     gap: 10px;
     .title {
@@ -106,6 +107,7 @@ main {
         width: 100%;
         max-height: 300px;
         object-fit: fill;
+        border-radius: 10px;
       }
       .description-detail {
         p {
@@ -114,6 +116,7 @@ main {
           padding: 5px 10px;
           white-space: pre;
           background-color: azure;
+          border-radius: 10px;
         }
       }
     }
@@ -124,7 +127,7 @@ main {
     margin-top: 5%;
     gap: 5px;
     button {
-      padding: 2px;
+      padding: 5px;
       border-radius: 5px;
     }
     button:hover {
