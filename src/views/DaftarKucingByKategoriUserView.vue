@@ -26,8 +26,8 @@ const render = async () => {
   }
 }
 const router = useRouter()
-function goToDetail(routePath){
-    router.push(routePath)
+function goToDetail(routePath) {
+  router.push(routePath)
 }
 
 onMounted(() => {
@@ -39,7 +39,11 @@ onMounted(() => {
   <main>
     <h1>Daftar Kucing by Category</h1>
 
-    <div class="container-list">
+    <div class="list-kucing-kosong" v-if="pets.length == 0">
+      <p>Tidak ada kucing yang tersedia</p>
+    </div>
+
+    <div class="container-list" v-else>
       <div
         class="container-detail"
         v-for="pet in pets"
@@ -64,8 +68,21 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   h1 {
     margin-bottom: 25px;
+  }
+  .list-kucing-kosong{
+    background-color: #ffd482;
+    padding: 10px;
+    border-radius: 10px;
+    p{
+        display: flex;
+        text-transform: capitalize;
+        align-items: center;
+        justify-content: center;
+    }
   }
   .container-list {
     display: flex;
@@ -76,11 +93,13 @@ main {
       flex-direction: column;
       background-color: #ffd482;
       padding: 10px;
+      border-radius: 10px;
       gap: 5px;
       img {
         width: 100%;
         height: 300px;
         object-fit: fill;
+        border-radius: 10px;
       }
       .status-adopt-ready {
         background-color: #85a675;
@@ -88,6 +107,7 @@ main {
         align-items: center;
         justify-content: center;
         border-radius: 5px;
+        padding: 5px;
         font-size: medium;
         text-transform: capitalize;
       }
@@ -97,6 +117,7 @@ main {
         align-items: center;
         justify-content: center;
         border-radius: 5px;
+        padding: 5px;
         font-size: medium;
         text-transform: capitalize;
       }

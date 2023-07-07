@@ -60,7 +60,7 @@ onMounted(() => {
         <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
         <p>Isi Berita:</p>
         <div class="description-detail">
-          <p class="description">{{ announcement.description }}</p>
+          <textarea class="description" name="" id="" cols="50" rows="10" v-model="announcement.description" disabled></textarea>
         </div>
       </div>
     </div>
@@ -87,6 +87,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   .container-detail {
     display: flex;
     flex-direction: column;
@@ -110,13 +112,9 @@ main {
         border-radius: 10px;
       }
       .description-detail {
-        p {
+        overflow: hidden;
+        textarea{
           width: 100%;
-          height: 100%;
-          padding: 5px 10px;
-          white-space: pre;
-          background-color: azure;
-          border-radius: 10px;
         }
       }
     }

@@ -35,7 +35,7 @@ const goToDelete = async () => {
     })
     if (responseDelete.status == 200) {
       console.log(responseDelete)
-      router.push('/admin/home')
+      router.push('/admin/list-kucing')
     }
   } catch (error) {
     console.log(error)
@@ -140,14 +140,14 @@ onMounted(() => {
 
       <label for="">Album Photo</label>
       <div class="container-album">
-        <button type="button" @click="tambahUpload()">Tambah Gambar</button>
+        <button class="btn-tambah-gambar" type="button" @click="tambahUpload()">Tambah Gambar</button>
 
         <div class="container-tambah-gambar" v-for="inputFile in inputFiles" :key="inputFile.id">
           <input type="file" @change="inputFile.handler" />
           <button type="button" @click="removeFile(inputFile.id)">Remove</button>
         </div>
 
-        <button type="button" @click="simpanAlbum()">Simpan Album</button>
+        <button class="btn-simpan-album" type="button" @click="simpanAlbum()">Simpan Album</button>
 
         <div class="container-gambar">
           <div class="container-loop-gambar" v-for="image in images" :key="image.id">
@@ -170,7 +170,7 @@ onMounted(() => {
       <p>{{ pets.color }}</p>
 
       <label for="">Categories</label>
-      <p>{{ pets.categories_id }}</p>
+      <p>{{ pets.categories_name }}</p>
 
       <label for="">Date Birth</label>
       <p>{{ pets.date_birth }}</p>
@@ -197,7 +197,7 @@ onMounted(() => {
         Mark As Adopt
       </button>
 
-      <button class="btn-edit-kucing" type="button" @click="goToEdit(`/admin/pets/edit/${petI}`)">
+      <button class="btn-edit-kucing" type="button" @click="goToEdit(`/admin/pets/edit/${petId}`)">
         Edit Kucing
       </button>
 
@@ -205,10 +205,8 @@ onMounted(() => {
     </div>
 
     <div class="container-button" v-else>
-
       <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete Kucing</button>
     </div>
-
   </main>
 </template>
 
@@ -224,6 +222,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   .container-detail {
     display: flex;
     flex-direction: column;
@@ -231,6 +231,8 @@ main {
     padding: 10px;
     border-radius: 10px;
     gap: 5px;
+    max-width: 1920px;
+    margin: 0 auto;
     p {
       background-color: azure;
       padding: 5px;
@@ -260,6 +262,7 @@ main {
       gap: 5px;
       button {
         display: flex;
+        justify-content: center;
         width: 40%;
         background-color: #85a675;
         padding: 2px;
@@ -305,8 +308,9 @@ main {
   .container-button {
     display: flex;
     flex-direction: column;
-    margin-top: 5%;
     gap: 5px;
+    max-width: 1920px;
+    margin: 100px auto;
     button {
       padding: 5px;
       border-radius: 10px;

@@ -54,6 +54,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   h1{
     margin-bottom: 5%;
   }
@@ -71,7 +73,6 @@ main {
         box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     }
     .container-category:hover{
-        opacity: 80%;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
   }

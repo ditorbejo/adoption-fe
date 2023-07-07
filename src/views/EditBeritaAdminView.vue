@@ -117,6 +117,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   .container-edit {
     display: flex;
     flex-direction: column;

@@ -123,6 +123,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1920px;
   .container-form {
     display: flex;
     flex-direction: column;

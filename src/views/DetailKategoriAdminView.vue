@@ -78,6 +78,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1920px;
   h1 {
     margin-bottom: 25px;
   }
@@ -98,7 +100,7 @@ main {
     margin-top: 5%;
     gap: 5px;
     button {
-      padding: 2px;
+      padding: 5px;
       border-radius: 5px;
     }
     button:hover {

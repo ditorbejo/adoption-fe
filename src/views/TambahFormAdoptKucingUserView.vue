@@ -59,7 +59,7 @@ const sendForm = async () => {
     if (responseSend.status == 200) {
       console.log(responseSend.data.data.id)
       const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Berita</p>`
+      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Form Adopsi</p>`
       dataAdopter.name_adopter = ''
       dataAdopter.phone_adopter = ''
       dataAdopter.address_adopter = ''

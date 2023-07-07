@@ -33,6 +33,10 @@ onMounted(() => {
   <main>
     <h1>List Berita Cattery</h1>
 
+    <div class="list-form-kosong" v-if="announcements.length == 0">
+      <p>Belum ada berita informasi cattery</p>
+    </div>
+
     <div class="container-list">
       <div
         class="box-list"
@@ -44,7 +48,7 @@ onMounted(() => {
 
         <div class="container-description">
           <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
-          <p>{{ announcement.description }}</p>
+          <textarea name="" id="" cols="50" rows="10" v-model="announcement.description" disabled></textarea>
         </div>
       </div>
     </div>
@@ -63,6 +67,20 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
+  .list-form-kosong {
+    margin-top: 5%;
+    background-color: #ffd482;
+    padding: 10px;
+    border-radius: 10px;
+    p {
+      display: flex;
+      text-transform: capitalize;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   .container-list {
     display: flex;
     flex-direction: column;
@@ -81,22 +99,15 @@ main {
       .container-description {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
+        gap: 5px;
         img {
-          border-radius: 10px;
           width: 100%;
           max-height: 300px;
           object-fit: fill;
-        }
-        p {
-          width: 100%;
-          height: 100%;
-          padding: 5px 10px;
-          background-color: azure;
-          white-space: pre;
           border-radius: 10px;
+        }
+        .description-detail {
+          overflow: hidden;
         }
       }
     }

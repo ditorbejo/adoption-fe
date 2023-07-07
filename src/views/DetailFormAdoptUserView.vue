@@ -49,7 +49,7 @@ onMounted(() => {
       <p>{{ dataForm.phone_adopter }}</p>
 
       <label for="">Mengapa ingin mengadopsi kucing tersebut</label>
-      <textarea name="" id="" cols="50" rows="10" v-model="dataForm.description"></textarea>
+      <textarea name="" id="" cols="50" rows="10" v-model="dataForm.description" disabled></textarea>
     </div>
 
     <div class="container-status">
@@ -77,6 +77,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1920px;
   .container-nama-kucing{
     display: flex;
     p{

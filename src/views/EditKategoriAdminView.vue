@@ -1,11 +1,13 @@
 <script setup>
 import axios from 'axios'
 import { onMounted, reactive, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+
 const token = localStorage.getItem('token')
 const route = useRoute()
+const router = useRouter()
 const itemId = route.params.id
-const nama= ref()
+const nama = ref()
 const rename = ref()
 
 const dataEdit = reactive({
@@ -29,11 +31,15 @@ const render = async () => {
 
 const simpanEdit = async () => {
   try {
-    const responseSimpan = await axios.put(`http://127.0.0.1:8000/api/categories/${itemId}}`,dataEdit, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const responseSimpan = await axios.put(
+      `http://127.0.0.1:8000/api/categories/${itemId}}`,
+      dataEdit,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
     if (responseSimpan.status == 200) {
       const containerAlert = document.querySelector('.alert-message')
       containerAlert.innerHTML = '<p style="color:green">Berhasil mengubah kategori ras kucing</p>'
@@ -42,7 +48,13 @@ const simpanEdit = async () => {
     }
   } catch (error) {
     console.log(error)
+    const containerAlert = document.querySelector('.alert-message')
+    containerAlert.innerHTML = '<p style="color:green">Kategori ras kucing tidak boleh sama</p>'
   }
+}
+
+function backToDetail(routePath) {
+  router.push(routePath)
 }
 onMounted(() => {
   render()
@@ -57,13 +69,16 @@ onMounted(() => {
       <div class="alert-message"></div>
 
       <p class="label-nama">Nama Ras Kucing Saat ini</p>
-      <p class="nama-category">{{ nama}}</p>
+      <p class="nama-category">{{ nama }}</p>
       <p class="label-rename">Nama Ras Kucing Yang Akan Diganti</p>
       <input class="input-nama-category" type="text" v-model="dataEdit.namecategory" />
     </div>
 
     <div class="container-edit-delete">
       <button type="button" class="btn-edit" @click="simpanEdit()">Simpan Edit</button>
+      <button type="button" class="btn-kembali" @click="backToDetail(`/admin/category/${itemId}`)">
+        Kembali
+      </button>
     </div>
   </main>
 </template>
@@ -80,6 +95,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1920px;
   h1 {
     margin-bottom: 25px;
   }
@@ -97,10 +114,15 @@ main {
   }
   .container-edit-delete {
     margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     button {
       padding: 5px;
       width: 100%;
       border-radius: 5px;
+    }
+    .btn-edit {
       background-color: #ffd482;
     }
   }

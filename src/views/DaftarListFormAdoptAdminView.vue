@@ -7,14 +7,11 @@ const token = localStorage.getItem('token')
 const forms = ref({})
 const render = async () => {
   try {
-    const responseListAdopt = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?status=review`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseListAdopt = await axios.get(`http://127.0.0.1:8000/api/adoptions?status=review`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseListAdopt.status == 200) {
       forms.value = responseListAdopt.data.data
       console.log(responseListAdopt.data.data)
@@ -35,7 +32,12 @@ onMounted(() => {
 <template>
   <main>
     <h1>List Adopt Kucing</h1>
-    <div class="container-list">
+
+    <div class="list-form-kosong" v-if="forms.length == 0">
+      <p>Belum ada form adopsi kucing</p>
+    </div>
+
+    <div class="container-list" v-else>
       <div class="container-detail" v-for="form in forms" :key="form.id">
         <label>Nama Calon Adopter</label>
         <p>{{ form.name_adopter }}</p>
@@ -47,7 +49,9 @@ onMounted(() => {
         <p>{{ form.pet_name }}</p>
 
         <label>Status Adopt</label>
-        <p class="status-adopt-adopted" v-if="form.status_adopt == 'adopted'">{{ form.status_adopt }}</p>
+        <p class="status-adopt-adopted" v-if="form.status_adopt == 'adopted'">
+          {{ form.status_adopt }}
+        </p>
         <p class="status-adopt" v-else>{{ form.status_adopt }}</p>
         <div class="container-button">
           <button type="button" @click="goToDetail(`/admin/adoptions/${form.id}`)">Detail</button>
@@ -68,6 +72,20 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1920px;
+  .list-form-kosong {
+    margin-top: 5%;
+    background-color: #ffd482;
+    padding: 10px;
+    border-radius: 10px;
+    p {
+      display: flex;
+      text-transform: capitalize;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   .container-list {
     display: flex;
     flex-direction: column;
@@ -88,7 +106,7 @@ main {
       justify-content: center;
       text-transform: capitalize;
     }
-    .status-adopt-adopted{
+    .status-adopt-adopted {
       display: flex;
       background-color: red;
       justify-content: center;

@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
 import axios from 'axios'
+import router from '../router';
 
 const options = ref([])
 const dataTambahKucing = reactive({
@@ -51,6 +52,7 @@ async function submit() {
       dataTambahKucing.date_birth = ''
       dataTambahKucing.weight = ''
       dataTambahKucing.description = ''
+      router.push('/admin/list-kucing')
     }
   } catch (error) {
     console.log(error)
@@ -146,6 +148,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   .container-form {
     display: flex;
     flex-direction: column;

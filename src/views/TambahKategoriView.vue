@@ -1,10 +1,13 @@
 <script setup>
 import { reactive } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const dataKategori = reactive({
   namecategory: ''
 })
+
+const router = useRouter()
 
 const token = localStorage.getItem('token')
 async function submit() {
@@ -22,6 +25,9 @@ async function submit() {
       const containerAlert = document.querySelector('.alert-message')
       containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Kategori</p>`
       dataKategori.namecategory = ''
+      setTimeout(() => {
+        router.push('/admin/list-kategori')
+      }, 2000)
     }
   } catch (error) {
     const containerAlert = document.querySelector('.alert-message')
@@ -65,6 +71,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   .container-form {
     form {
       display: flex;

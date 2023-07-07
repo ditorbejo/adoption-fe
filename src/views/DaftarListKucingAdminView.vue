@@ -22,6 +22,10 @@ const render = async () => {
 }
 const router = useRouter()
 
+function goToTambahKucing(routePath){
+  router.push(routePath)
+}
+
 function goToDetail(routePath) {
   router.push(routePath)
 }
@@ -34,7 +38,12 @@ onMounted(() => {
   <main>
     <h1>List Kucing</h1>
 
-    <div class="container-list">
+    <div class="list-form-kosong" v-if="pets.length == 0">
+      <p>Kucing Belum Ditambahkan</p>
+    </div>
+
+    <div class="container-list" v-else>
+      <button class="button-tambah-kucing" @click="goToTambahKucing('/admin/tambah-kucing')">Tambah Kucing</button>
       <div
         class="container-detail"
         v-for="pet in pets"
@@ -45,8 +54,8 @@ onMounted(() => {
 
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>
-        <p>Category: {{ pet.categories_id }}</p>
-        <p class="status-adopt" v-if="pet.status_adopt == 'ready' ">{{ pet.status_adopt }}</p>
+        <p>Category: {{ pet.categories_name }}</p>
+        <p class="status-adopt" v-if="pet.status_adopt == 'ready'">{{ pet.status_adopt }}</p>
         <p class="status-adopt-adopted" v-else>{{ pet.status_adopt }}</p>
       </div>
     </div>
@@ -65,20 +74,42 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   h1 {
     margin-bottom: 25px;
+  }
+
+  .list-form-kosong {
+    margin-top: 5%;
+    background-color: #ffd482;
+    padding: 10px;
+    border-radius: 10px;
+    p {
+      display: flex;
+      text-transform: capitalize;
+      align-items: center;
+      justify-content: center;
+    }
   }
   .container-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    .button-tambah-kucing{
+      padding: 5px;
+      background-color: #85a675;
+      border-radius: 10px;
+    }
     .container-detail {
       display: flex;
       flex-direction: column;
       background-color: #ffd482;
       padding: 10px;
       gap: 5px;
+      border-radius: 10px;
       img {
+        border-radius: 10px;
         width: 100%;
         max-height: 300px;
         object-fit: fill;

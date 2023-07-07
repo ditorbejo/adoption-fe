@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const dataBerita = reactive({
   title: '',
@@ -36,6 +37,11 @@ async function submit() {
     containerAlert.innerHTML = `<p style="color:red;"> Isi semua field yang ada</p>`
   }
 }
+
+const router = useRouter()
+function goToListBerita(routePath) {
+  router.push(routePath)
+}
 </script>
 
 <template>
@@ -67,6 +73,11 @@ async function submit() {
       <div class="container-button">
         <button id="button" type="submit" @click="submit()">Tambah Berita</button>
       </div>
+      <div class="container-button">
+        <button type="button" @click="goToListBerita('/admin/list-berita')">
+          Ke Halaman List Berita
+        </button>
+      </div>
     </div>
   </main>
 </template>
@@ -83,6 +94,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1920px;
   .container-form {
     display: flex;
     flex-direction: column;
@@ -112,8 +125,7 @@ main {
       display: flex;
       overflow-y: hidden;
       max-height: 200px;
-      input {
-        height: 100px;
+      textarea {
         width: 100%;
       }
     }

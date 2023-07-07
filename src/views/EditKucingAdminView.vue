@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import router from '../router';
+import router from '../router'
 const token = localStorage.getItem('token')
 const route = useRoute()
 const itemId = route.params.id
@@ -65,8 +65,8 @@ const render = async () => {
       description.value = responseKucing.data.data.description
       image.value = responseKucing.data.data.image
     }
-    if (status_adopt.value == 'adopted'){
-        router.push('/')
+    if (status_adopt.value == 'adopted') {
+      router.push('/')
     }
   } catch (error) {
     console.log(error)
@@ -116,6 +116,7 @@ const simpanEdit = async () => {
       dataKucing.weight = ''
       dataKucing.date_birth = ''
       dataKucing.certificate = ''
+      router.push(`/admin/pets/${itemId}`)
     }
   } catch (error) {
     console.log(error)
@@ -195,10 +196,15 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1920px;
+  margin: 0 auto;
   .container-edit {
     display: flex;
     flex-direction: column;
     margin-top: 5%;
+    img {
+      max-height: 300px;
+    }
     .container-input {
       display: flex;
       flex-direction: column;
