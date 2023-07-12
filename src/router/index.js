@@ -25,6 +25,13 @@ import DaftarListFormAdoptAdminView from '../views/DaftarListFormAdoptAdminView.
 import DetailFormAdoptAdminView from '../views/DetailFormAdoptAdminView.vue'
 import DaftarListHistoryAdoptAdminView from '../views/DaftarListHistoryAdoptAdminView.vue'
 import TambahMarkAsAdoptAdminView from '../views/TambahMarkAsAdoptAdminView.vue'
+import HalamanChatAdminView from '../views/HalamanChatAdminView.vue'
+import HalamanChatUserView from '../views/HalamanChatUserView.vue'
+import HalamanChatAdminToUserView from '../views/HalamanChatAdminToUserView.vue'
+import DaftarListKucingUserView from '../views/DaftarListKucingUserView.vue'
+import DaftarListKucingByWarnaUserView from '../views/DaftarListKucingByWarnaUserView.vue'
+import DaftarListBeritaUserView from '../views/DaftarListBeritaUserView.vue'
+import DetailBeritaUserView from '../views/DetailBeritaUserView.vue'
 
 import axios from 'axios'
 
@@ -171,54 +178,6 @@ const router = createRouter({
       }
     },
     {
-      path: '/user/list-kategori',
-      name: 'list-kategori-user',
-      component: DaftarListKategoriUserView,
-      meta: {
-        roles : ['user','admin']
-      }
-    },
-    {
-      path: '/user/category/:id',
-      name: 'list-pet-by-kategory-user',
-      component: DaftarKucingByKategoriUserView,
-      meta: {
-        roles : ['user','admin']
-      }
-    },
-    {
-      path: '/user/pets/:id',
-      name: 'detail-kucing-user',
-      component: DetailKucingUserView,
-      meta: {
-        roles : ['user','admin']
-      }
-    },
-    {
-      path: '/user/pets/adopt/:id',
-      name: 'tambah-form-adopt-user',
-      component: TambahFormAdoptKucingUserView,
-      meta: {
-        roles : ['user','admin']
-      }
-    },
-    {
-      path: '/user/list-form-adopt',
-      name: 'list-form-adopt-user',
-      component: DaftarListFormAdoptUserView,
-      meta: {
-        roles : ['user','admin']
-      }
-    },
-    {
-      path: '/user/adoptions/:id',
-      name: 'detail-form-adopt-user',
-      component: DetailFormAdoptUserView,
-      meta: {
-        roles : ['user','admin']
-      }
-    },
-    {
       path: '/admin/list-form-adopt',
       name: 'list-form-adopt-admin',
       component: DaftarListFormAdoptAdminView,
@@ -248,6 +207,110 @@ const router = createRouter({
       component: TambahMarkAsAdoptAdminView,
       meta: {
         roles : ['user','admin']
+      }
+    },
+    {
+      path: '/admin/chat',
+      name: 'halaman-chat-admin',
+      component: HalamanChatAdminView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/admin/chat/:id',
+      name: 'halaman-chat-admin-to-user',
+      component: HalamanChatAdminToUserView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
+      path: '/user/pets/adopt/:id',
+      name: 'tambah-form-adopt-user',
+      component: TambahFormAdoptKucingUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/user/list-form-adopt',
+      name: 'list-form-adopt-user',
+      component: DaftarListFormAdoptUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/user/adoptions/:id',
+      name: 'detail-form-adopt-user',
+      component: DetailFormAdoptUserView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/user/chat',
+      name: 'halaman-chat-user',
+      component: HalamanChatUserView,
+      meta: {
+        roles : ['admin','user']
+      }
+    },
+    {
+      path: '/list-warna-kucing',
+      name: 'list-warna-kucing-user',
+      component: DaftarListKucingByWarnaUserView,
+      meta: {
+        roles : ['admin','user','guest']
+      }
+    },
+    {
+      path: '/list-berita',
+      name: 'list-berita-user',
+      component: DaftarListBeritaUserView,
+      meta: {
+        roles : ['admin','user','guest']
+      }
+    },
+    {
+      path: '/announcements/:id',
+      name: 'detail-berita-user',
+      component: DetailBeritaUserView,
+      meta: {
+        roles : ['admin','user','guest']
+      }
+    },
+    {
+      path: '/list-kategori',
+      name: 'list-kategori-user',
+      component: DaftarListKategoriUserView,
+      meta: {
+        roles : ['user','admin','guest']
+      }
+    },
+    {
+      path: '/category/:id',
+      name: 'list-pet-by-kategory-user',
+      component: DaftarKucingByKategoriUserView,
+      meta: {
+        roles : ['user','admin','guest']
+      }
+    },
+    {
+      path: '/list-kucing',
+      name: 'list-kucing-user',
+      component: DaftarListKucingUserView,
+      meta: {
+        roles : ['admin','user','guest']
+      }
+    },
+    {
+      path: '/pets/:id',
+      name: 'detail-kucing-user',
+      component: DetailKucingUserView,
+      meta: {
+        roles : ['user','admin','guest']
       }
     },
 

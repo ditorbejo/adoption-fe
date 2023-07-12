@@ -15,7 +15,7 @@ const render = async () => {
       }
     })
     if (responseDetail.status == 200) {
-      console.log(responseDetail.data.data)
+      console.log(responseDetail.data.data.user_id)
       dataForm.value = responseDetail.data.data
     }
   } catch (error) {
@@ -41,22 +41,29 @@ const deleteForm = async () => {
 
 const acceptForm = async () => {
   try {
-    const responseAccept = await axios.post(`http://127.0.0.1:8000/api/adoptions/${formId}/adopt`, {
+    const responseAccept = await axios.post(
+      `http://127.0.0.1:8000/api/adoptions/${formId}/adopt`,
+      {
         undefined
-    },{
-      headers: {
-        Authorization: `Bearer ${token}`
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
+    )
     if (responseAccept.status == 200) {
       console.log(responseAccept)
       console.log('Berhasil melakukan adopsi')
       router.push('/admin/list-history-adopt')
-      
     }
   } catch (error) {
     console.log(error)
   }
+}
+
+const goToChatUser = (routePath) => {
+  router.push(routePath)
 }
 
 onMounted(() => {
@@ -89,7 +96,14 @@ onMounted(() => {
       <p>{{ dataForm.phone_adopter }}</p>
 
       <label for="">Mengapa ingin mengadopsi kucing tersebut</label>
-      <textarea name="" id="" cols="50" rows="10" v-model="dataForm.description" disabled></textarea>
+      <textarea
+        name=""
+        id=""
+        cols="50"
+        rows="10"
+        v-model="dataForm.description"
+        disabled
+      ></textarea>
     </div>
 
     <div class="container-status">
@@ -109,7 +123,13 @@ onMounted(() => {
 
     <div class="container-button" v-if="dataForm.status_adopt == 'ready'">
       <p>Fitur Form</p>
-      <button class="btn-chat" type="button">Chat</button>
+      <button
+        class="btn-chat"
+        type="button"
+        @click="goToChatUser(`/admin/chat/${dataForm.user_id}`)"
+      >
+        Chat
+      </button>
       <button class="btn-accept" type="button" @click="acceptForm()">Setuju</button>
       <button class="btn-delete" type="button" @click="deleteForm()">Delete</button>
     </div>

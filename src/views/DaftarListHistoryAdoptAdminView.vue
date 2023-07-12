@@ -52,10 +52,10 @@ onMounted(() => {
 
     <div class="container-list">
       <div class="container-detail" v-for="form in forms" :key="form.id">
-        <label>Nama Calon Adopter</label>
+        <label>Nama Adopter</label>
         <p>{{ form.name_adopter }}</p>
 
-        <label>Email Calon Adopter</label>
+        <label>Email Adopter</label>
         <p>{{ form.email }}</p>
 
         <label>Nama Kucing</label>
