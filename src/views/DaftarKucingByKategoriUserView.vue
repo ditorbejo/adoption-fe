@@ -26,6 +26,7 @@ const render = async () => {
   }
 }
 const router = useRouter()
+
 function goToDetail(routePath) {
   router.push(routePath)
 }
@@ -48,15 +49,14 @@ onMounted(() => {
         class="container-detail"
         v-for="pet in pets"
         :key="pet.id"
-        @click="goToDetail(`/user/pets/${pet.id}`)"
+        @click="goToDetail(`/pets/${pet.id}`)"
       >
         <img :src="`http://127.0.0.1:8000${pet.image}`" alt="" />
 
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>
         <p>Category: {{ pet.categories_name }}</p>
-        <p class="status-adopt-ready" v-if="pet.status_adopt == 'ready'">{{ pet.status_adopt }}</p>
-        <p class="status-adopt-adopted" v-else>{{ pet.status_adopt }}</p>
+        <p class="status-adopt-ready">{{ pet.status_adopt }}</p>
       </div>
     </div>
   </main>
@@ -73,15 +73,15 @@ main {
   h1 {
     margin-bottom: 25px;
   }
-  .list-kucing-kosong{
+  .list-kucing-kosong {
     background-color: #ffd482;
     padding: 10px;
     border-radius: 10px;
-    p{
-        display: flex;
-        text-transform: capitalize;
-        align-items: center;
-        justify-content: center;
+    p {
+      display: flex;
+      text-transform: capitalize;
+      align-items: center;
+      justify-content: center;
     }
   }
   .container-list {
@@ -103,16 +103,6 @@ main {
       }
       .status-adopt-ready {
         background-color: #85a675;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 5px;
-        padding: 5px;
-        font-size: medium;
-        text-transform: capitalize;
-      }
-      .status-adopt-adopted {
-        background-color: red;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -35,7 +35,7 @@ onMounted(() => {
     <h1>List Kategori Ras Kucing</h1>
 
     <div class="container-list">
-      <div class="container-category" v-for="category in categories" :key="category.id" @click="goToCategory(`/user/category/${category.id}`)">
+      <div class="container-category" v-for="category in categories" :key="category.id" @click="goToCategory(`/category/${category.id}`)">
         <p>{{ category.namecategory }}</p>
       </div>
     </div>
