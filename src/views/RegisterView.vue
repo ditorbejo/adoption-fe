@@ -49,6 +49,7 @@ async function submit(){
           name="email"
           placeholder="Masukkan email anda"
           v-model="formsRegister.email"
+          required
         />
         <label for="password">Password</label>
         <input
@@ -57,6 +58,7 @@ async function submit(){
           name="password"
           placeholder="Masukkan password anda"
           v-model="formsRegister.password"
+          required
         />
         <div class="container-button">
           <button type="button" @click="submit()">Register</button>

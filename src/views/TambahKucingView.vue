@@ -42,7 +42,7 @@ async function submit() {
     })
     if (responseTambahKucing.status == 200) {
       const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan TambahKucing</p>`
+      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Kucing</p>`
       dataTambahKucing.name = ''
       dataTambahKucing.gender = ''
       dataTambahKucing.status_adopt = ''

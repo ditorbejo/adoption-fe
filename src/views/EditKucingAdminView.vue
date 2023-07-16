@@ -121,7 +121,7 @@ const simpanEdit = async () => {
   } catch (error) {
     console.log(error)
     const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;">Field tidak boleh ada yang kosong</p>`
+    containerAlert.innerHTML = `<p style="color:red;">Field tidak boleh ada yang kosong selain image</p>`
   }
 }
 onMounted(() => {

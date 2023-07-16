@@ -64,7 +64,7 @@ const markAsAdopt = async () => {
       console.log(responseForm.data.data)
       formId.value = responseForm.data.data.id
       const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Berita</p>`
+      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mark as Adopt Kucing</p>`
       dataAdopter.name_adopter = ''
       dataAdopter.phone_adopter = ''
       dataAdopter.address_adopter = ''
@@ -72,6 +72,8 @@ const markAsAdopt = async () => {
       dataAdopter.description = ''
     }
   } catch (error) {
+    const containerAlert = document.querySelector('.alert-message')
+    containerAlert.innerHTML = `<p style="color:red;"> Isi semua field yang ada</p>`
     console.log(error)
   }
 }

@@ -32,7 +32,7 @@ const goToDelete = async () => {
     })
     if (responseDelete.status == 200) {
       console.log(responseDelete)
-      router.push('/admin/home')
+      router.push('/admin/list-kategori')
     }
   } catch (error) {
     console.log(error)

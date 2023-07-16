@@ -33,7 +33,7 @@ const goToDelete = async () => {
     })
     if (responseDelete.status == 200) {
       console.log(responseDelete.data.data)
-      router.push('/admin/home')
+      router.push('/admin/list-berita')
     }
   } catch (error) {
     console.log(error)
@@ -70,7 +70,7 @@ onMounted(() => {
         Edit
       </button>
 
-      <button type="button" class="delete" @click="goToDelete()">Delete</button>
+      <button type="button" class="delete" @click="goToDelete()">Hapus</button>
     </div>
   </main>
 </template>

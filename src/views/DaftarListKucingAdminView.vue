@@ -39,7 +39,7 @@ onMounted(() => {
     <h1>List Kucing</h1>
 
     <div class="list-form-kosong" v-if="pets.length == 0">
-      <p>Kucing Belum Ditambahkan</p>
+      <p>Belum ada kucing yang ditambahkan</p>
     </div>
 
     <div class="container-list" v-else>

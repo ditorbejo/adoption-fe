@@ -67,6 +67,8 @@ const sendForm = async () => {
       dataAdopter.description = ''
     }
   } catch (error) {
+    const containerAlert = document.querySelector('.alert-message')
+    containerAlert.innerHTML = `<p style="color:red;"> Lengkapi semua field pada form adopsi</p>`
     console.log(error)
   }
 }
