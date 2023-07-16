@@ -1,38 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import HomeAdminView from '../views/HomeAdminView.vue'
+
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+
 import TambahKategoriView from '../views/TambahKategoriView.vue'
 import TambahBeritaView from '../views/TambahBeritaView.vue'
 import TambahKucingView from '../views/TambahKucingView.vue'
-import DaftarListKategoriAdminView from '../views/DaftarListKategoriAdminView.vue'
+import TambahMarkAsAdoptAdminView from '../views/TambahMarkAsAdoptAdminView.vue'
+import TambahFormAdoptKucingUserView from '../views/TambahFormAdoptKucingUserView.vue'
+
 import DetailKategoriAdminView from '../views/DetailKategoriAdminView.vue'
-import EditKategoriAdminView from '../views/EditKategoriAdminView.vue'
-import DaftarListBeritaAdminView from '../views/DaftarListBeritaAdminView.vue'
-import DetailBeritaAdminView from '../views/DetailBeritaAdminView.vue'
-import EditBeritaAdminView from '../views/EditBeritaAdminView.vue'
-import DaftarListKucingAdminView from '../views/DaftarListKucingAdminView.vue'
 import DetailKucingAdminView from '../views/DetailKucingAdminView.vue'
+import DetailBeritaAdminView from '../views/DetailBeritaAdminView.vue'
+import DetailFormAdoptAdminView from '../views/DetailFormAdoptAdminView.vue'
+
+import DetailKucingUserView from '../views/DetailKucingUserView.vue'
+import DetailFormAdoptUserView from '../views/DetailFormAdoptUserView.vue'
+import DetailBeritaUserView from '../views/DetailBeritaUserView.vue'
+
+import EditKategoriAdminView from '../views/EditKategoriAdminView.vue'
+import EditBeritaAdminView from '../views/EditBeritaAdminView.vue'
 import EditKucingAdminView from '../views/EditKucingAdminView.vue'
+
+import DaftarListKucingAdminView from '../views/DaftarListKucingAdminView.vue'
+import DaftarListKategoriAdminView from '../views/DaftarListKategoriAdminView.vue'
+import DaftarListFormAdoptAdminView from '../views/DaftarListFormAdoptAdminView.vue'
+import DaftarListFormAdoptRejectAdminView from '../views/DaftarListFormAdoptRejectAdminView.vue'
+import DaftarListHistoryAdoptAdminView from '../views/DaftarListHistoryAdoptAdminView.vue'
+import DaftarListBeritaAdminView from '../views/DaftarListBeritaAdminView.vue'
+
 import DaftarListKategoriUserView from '../views/DaftarListKategoriUserView.vue'
 import DaftarKucingByKategoriUserView from '../views/DaftarKucingByKategoriUserView.vue'
-import DetailKucingUserView from '../views/DetailKucingUserView.vue'
-import TambahFormAdoptKucingUserView from '../views/TambahFormAdoptKucingUserView.vue'
+import DaftarListKucingUserView from '../views/DaftarListKucingUserView.vue'
+import DaftarListKucingByWarnaUserView from '../views/DaftarListKucingByWarnaUserView.vue'
 import DaftarListFormAdoptUserView from '../views/DaftarListFormAdoptUserView.vue'
-import DetailFormAdoptUserView from '../views/DetailFormAdoptUserView.vue'
-import DaftarListFormAdoptAdminView from '../views/DaftarListFormAdoptAdminView.vue'
-import DetailFormAdoptAdminView from '../views/DetailFormAdoptAdminView.vue'
-import DaftarListHistoryAdoptAdminView from '../views/DaftarListHistoryAdoptAdminView.vue'
-import TambahMarkAsAdoptAdminView from '../views/TambahMarkAsAdoptAdminView.vue'
+import DaftarListBeritaUserView from '../views/DaftarListBeritaUserView.vue'
+
+
 import HalamanChatAdminView from '../views/HalamanChatAdminView.vue'
 import HalamanChatUserView from '../views/HalamanChatUserView.vue'
 import HalamanChatAdminToUserView from '../views/HalamanChatAdminToUserView.vue'
-import DaftarListKucingUserView from '../views/DaftarListKucingUserView.vue'
-import DaftarListKucingByWarnaUserView from '../views/DaftarListKucingByWarnaUserView.vue'
-import DaftarListBeritaUserView from '../views/DaftarListBeritaUserView.vue'
-import DetailBeritaUserView from '../views/DetailBeritaUserView.vue'
-
 import axios from 'axios'
 
 const router = createRouter({
@@ -197,6 +206,14 @@ const router = createRouter({
       path: '/admin/list-history-adopt',
       name: 'list-history-adopt-admin',
       component: DaftarListHistoryAdoptAdminView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
+      path: '/admin/list-form-adopt-reject',
+      name: 'list-form-adopt-reject-admin',
+      component: DaftarListFormAdoptRejectAdminView,
       meta: {
         roles : ['user','admin']
       }

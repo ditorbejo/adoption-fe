@@ -23,15 +23,21 @@ const render = async () => {
   }
 }
 const router = useRouter()
-const deleteForm = async () => {
+const rejectForm = async () => {
   try {
-    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/adoptions/${formId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const responseReject = await axios.post(
+      `http://127.0.0.1:8000/api/adoptions/${formId}/reject`,
+      {
+        undefined
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
-    if (responseDelete.status == 200) {
-      console.log(responseDelete)
+    )
+    if (responseReject.status == 200) {
+      console.log(responseReject)
       router.push('/')
     }
   } catch (error) {
@@ -131,7 +137,7 @@ onMounted(() => {
         Chat
       </button>
       <button class="btn-accept" type="button" @click="acceptForm()">Setuju</button>
-      <button class="btn-delete" type="button" @click="deleteForm()">Delete</button>
+      <button class="btn-delete" type="button" @click="rejectForm()">Reject</button>
     </div>
     <div class="container-button" v-else>
       <p>Fitur Form</p>
