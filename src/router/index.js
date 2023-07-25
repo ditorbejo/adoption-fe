@@ -23,6 +23,7 @@ import DetailBeritaUserView from '../views/DetailBeritaUserView.vue'
 import EditKategoriAdminView from '../views/EditKategoriAdminView.vue'
 import EditBeritaAdminView from '../views/EditBeritaAdminView.vue'
 import EditKucingAdminView from '../views/EditKucingAdminView.vue'
+import RejectFormAdopsiKucingAdminView from '../views/RejectFormAdopsiKucingAdminView.vue'
 
 import DaftarListKucingAdminView from '../views/DaftarListKucingAdminView.vue'
 import DaftarListKategoriAdminView from '../views/DaftarListKategoriAdminView.vue'
@@ -42,6 +43,7 @@ import DaftarListBeritaUserView from '../views/DaftarListBeritaUserView.vue'
 import HalamanChatAdminView from '../views/HalamanChatAdminView.vue'
 import HalamanChatUserView from '../views/HalamanChatUserView.vue'
 import HalamanChatAdminToUserView from '../views/HalamanChatAdminToUserView.vue'
+import AboutView from '../views/AboutView.vue'
 import axios from 'axios'
 
 const router = createRouter({
@@ -219,6 +221,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/admin/form-reject/:id',
+      name: 'form-reject-admin',
+      component: RejectFormAdopsiKucingAdminView,
+      meta: {
+        roles : ['user','admin']
+      }
+    },
+    {
       path: '/admin/pets/adopt/:id',
       name: 'tambah-mark-as-adopt-admin',
       component: TambahMarkAsAdoptAdminView,
@@ -326,6 +336,15 @@ const router = createRouter({
       path: '/pets/:id',
       name: 'detail-kucing-user',
       component: DetailKucingUserView,
+      meta: {
+        roles : ['user','admin','guest']
+      }
+    },
+
+    {
+      path: '/about',
+      name: 'about-cattery',
+      component: AboutView,
       meta: {
         roles : ['user','admin','guest']
       }
