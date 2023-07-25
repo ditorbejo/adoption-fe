@@ -1,13 +1,76 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import axios from 'axios'
+import { onMounted, ref } from 'vue'
+import { RouterView, useRouter } from 'vue-router'
+import { stateLogin } from '../store.js'
+
+const navbarMenuOpen = ref(false)
+
+const toggleNavbar = () => {
+  navbarMenuOpen.value = !navbarMenuOpen.value
+}
+const closeNavbar = () => {
+  navbarMenuOpen.value = !navbarMenuOpen.value
+}
+
+let token = localStorage.getItem('token')
+
+const roleUser = ref('guest')
+const checkUserLogin = async () => {
+  console.log('checkUserLoginBerjalan')
+  try {
+    const loginResponse = await axios.get('http://127.0.0.1:8000/api/auth/role', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (loginResponse.status == 200) {
+      stateLogin.login = true
+      roleUser.value = loginResponse.data.role
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const router = useRouter()
+const logOutUser = async () => {
+  try {
+    const responseLogout = await axios.post(
+      `http://127.0.0.1:8000/api/logout`,
+      {
+        undefined
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    if (responseLogout.status == 200) {
+      console.log(responseLogout)
+      stateLogin.login = false
+      console.log('Berhasil Logout')
+      router.push('/login')
+      localStorage.clear()
+      token = null
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+onMounted(() => {
+  checkUserLogin()
+})
 </script>
 
 <template>
   <header>
     <div class="container-home">
-      <a class="home" href="/"> LoremIpsum </a>
+      <router-link class="home" to="/"> LoremIpsum </router-link>
     </div>
-    <button aria-label="navigasi" class="hamburger-button">
+    <button aria-label="navigasi" class="hamburger-button" @click="toggleNavbar()">
       <svg
         class="hamburger-icon"
         xmlns="http://www.w3.org/2000/svg"
@@ -28,6 +91,227 @@ import { RouterView } from 'vue-router'
         />
       </svg>
     </button>
+    <div class="nav-open" v-if="navbarMenuOpen == true" @click="closeNavbar()">
+      <ul class="list-navbar" v-if="roleUser == 'user'">
+        <li>
+          <router-link to="/home">Home</router-link>
+        </li>
+        <li>
+          <router-link to="/list-warna-kucing">Warna</router-link>
+        </li>
+        <li>
+          <router-link to="/list-kategori">Ras </router-link>
+        </li>
+        <li>
+          <router-link to="/list-kucing">Adopsi </router-link>
+        </li>
+        <li>
+          <router-link to="/list-berita">Berita </router-link>
+        </li>
+        <li>
+          <router-link to="/about">About </router-link>
+        </li>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
+          </li>
+        </div>
+        <div class="login-register" v-else>
+          <li>
+            <router-link to="/user/chat">Chat </router-link>
+          </li>
+          <li>
+            <router-link to="/user/list-form-adopt">Form Adopt </router-link>
+          </li>
+          <li>
+            <a @click="logOutUser()">Logout</a>
+          </li>
+        </div>
+      </ul>
+
+      <ul class="list-navbar" v-if="roleUser == 'admin'">
+        <li>
+          <router-link to="/admin/home">Home </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/list-kategori">Ras </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/list-kucing">Adopsi </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/list-berita">Berita </router-link>
+        </li>
+        <li>
+          <router-link to="/about">About </router-link>
+        </li>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
+          </li>
+        </div>
+        <div class="login-register" v-else>
+          <li>
+            <router-link to="/admin/chat">Chat </router-link>
+          </li>
+          <li>
+            <router-link to="/admin/list-form-adopt">Form Adopt </router-link>
+          </li>
+          <li>
+            <router-link to="/admin/list-history-adopt">History Adopt </router-link>
+          </li>
+          <li>
+            <a @click="logOutUser()">Logout </a>
+          </li>
+        </div>
+      </ul>
+
+      <ul class="list-navbar" v-if="roleUser == 'guest'">
+        <li>
+          <router-link to="/home">Home </router-link>
+        </li>
+        <li>
+          <router-link to="/list-warna-kucing">Warna </router-link>
+        </li>
+        <li>
+          <router-link to="/list-kategori">Ras </router-link>
+        </li>
+        <li>
+          <router-link to="/list-kucing">Adopsi </router-link>
+        </li>
+        <li>
+          <router-link to="/list-berita">Berita </router-link>
+        </li>
+        <li>
+          <router-link to="/about">About </router-link>
+        </li>
+        <div class="login-register">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
+          </li>
+        </div>
+      </ul>
+    </div>
+
+    <div class="nav" v-else>
+      <ul class="list-navbar" v-if="roleUser == 'user'">
+        <li>
+          <router-link to="/home">Home </router-link>
+        </li>
+        <li>
+          <router-link to="/list-warna-kucing">Warna </router-link>
+        </li>
+        <li>
+          <router-link to="/list-kategori">Ras </router-link>
+        </li>
+        <li>
+          <router-link to="/list-kucing">Adopsi </router-link>
+        </li>
+        <li>
+          <router-link to="/list-berita">Berita </router-link>
+        </li>
+        <li>
+          <router-link to="/about">About </router-link>
+        </li>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
+          </li>
+        </div>
+        <div class="login-register" v-else>
+          <li>
+            <router-link to="/user/chat">Chat </router-link>
+          </li>
+          <li>
+            <router-link to="/user/list-form-adopt">Form Adopt </router-link>
+          </li>
+          <li>
+            <a to="" @click="logOutUser()">Logout </a>
+          </li>
+        </div>
+      </ul>
+
+      <ul class="list-navbar" v-if="roleUser == 'admin'">
+        <li>
+          <router-link to="/admin/home">Home </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/list-kategori">Ras </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/list-kucing">Adopsi </router-link>
+        </li>
+        <li>
+          <router-link to="/admin/list-berita">Berita </router-link>
+        </li>
+        <li>
+          <router-link to="/about">About </router-link>
+        </li>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
+          </li>
+        </div>
+        <div class="login-register" v-else>
+          <li>
+            <router-link to="/admin/chat">Chat </router-link>
+          </li>
+          <li>
+            <router-link to="/admin/list-form-adopt">Form Adopt </router-link>
+          </li>
+          <li>
+            <router-link to="/admin/list-history-adopt">History Adopt </router-link>
+          </li>
+          <li>
+            <a @click="logOutUser()">Logout </a>
+          </li>
+        </div>
+      </ul>
+
+      <ul class="list-navbar" v-if="roleUser == 'guest'">
+        <li>
+          <router-link to="/home">Home </router-link>
+        </li>
+        <li>
+          <router-link to="/list-warna-kucing">Warna </router-link>
+        </li>
+        <li>
+          <router-link to="/list-kategori">Ras </router-link>
+        </li>
+        <li>
+          <router-link to="/list-kucing">Adopsi </router-link>
+        </li>
+        <li>
+          <router-link to="/list-berita">Berita </router-link>
+        </li>
+        <li>
+          <router-link to="/about">About </router-link>
+        </li>
+        <div class="login-register">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
+          </li>
+        </div>
+      </ul>
+    </div>
   </header>
   <RouterView />
 </template>
@@ -44,11 +328,15 @@ a {
 }
 header {
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #ffae11;
   padding: 5px 20px;
+  position: fixed;
+  top: 0;
+  z-index: 99;
   .hamburger-button {
     padding: 0;
     border: none;
@@ -59,11 +347,94 @@ header {
     cursor: pointer;
     .hamburger-icon {
       font-size: 44px;
-      color: white;
+      color: #f24c3d;
     }
   }
   .container-home a {
     font-size: large;
+  }
+  .nav-open {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    align-items: center;
+    background-color: #00000080;
+    .list-navbar {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffae11;
+      width: 50%;
+      height: 100vh;
+      transform: translate(100%, 0);
+      .login-register {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+      li:hover {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+        width: 100%;
+        a {
+          color: #f24c3d;
+        }
+      }
+      a {
+        text-decoration: none;
+        color: black;
+        cursor: pointer;
+      }
+    }
+  }
+  .nav {
+    display: none;
+  }
+}
+@media only screen and (min-width: 768px) {
+  header {
+    .nav {
+      display: none;
+    }
+  }
+}
+@media only screen and (min-width: 1024px) {
+  header {
+    width: 100%;
+    padding: 10px 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .hamburger-button {
+      display: none;
+    }
+    .nav {
+      display: flex;
+      .list-navbar {
+        display: flex;
+        gap: 10px;
+        list-style-type: none;
+        .login-register {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+        }
+        a:hover {
+          color: #ffffff;
+        }
+      }
+    }
   }
 }
 </style>
