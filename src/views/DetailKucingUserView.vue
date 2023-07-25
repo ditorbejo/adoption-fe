@@ -18,12 +18,6 @@ const render = async () => {
     if (responseDetailKucing.status == 200) {
       console.log(responseDetailKucing.data.data)
       pets.value = responseDetailKucing.data.data
-    //   if (pets.value.status_adopt == 'adopted') {
-    //     const statusAdopt = document.querySelector('.status_adopt')
-    //     statusAdopt.style.backgroundColor = 'red'
-    //     const buttonAdopt = document.querySelector('.container-button')
-    //     buttonAdopt.innerHTML = ''
-    //   }
     }
   } catch (error) {
     console.log(error)
@@ -41,19 +35,6 @@ const fetchAlbum = async () => {
     if (responseAlbum.status == 200) {
       console.log(responseAlbum.data.data)
       images.value = responseAlbum.data.data
-      if (images.value.length == 0) {
-        const alertContainer = document.querySelector('.alert-message')
-        alertContainer.innerHTML = `
-        <p>Tidak ada Album Gambar</p>
-        <style>
-        p{
-            background-color: #D9D9D9;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        </style>
-        `
-      }
     }
   } catch (error) {
     console.log(error)
@@ -62,6 +43,10 @@ const fetchAlbum = async () => {
 
 function goToFormAdopt(routePath) {
   router.push(routePath)
+}
+
+const askQuestion = () => {
+  router.push('/user/chat')
 }
 
 onMounted(() => {
@@ -79,12 +64,14 @@ onMounted(() => {
 
       <label for="">Album Photo</label>
       <div class="container-album">
-        <div class="alert-message"></div>
-
-        <div class="container-gambar">
+        <div class="container-gambar" v-if="images.length != 0">
           <div class="container-loop-gambar" v-for="image in images" :key="image.id">
             <img class="gambar-album" :src="`http://127.0.0.1:8000${image.image}`" alt="" />
           </div>
+        </div>
+
+        <div class="alert-message" v-else>
+          <p>Tidak ada Album Gambar</p>
         </div>
       </div>
 
@@ -104,35 +91,36 @@ onMounted(() => {
       <p>{{ pets.categories_id }}</p>
 
       <label for="">Date Birth</label>
-      <p>{{ pets.date_birth }}</p>
+      <p>{{ pets.format_date_birth }}</p>
 
       <label for="">Weight</label>
-      <p>{{ pets.weight }}</p>
+      <p>{{ pets.weight }} Kg</p>
 
       <label for="">Description</label>
-      <textarea
-        disabled
-        class="description"
-        id=""
-        cols="50"
-        rows="10"
-        v-model="pets.description"
-      ></textarea>
+      <div class="container-description">
+        <textarea
+          disabled
+          class="description"
+          id=""
+          cols="50"
+          rows="10"
+          v-model="pets.description"
+        ></textarea>
+      </div>
 
       <label for="">Status Adopt</label>
       <p class="status_adopt" v-if="pets.status_adopt == 'ready'">{{ pets.status_adopt }}</p>
       <p class="status_adopt_adopted" v-else>{{ pets.status_adopt }}</p>
     </div>
 
-    <div  class="container-button" v-if="pets.status_adopt == 'ready'">
+    <div class="container-button" v-if="pets.status_adopt == 'ready'">
       <button class="btn-adopt" type="button" @click="goToFormAdopt(`/user/pets/adopt/${petId}`)">
         Adopt
       </button>
 
-      <button class="btn-question" type="button" @click="goToDelete()">Ask a Question</button>
+      <button class="btn-question" type="button" @click="askQuestion()">Ask a Question</button>
     </div>
-    <div  class="container-button" v-else>
-    </div>
+    <div class="container-button" v-else></div>
   </main>
 </template>
 
@@ -148,8 +136,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-detail {
     display: flex;
     flex-direction: column;
@@ -163,6 +151,8 @@ main {
       border-radius: 5px;
     }
     .gambar-utama {
+      padding: 10px;
+      background-color: #f79327;
       width: 100%;
       max-height: 300px;
       object-fit: fill;
@@ -170,9 +160,15 @@ main {
     .gender {
       text-transform: capitalize;
     }
-    .description {
-      overflow: hidden;
+    .container-description {
+      .description {
+        width: 100%;
+        overflow: hidden;
+        padding: 10px;
+        resize: none;
+      }
     }
+
     .status_adopt {
       display: flex;
       align-items: center;
@@ -207,7 +203,7 @@ main {
           background-color: azure;
           img {
             width: 100%;
-            height: 100px;
+            height: 150px;
             object-fit: fill;
           }
           button {
@@ -238,6 +234,54 @@ main {
     }
     .btn-question {
       background-color: #ffd482;
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  main {
+    .container-detail {
+      .gambar-utama {
+        padding: 10px;
+        background-color: #f79327;
+        border-radius: 10px;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+      }
+      .container-album {
+        .container-gambar {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: repeat(auto, 1fr);
+          grid-column-gap: 20px;
+          grid-row-gap: 20px;
+        }
+      }
+    }
+  }
+}
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-detail {
+      .gambar-utama {
+        padding: 10px;
+        background-color: #f79327;
+        border-radius: 10px;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+      }
+      .container-album {
+        .container-gambar {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: repeat(auto, 1fr);
+          grid-column-gap: 20px;
+          grid-row-gap: 20px;
+        }
+      }
     }
   }
 }
