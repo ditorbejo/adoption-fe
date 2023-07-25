@@ -12,35 +12,6 @@ const userId = ref()
 
 const token = localStorage.getItem('token')
 
-// const renderAllChatUser = async () => {
-//   try {
-//     const responseUser = await axios.get('http://127.0.0.1:8000/api/chat', {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     })
-//     if (responseUser.status == 200) {
-//       const responseUserChat = responseUser.data.data.filter((data) => {
-//         if (data.admin_id == null) {
-//           return data
-//         }
-//       })
-//       const mapUserId = responseUserChat.map((data) => {
-//         return {
-//           user_id: data.user_id,
-//           user_name: data.user_name,
-//           role: data.role
-//         }
-//       })
-//       const uniqueArray = Array.from(new Set(mapUserId.map(JSON.stringify)), JSON.parse)
-//       console.log(uniqueArray)
-//       listUserMessage.value = uniqueArray
-//     }
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
-
 const renderUserChat = async () => {
   try {
     const responseUser = await axios.get('http://127.0.0.1:8000/api/getAllUser', {
@@ -48,9 +19,9 @@ const renderUserChat = async () => {
         Authorization: `Bearer ${token}`
       }
     })
-    if(responseUser.status == 200){
-        listUserMessage.value = responseUser.data.data
-        console.log(responseUser.data.data)
+    if (responseUser.status == 200) {
+      listUserMessage.value = responseUser.data.data
+      console.log(responseUser.data.data)
     }
   } catch (error) {
     console.log(error)
@@ -80,7 +51,7 @@ const sendMessage = async (userId) => {
     console.log(error)
   }
 }
-
+const roleUserName = ref()
 const fetchMessages = async (user_id) => {
   try {
     userId.value = user_id
@@ -92,36 +63,34 @@ const fetchMessages = async (user_id) => {
     })
     if (responseMessages.status == 200) {
       messages.value = responseMessages.data.data
-        var channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
-        channel.bind('chat-Cattery', (data) => {
-          console.log(data.resourceData)
-          messages.value.push(data.resourceData)
-          console.log(messages.value)
-        })
-        channel.bind('pusher:subscription_succeeded', () => {
-          console.log('Subscribe berhasil')
-        })
+      console.log(responseMessages.data.data)
+      const filterRoleUser = responseMessages.data.data.filter((user) => user.role == 'user')
+      const firstFilteredData = filterRoleUser.find(() => true)
+      roleUserName.value = firstFilteredData.user_name
+
+      var channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
+      channel.bind('chat-Cattery', (data) => {
+        console.log(data.resourceData)
+        messages.value.push(data.resourceData)
+        console.log(messages.value)
+      })
+      channel.bind('pusher:subscription_succeeded', () => {
+        console.log('Subscribe berhasil')
+      })
     }
   } catch (error) {
     console.log(error)
   }
 }
 
+const backToListChat = () => {
+  userId.value = null
+}
+
 const pusher = new Pusher(pusherAppKey, { cluster: pusherCluster })
 
 onMounted(async () => {
   await renderUserChat()
-//   listUserMessage.value.forEach((user) => {
-//     var channel = pusher.subscribe(`lorem-ipsum-chat-${user.id}`)
-//     channel.bind('chat-Cattery', (data) => {
-//       console.log(data.resourceData)
-//       messages.value.push(data.resourceData)
-//       console.log(messages.value)
-//     })
-//     channel.bind('pusher:subscription_succeeded', () => {
-//       console.log(`Subscribe berhasil-${user.id}`)
-//     })
-//   })
   var channelNewUser = pusher.subscribe('new-user-chat')
   channelNewUser.bind('new-Chat-Cattery', () => {
     renderUserChat()
@@ -141,34 +110,36 @@ onUnmounted(() => {
     <h1>Halaman Chat Admin</h1>
 
     <div class="container-chat">
-      <div class="list-user-chat">
+      <div class="list-user-chat" v-if="userId == null">
         <p>List User Chat</p>
+
         <div class="list-chat" v-for="user in listUserMessage" :key="user.id">
           <div class="user-box" @click="fetchMessages(user.id)">
-            <p>Nama:{{ user.name }}</p>
-            <p>User ID:{{ user.id }}</p>
-            <p>Role :{{ user.role }}</p>
+            <p>{{ user.name }} {{ user.role }}</p>
+            <p>{{ user.email }}</p>
           </div>
         </div>
       </div>
 
-      <div class="box-chat">
-        <p>Ini adalah box chat</p>
+      <div class="box-chat" v-else>
+        <button class="button-back" @click="backToListChat()">Kembali ke Daftar Chat</button>
+        <p class="judul-box-chat">{{ roleUserName }}</p>
 
-        <div class="isi-chat" style="overflow: auto; height: 600px">
+        <div class="isi-chat">
           <div class="message" v-for="message in messages" :key="message.id">
             <div class="container-chat" v-if="message.role == 'user'">
-              <label class="isi-pesan-user" for=""
-                >{{ message.user_name }} {{ message.role }}</label
-              >
-              <p class="isi-pesan-user">Pesan: {{ message.message }}</p>
+              <div class="container-detail-user">
+                <p class="jam-pesan">{{ message.created_at }}</p>
+                <p class="user-dan-role" for="">{{ message.user_name }} {{ message.role }}</p>
+              </div>
+              <p class="isi-pesan-user">{{ message.message }}</p>
             </div>
-
             <div class="container-chat" v-else>
-              <label class="isi-pesan-admin" for=""
-                >{{ message.user_name }} {{ message.role }}</label
-              >
-              <p class="isi-pesan-admin">Pesan: {{ message.message }}</p>
+              <div class="container-detail-user">
+                <p class="jam-pesan">{{ message.created_at }}</p>
+                <p class="user-dan-role" for="">{{ message.user_name }} {{ message.role }}</p>
+              </div>
+              <p class="isi-pesan-admin">{{ message.message }}</p>
             </div>
           </div>
         </div>
@@ -193,60 +164,96 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-chat {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 100%;
+    border-radius: 10px;
     .list-user-chat {
       padding: 10px;
-      width: 40%;
+      width: 100%;
+      border-radius: 10px;
       .list-chat {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        background-color: yellow;
+        background-color: #f79327;
         border: 1px;
         padding: 10px;
         .user-box {
           background-color: bisque;
           padding: 10px;
+          p {
+            text-transform: capitalize;
+          }
         }
       }
     }
     .box-chat {
-      width: 60%;
+      width: 100%;
       padding: 10px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      .button-back {
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #fffec4;
+      }
+      .judul-box-chat {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        background-color: #fffec4;
+        border: 1px solid #f79327;
+        margin: 10px 0;
+        text-transform: capitalize;
+      }
       .isi-chat {
         display: flex;
         flex-direction: column;
         gap: 5px;
-        background-color: aliceblue;
+        overflow: auto;
+        scroll-behavior: smooth;
+        height: 600px;
         .message {
-          background-color: yellow;
+          background-color: #f79540;
           padding: 10px;
           border-radius: 10px;
           border: 1px solid;
           .container-chat {
-            display: flex;
-            flex-direction: column;
             border-radius: 5px;
-            background-color: rgb(255, 255, 255);
+            padding: 10px;
+            .container-detail-user {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              .user-dan-role {
+                text-align: center;
+                width: 50%;
+                padding: 5px;
+                background-color: #f8ff21;
+                text-transform: capitalize;
+              }
+              .jam-pesan {
+                width: 100%;
+                background-color: #f8ff21;
+                padding: 5px;
+              }
+            }
           }
           .isi-pesan-user {
             display: flex;
-            padding: 5px;
+            padding: 10px;
             justify-content: flex-end;
+            background-color: #ffe569;
           }
           .isi-pesan-admin {
             display: flex;
-            padding: 5px;
+            padding: 10px;
             justify-content: flex-start;
-            background-color: yellow;
+            background-color: #ffe569;
           }
         }
       }
@@ -254,6 +261,11 @@ main {
         margin-top: 5%;
         display: flex;
         flex-direction: row;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #d0daee;
         textarea {
           width: 80%;
         }

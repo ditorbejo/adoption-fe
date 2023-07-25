@@ -19,6 +19,7 @@ const fetchMessages = async () => {
     if (responseMessages.status == 200) {
       //   console.log(responseMessages.data.data)
       messages.value = responseMessages.data.data
+      console.log(responseMessages.data.data)
     }
   } catch (error) {
     console.log(error)
@@ -74,12 +75,18 @@ onUnmounted(() => {
       <div class="isi-chat">
         <div class="message" v-for="message in messages" :key="message.id">
           <div class="container-chat" v-if="message.role == 'user'">
-            <label class="isi-pesan-user" for="">{{ message.user_name }} {{ message.role }}</label>
-            <p class="isi-pesan-user">Pesan: {{ message.message }}</p>
+            <div class="container-detail-user">
+              <p class="jam-pesan">{{ message.created_at }}</p>
+              <p class="user-dan-role" for="">{{ message.user_name }} {{ message.role }}</p>
+            </div>
+            <p class="isi-pesan-user"> {{ message.message }}</p>
           </div>
           <div class="container-chat" v-else>
-            <label class="isi-pesan-admin" for="">{{ message.user_name }} {{ message.role }}</label>
-            <p class="isi-pesan-admin">Pesan: {{ message.message }}</p>
+            <div class="container-detail-user">
+              <p class="jam-pesan">{{ message.created_at }}</p>
+              <p class="user-dan-role" for="">{{ message.user_name }} {{ message.role }}</p>
+            </div>
+            <p class="isi-pesan-admin"> {{ message.message }}</p>
           </div>
         </div>
       </div>
@@ -104,8 +111,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .box-chat {
     padding: 10px;
     display: flex;
@@ -119,24 +126,42 @@ main {
       scroll-behavior: smooth;
       height: 600px;
       .message {
-        background-color: yellow;
+        background-color: #f79540;
         padding: 10px;
         border-radius: 10px;
         border: 1px solid;
         .container-chat {
           border-radius: 5px;
-          background-color: rgb(255, 255, 255);
+          padding: 10px;
+          .container-detail-user {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .user-dan-role {
+              text-align: center;
+              width: 50%;
+              padding: 5px;
+              background-color: #f8ff21;
+              text-transform: capitalize;
+            }
+            .jam-pesan {
+              width: 100%;
+              background-color: #f8ff21;
+              padding: 5px;
+            }
+          }
         }
         .isi-pesan-user {
           display: flex;
-          padding: 5px;
+          padding: 10px;
           justify-content: flex-end;
+          background-color: #ffe569;
         }
         .isi-pesan-admin {
           display: flex;
-          padding: 5px;
+          padding: 10px;
           justify-content: flex-start;
-          background-color: yellow;
+          background-color: #ffe569;
         }
       }
     }
@@ -144,6 +169,11 @@ main {
       margin-top: 5%;
       display: flex;
       flex-direction: row;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #d0daee;
       textarea {
         width: 80%;
       }
