@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import { useRoute} from 'vue-router'
+import { useRoute } from 'vue-router'
 
 const token = localStorage.getItem('token')
 const announcement = ref({})
@@ -23,8 +23,6 @@ const render = async () => {
   }
 }
 
-
-
 onMounted(() => {
   render()
 })
@@ -41,7 +39,15 @@ onMounted(() => {
         <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
         <p>Isi Berita:</p>
         <div class="description-detail">
-          <textarea class="description" name="" id="" cols="50" rows="10" v-model="announcement.description" disabled></textarea>
+          <textarea
+            class="description"
+            name=""
+            id=""
+            cols="50"
+            rows="10"
+            v-model="announcement.description"
+            disabled
+          ></textarea>
         </div>
       </div>
     </div>
@@ -60,8 +66,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-detail {
     display: flex;
     flex-direction: column;
@@ -83,11 +89,16 @@ main {
         max-height: 300px;
         object-fit: fill;
         border-radius: 10px;
+        padding: 10px;
+        background-color: #f79327;
       }
       .description-detail {
         overflow: hidden;
-        textarea{
+        .description {
+          padding: 10px;
           width: 100%;
+          overflow: hidden;
+          resize: none;
         }
       }
     }
