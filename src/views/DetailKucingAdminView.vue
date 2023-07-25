@@ -139,8 +139,10 @@ onMounted(() => {
       <img class="gambar-utama" :src="`http://127.0.0.1:8000${pets.image}`" alt="" />
 
       <label for="">Album Photo</label>
-      <div class="container-album">
-        <button class="btn-tambah-gambar" type="button" @click="tambahUpload()">Tambah Gambar</button>
+      <div class="container-album" v-if="pets.status_adopt == 'ready'">
+        <button class="btn-tambah-gambar" type="button" @click="tambahUpload()">
+          Tambah Gambar
+        </button>
 
         <div class="container-tambah-gambar" v-for="inputFile in inputFiles" :key="inputFile.id">
           <input type="file" @change="inputFile.handler" />
@@ -153,6 +155,14 @@ onMounted(() => {
           <div class="container-loop-gambar" v-for="image in images" :key="image.id">
             <img class="gambar-album" :src="`http://127.0.0.1:8000${image.image}`" alt="" />
             <button type="button" @click="hapusGambar(image.id)">Hapus</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-album" v-else>
+        <div class="container-gambar">
+          <div class="container-loop-gambar" v-for="image in images" :key="image.id">
+            <img class="gambar-album" :src="`http://127.0.0.1:8000${image.image}`" alt="" />
           </div>
         </div>
       </div>
@@ -173,10 +183,10 @@ onMounted(() => {
       <p>{{ pets.categories_name }}</p>
 
       <label for="">Date Birth</label>
-      <p>{{ pets.date_birth }}</p>
+      <p>{{ pets.format_date_birth }}</p>
 
       <label for="">Weight</label>
-      <p>{{ pets.weight }}</p>
+      <p>{{ pets.weight }} Kg</p>
 
       <label for="">Description</label>
       <textarea
@@ -189,7 +199,8 @@ onMounted(() => {
       ></textarea>
 
       <label for="">Status Adopt</label>
-      <p class="status_adopt">{{ pets.status_adopt }}</p>
+      <p class="status_adopt" v-if="pets.status_adopt == 'ready'">{{ pets.status_adopt }}</p>
+      <p class="status_adopt-adopted" v-else>{{ pets.status_adopt }}</p>
     </div>
 
     <div class="container-button" v-if="pets.status_adopt == 'ready'">
@@ -204,9 +215,7 @@ onMounted(() => {
       <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete Kucing</button>
     </div>
 
-    <div class="container-button" v-else>
-      <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete Kucing</button>
-    </div>
+    <div class="container-button" v-else></div>
   </main>
 </template>
 
@@ -222,8 +231,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-detail {
     display: flex;
     flex-direction: column;
@@ -239,6 +248,8 @@ main {
       border-radius: 5px;
     }
     .gambar-utama {
+      padding: 10px;
+      background-color: #f79327;
       width: 100%;
       max-height: 300px;
       object-fit: fill;
@@ -248,12 +259,21 @@ main {
     }
     .description {
       overflow: hidden;
+      padding: 10px;
+      resize: none;
     }
     .status_adopt {
       display: flex;
       align-items: center;
       justify-content: center;
       background-color: #85a675;
+      text-transform: capitalize;
+    }
+    .status_adopt-adopted {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: red;
       text-transform: capitalize;
     }
     .container-album {
@@ -279,7 +299,7 @@ main {
       .container-gambar {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: minmax(1, 3);
+        grid-template-rows: repeat(auto, 1fr);
         grid-column-gap: 20px;
         grid-row-gap: 20px;
 
@@ -293,7 +313,7 @@ main {
           background-color: azure;
           img {
             width: 100%;
-            height: 100px;
+            height: 150px;
             object-fit: fill;
           }
           button {
@@ -323,6 +343,54 @@ main {
     }
     .btn-delete-kucing {
       background-color: #ff3c3c;
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  main {
+    .container-detail {
+      .gambar-utama {
+        padding: 10px;
+        background-color: #f79327;
+        border-radius: 10px;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+      }
+      .container-album {
+        .container-gambar {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: repeat(auto, 1fr);
+          grid-column-gap: 20px;
+          grid-row-gap: 20px;
+        }
+      }
+    }
+  }
+}
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-detail {
+      .gambar-utama {
+        padding: 10px;
+        background-color: #f79327;
+        border-radius: 10px;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+      }
+      .container-album {
+        .container-gambar {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: repeat(auto, 1fr);
+          grid-column-gap: 20px;
+          grid-row-gap: 20px;
+        }
+      }
     }
   }
 }
