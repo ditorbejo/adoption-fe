@@ -15,30 +15,8 @@ const render = async () => {
       }
     })
     if (responseDetail.status == 200) {
-      console.log(responseDetail.data.data.user_id)
+      console.log(responseDetail.data.data)
       dataForm.value = responseDetail.data.data
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
-const router = useRouter()
-const rejectForm = async () => {
-  try {
-    const responseReject = await axios.post(
-      `http://127.0.0.1:8000/api/adoptions/${formId}/reject`,
-      {
-        undefined
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-    if (responseReject.status == 200) {
-      console.log(responseReject)
-      router.push('/')
     }
   } catch (error) {
     console.log(error)
@@ -68,6 +46,13 @@ const acceptForm = async () => {
   }
 }
 
+const router = useRouter()
+const goToRejectForm = (routePath) => {
+  router.push(routePath)
+}
+const goToDetailKucing = (routePath) => {
+  router.push(routePath)
+}
 const goToChatUser = (routePath) => {
   router.push(routePath)
 }
@@ -88,6 +73,16 @@ onMounted(() => {
       <img :src="`http://127.0.0.1:8000${dataForm.pet_image}`" alt="" />
     </div>
 
+    <div class="container-button-detail-kucing">
+      <button
+        class="button-detail-kucing"
+        @click="goToDetailKucing(`/admin/pets/${dataForm.pet_id}`)"
+      >
+        <i class="fa-solid fa-circle-info fa-xl"></i>
+        Detail Informasi Kucing
+      </button>
+    </div>
+
     <div class="container-detail">
       <label for="">Nama Calon Adopter</label>
       <p>{{ dataForm.name_adopter }}</p>
@@ -105,6 +100,7 @@ onMounted(() => {
       <textarea
         name=""
         id=""
+        class="description"
         cols="50"
         rows="10"
         v-model="dataForm.description"
@@ -121,27 +117,55 @@ onMounted(() => {
 
       <label for="">Status Form</label>
       <p class="status-form-review" v-if="dataForm.status == 'review'">{{ dataForm.status }}</p>
+
       <p class="status-form-approved" v-else-if="dataForm.status == 'approve'">
         {{ dataForm.status }}
       </p>
       <p class="status-form-unavailable" v-else>{{ dataForm.status }}</p>
     </div>
 
-    <div class="container-button" v-if="dataForm.status_adopt == 'ready'">
+    <div
+      class="container-button"
+      v-if="dataForm.status_adopt == 'ready' && dataForm.status == 'review'"
+    >
       <p>Fitur Form</p>
       <button
         class="btn-chat"
         type="button"
         @click="goToChatUser(`/admin/chat/${dataForm.user_id}`)"
       >
+        <i class="fa-solid fa-message fa-2xl" style="color: #000000"></i>
         Chat
       </button>
-      <button class="btn-accept" type="button" @click="acceptForm()">Setuju</button>
-      <button class="btn-delete" type="button" @click="rejectForm()">Reject</button>
+      <button class="btn-accept" type="button" @click="acceptForm()">
+        <i class="fa-solid fa-circle-check fa-2xl"></i>
+        Setuju
+      </button>
+      <button
+        class="btn-delete"
+        type="button"
+        @click="goToRejectForm(`/admin/form-reject/${formId}`)"
+      >
+        <i class="fa-solid fa-xmark fa-2xl"></i>
+        Reject
+      </button>
     </div>
+
     <div class="container-button" v-else>
       <p>Fitur Form</p>
-      <button class="btn-chat" type="button">Chat</button>
+      <button
+        class="btn-chat"
+        type="button"
+        @click="goToChatUser(`/admin/chat/${dataForm.user_id}`)"
+      >
+        <i class="fa-solid fa-message fa-xl" style="color: #000000"></i>
+        Chat
+      </button>
+    </div>
+
+    <div class="alasan-reject" v-if="dataForm.status == 'reject'">
+      <label for="">Alasan Form Ditolak</label>
+      <textarea name="" id="" cols="50" rows="10" v-model="dataForm.reject" disabled></textarea>
     </div>
   </main>
 </template>
@@ -151,15 +175,14 @@ onMounted(() => {
   margin: 0;
   padding: 0;
   outline: 0;
-  font-family: 'Open Sans', sans-serif;
 }
 main {
   background-color: white;
   color: black;
   width: 100%;
   padding: 10px 20px;
-  margin: 0 auto;
-  max-width: 1920px;
+  margin: 50px auto 0 auto;
+  max-width: 1200px;
   .container-nama-kucing {
     display: flex;
     p {
@@ -184,6 +207,22 @@ main {
       border-radius: 10px;
     }
   }
+  .container-button-detail-kucing {
+    margin-top: 5%;
+    display: flex;
+    button {
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+      background-color: #f29727;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      cursor: pointer;
+    }
+    button:hover {
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+  }
   .container-detail {
     background-color: #ffd482;
     display: flex;
@@ -197,6 +236,12 @@ main {
       padding: 5px;
       border-radius: 5px;
       text-transform: capitalize;
+    }
+    .description {
+      padding: 10px;
+      width: 100%;
+      overflow: hidden;
+      resize: none;
     }
   }
   .container-status {
@@ -231,6 +276,18 @@ main {
       background-color: red;
     }
   }
+
+  .alasan-reject {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    background-color: #d9d9d9;
+    padding: 10px;
+    border-radius: 10px;
+    textarea {
+      padding: 10px;
+    }
+  }
   .container-button {
     display: flex;
     flex-direction: column;
@@ -238,7 +295,7 @@ main {
     margin-top: 5%;
     button {
       width: 100%;
-      padding: 5px;
+      padding: 10px;
       border-radius: 10px;
       cursor: pointer;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
