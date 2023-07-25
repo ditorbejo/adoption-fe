@@ -21,7 +21,12 @@ const renderKucing = async () => {
           color: item.color
         }
       })
-      listWarna.value = mapColor
+      const uniqueColor = mapColor.filter(
+        (obj, index, self) =>
+          index === self.findIndex((item) => item.id === obj.id && item.color === obj.color)
+      )
+      listWarna.value = uniqueColor
+      console.log(listWarna.value)
     }
   } catch (error) {
     console.log(error)
@@ -60,9 +65,16 @@ onMounted(() => {
 
 <template>
   <main>
-    <h1>Ini adalah Halaman Kucing By Warna</h1>
-    <div class="list-color" v-for="color in listWarna" :key="color.id">
-      <button @click="renderKucingByColor(color.color)">{{ color.color }}</button>
+    <h1>Kucing Berdasarkan Warna</h1>
+
+    <div class="list-form-kosong" v-if="listWarna.length == 0">
+      <p>Kucing Belum Ditambahkan</p>
+    </div>
+
+    <div class="container-list-color" v-else>
+      <div class="list-color" v-for="color in listWarna" :key="color.id">
+        <button @click="renderKucingByColor(color.color)">{{ color.color }}</button>
+      </div>
     </div>
 
     <div class="container-list-kucing">
@@ -95,33 +107,52 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
-  .list-color {
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
+  .list-form-kosong {
     margin-top: 5%;
-    display: flex;
-    width: 100%;
-    button {
-      background-color: #ffd482;
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
+    background-color: #ffd482;
+    padding: 10px;
+    border-radius: 10px;
+    p {
       display: flex;
+      text-transform: capitalize;
       align-items: center;
       justify-content: center;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-    }
-    button:hover {
-      cursor: pointer;
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
   }
-  .container-list-kucing {
-    margin-top: 5%;
+  .container-list-color {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
+
+    .list-color {
+      button {
+        width: 100px;
+        background-color: #ffd482;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      }
+      button:hover {
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      }
+    }
+  }
+
+  .container-list-kucing {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    margin-top: 10px;
     .list-kucing-by-color {
       display: flex;
       flex-direction: column;
@@ -145,6 +176,25 @@ main {
         font-size: medium;
         text-transform: capitalize;
       }
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  main {
+    .container-list-kucing {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-list-kucing {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
     }
   }
 }

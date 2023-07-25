@@ -48,7 +48,15 @@ onMounted(() => {
 
         <div class="container-description">
           <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
-          <textarea name="" id="" cols="50" rows="10" v-model="announcement.description" disabled></textarea>
+          <textarea
+            name=""
+            id=""
+            class="description"
+            cols="50"
+            rows="10"
+            v-model="announcement.description"
+            disabled
+          ></textarea>
         </div>
       </div>
     </div>
@@ -67,8 +75,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .list-form-kosong {
     margin-top: 5%;
     background-color: #ffd482;
@@ -101,13 +109,57 @@ main {
         flex-direction: column;
         gap: 5px;
         img {
+          padding: 10px;
+          background-color: #f79327;
           width: 100%;
-          max-height: 300px;
+          height: 300px;
           object-fit: fill;
           border-radius: 10px;
         }
-        .description-detail {
+        .description {
+          padding: 10px;
+          width: 100%;
           overflow: hidden;
+          resize: none;
+        }
+      }
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  main {
+    .container-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      .container-detail {
+        img {
+          border-radius: 10px;
+          width: 100%;
+          height: 300px;
+          object-fit: fill;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      .container-detail {
+        img {
+          border-radius: 10px;
+          width: 100%;
+          height: 300px;
+          object-fit: fill;
         }
       }
     }

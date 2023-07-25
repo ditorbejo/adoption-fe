@@ -38,13 +38,45 @@ function goToDetail(routePath) {
   router.push(routePath)
 }
 
-onMounted(() => {
+const formStatusName = ref()
+const getListForm = async (statusFormName) => {
+  formStatusName.value = statusFormName
+  try {
+    const responseForm = await axios.get(
+      `http://127.0.0.1:8000/api/adoptions?status=${statusFormName}&user_id=${userId.value}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    if (responseForm.status == 200) {
+      console.log(responseForm.data.data)
+      forms.value = responseForm.data.data
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+onMounted(async () => {
   render()
 })
 </script>
 <template>
   <main>
     <h1>List Adopt Kucing</h1>
+
+    <div class="container-filter">
+      <p class="judul-status-form">Status Form Filter</p>
+      <p class="filter-status-name" v-if="formStatusName != null">{{ formStatusName }}</p>
+      <div class="box-filter">
+        <button class="button-review" @click="getListForm('review')">Review</button>
+        <button class="button-approve" @click="getListForm('approve')">Approve</button>
+        <button class="button-reject" @click="getListForm('reject')">Reject</button>
+        <button class="button-unavailable" @click="getListForm('unavailable')">Unavailable</button>
+      </div>
+    </div>
 
     <div class="list-form-kosong" v-if="forms.length == 0">
       <p>Belum ada form adopsi kucing</p>
@@ -66,6 +98,15 @@ onMounted(() => {
           {{ form.status_adopt }}
         </p>
         <p class="status-adopt" v-else>{{ form.status_adopt }}</p>
+
+        <label for="">Status Form</label>
+        <p class="status-form-review" v-if="form.status == 'review'">{{ form.status }}</p>
+        <p class="status-form-approve" v-else-if="form.status == 'approve'">{{ form.status }}</p>
+        <p class="status-form-reject" v-else-if="form.status == 'reject'">{{ form.status }}</p>
+        <p class="status-form-unavailable" v-else-if="form.status == 'unavailable'">
+          {{ form.status }}
+        </p>
+
         <div class="container-button">
           <button type="button" @click="goToDetail(`/user/adoptions/${form.id}`)">Detail</button>
         </div>
@@ -85,8 +126,45 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  margin: 0 auto;
-  max-width: 1920px;
+  margin: 50px auto 0 auto;
+  max-width: 1200px;
+  .container-filter {
+    display: flex;
+    flex-direction: column;
+    .filter-status-name {
+      display: flex;
+      padding: 10px;
+      justify-content: center;
+      text-transform: capitalize;
+      border-radius: 10px;
+      background-color: #ffd482;
+    }
+    .box-filter {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      button {
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      }
+      .button-review {
+        background-color: #d9d9d9;
+      }
+      .button-approve {
+        background-color: #85eb60;
+      }
+      .button-reject {
+        background-color: red;
+      }
+      .button-unavailable {
+        background-color: #ffd482;
+      }
+    }
+  }
   .list-form-kosong {
     margin-top: 5%;
     background-color: #ffd482;
@@ -103,42 +181,66 @@ main {
     display: flex;
     flex-direction: column;
     gap: 5px;
-  }
-  .container-detail {
-    background-color: #ffd482;
-    padding: 5px;
-    border-radius: 10px;
-    p {
+    .container-detail {
+      background-color: #ffd482;
       padding: 5px;
-      background-color: #d9d9d9;
       border-radius: 10px;
-    }
-    .status-adopt {
-      display: flex;
-      background-color: #9bb05d;
-      justify-content: center;
-      text-transform: capitalize;
-    }
-    .status-adopt-adopted {
-      display: flex;
-      background-color: red;
-      justify-content: center;
-      text-transform: capitalize;
-    }
-    .container-button {
-      display: flex;
-      justify-content: center;
-      margin-top: 5%;
-      button {
-        width: 100%;
+      p {
         padding: 5px;
-        border-radius: 5px;
-        cursor: pointer;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        background-color: #d9d9d9;
+        border-radius: 10px;
       }
-      button:hover {
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      .status-adopt {
+        display: flex;
+        background-color: #9bb05d;
+        justify-content: center;
+        text-transform: capitalize;
+      }
+      .status-adopt-adopted {
+        display: flex;
+        background-color: rgb(255, 253, 188);
+        justify-content: center;
+        text-transform: capitalize;
+      }
+      .status-form-review {
+        background-color: #d9d9d9;
+        display: flex;
+        justify-content: center;
+        text-transform: capitalize;
+      }
+      .status-form-approve {
+        background-color: #79d53f;
+        display: flex;
+        justify-content: center;
+        text-transform: capitalize;
+      }
+      .status-form-reject {
+        background-color: #ff2020;
+        display: flex;
+        justify-content: center;
+        text-transform: capitalize;
+      }
+      .status-form-unavailable {
+        background-color: #dbff58;
+        display: flex;
+        justify-content: center;
+        text-transform: capitalize;
+      }
+      .container-button {
+        display: flex;
+        justify-content: center;
+        margin-top: 5%;
+        button {
+          width: 100%;
+          padding: 5px;
+          border-radius: 5px;
+          cursor: pointer;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+            rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        }
+        button:hover {
+          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
       }
     }
   }

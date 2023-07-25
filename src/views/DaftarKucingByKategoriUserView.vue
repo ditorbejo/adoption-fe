@@ -63,13 +63,19 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  font-family: 'Open Sans', sans-serif;
+}
 main {
   background-color: white;
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   h1 {
     margin-bottom: 25px;
   }
@@ -85,9 +91,11 @@ main {
     }
   }
   .container-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
     .container-detail {
       display: flex;
       flex-direction: column;
@@ -110,6 +118,44 @@ main {
         padding: 5px;
         font-size: medium;
         text-transform: capitalize;
+      }
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  main {
+    .container-list {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      .container-detail {
+        img {
+          border-radius: 10px;
+          width: 100%;
+          height: 300px;
+          object-fit: fill;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      .container-detail {
+        img {
+          border-radius: 10px;
+          width: 100%;
+          height: 300px;
+          object-fit: fill;
+        }
       }
     }
   }

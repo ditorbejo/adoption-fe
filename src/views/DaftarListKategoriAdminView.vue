@@ -23,6 +23,10 @@ function goDetail(routePath) {
   router.push(routePath)
 }
 
+function goToTambahKategori(routePath) {
+  router.push(routePath)
+}
+
 onMounted(() => {
   getDataCategory()
 })
@@ -31,6 +35,10 @@ onMounted(() => {
 <template>
   <main>
     <h1>List Kategori Ras Kucing</h1>
+
+    <button class="button-tambah-kategori" @click="goToTambahKategori('/admin/tambah-kategori')">
+      Tambah Kategori Ras
+    </button>
 
     <div class="list-form-kosong" v-if="categories.length == 0">
       <p>Belum ada kategori kucing</p>
@@ -61,10 +69,23 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   h1 {
     margin-bottom: 25px;
+  }
+  .button-tambah-kategori {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    background-color: #ffe569;
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+      rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  }
+  .button-tambah-kategori:hover {
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 
   .list-form-kosong {
@@ -92,7 +113,8 @@ main {
     justify-content: center;
     padding: 10px;
     border-radius: 5px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+      rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   }
   .box-list:hover {
     cursor: pointer;
