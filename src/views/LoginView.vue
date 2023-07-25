@@ -2,6 +2,7 @@
 import { reactive } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { stateLogin } from '../../store.js'
 
 const loginData = reactive({
   email: '',
@@ -15,6 +16,7 @@ async function submit() {
     const responseLogin = await axios.post('http://127.0.0.1:8000/api/auth/login', this.loginData)
     localStorage.setItem('token', responseLogin.data.token)
     router.push('/')
+    stateLogin.login = true
   } catch (error) {
     const ContainerAlert = document.querySelector('.alert-message')
     ContainerAlert.innerHTML =
@@ -71,6 +73,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   h1 {
     margin-bottom: 10px;
   }
