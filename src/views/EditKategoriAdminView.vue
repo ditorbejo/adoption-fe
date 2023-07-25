@@ -95,8 +95,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  margin: 0 auto;
-  max-width: 1920px;
+  margin: 50px auto 0 auto;
+  max-width: 1200px;
   h1 {
     margin-bottom: 25px;
   }

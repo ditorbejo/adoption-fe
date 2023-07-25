@@ -40,6 +40,7 @@ const getDataCategory = async () => {
     console.log(error)
   }
 }
+
 let file = null
 function handleFileChange() {
   file = event.target.files[0]
@@ -196,8 +197,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-edit {
     display: flex;
     flex-direction: column;

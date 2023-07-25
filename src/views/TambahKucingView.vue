@@ -120,7 +120,7 @@ onMounted(() => {
       <label for="date_birth">Date Birth</label>
       <input type="date" v-model="dataTambahKucing.date_birth" />
 
-      <label for="weight">Weight</label>
+      <label for="weight">Weight (Kilogram)</label>
       <input type="text" placeholder="Weight" v-model="dataTambahKucing.weight" />
 
       <label for="description">Description</label>
@@ -148,8 +148,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
-  max-width: 1920px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-form {
     display: flex;
     flex-direction: column;

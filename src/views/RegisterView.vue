@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { reactive } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const formsRegister = reactive({
   name: '',
@@ -11,26 +11,29 @@ const formsRegister = reactive({
 
 const router = useRouter()
 
-async function submit(){
-    try{
-        const responseRegister = await axios.post('http://127.0.0.1:8000/api/auth/register', this.formsRegister)
-        if(responseRegister.status == 200){
-            const ContainerAlert = document.querySelector('.alert-request')
-            ContainerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftar Sebagai Member</p>`
-            setTimeout(()=>{
-                router.push('/login')
-            }, 2000)
-        }
-    }catch(error){
-        const ContainerAlert = document.querySelector('.alert-request')
-        ContainerAlert.innerHTML = `<p style="color:red;"> Mohon Lengkapi semua field yang ada atau email sudah terdaftar</p>`
+async function submit() {
+  try {
+    const responseRegister = await axios.post(
+      'http://127.0.0.1:8000/api/auth/register',
+      this.formsRegister
+    )
+    if (responseRegister.status == 200) {
+      const ContainerAlert = document.querySelector('.alert-request')
+      ContainerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftar Sebagai Member</p>`
+      setTimeout(() => {
+        router.push('/login')
+      }, 2000)
     }
+  } catch (error) {
+    const ContainerAlert = document.querySelector('.alert-request')
+    ContainerAlert.innerHTML = `<p style="color:red;"> Mohon Lengkapi semua field yang ada atau email sudah terdaftar</p>`
+  }
 }
 </script>
 
 <template>
   <main class="register">
-    <h1>Create Account</h1>
+    <h1>Membuat Akun</h1>
     <div class="container-form" id="container-form">
       <div class="alert-request"></div>
       <form action="">
@@ -85,6 +88,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-form {
     form {
       display: flex;
