@@ -1,13 +1,13 @@
 <script setup>
 import axios from 'axios'
 import { onMounted, reactive, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const petId = route.params.id
 const token = localStorage.getItem('token')
 const name = ref()
-const render = async () => {
+const renderDataKucing = async () => {
   try {
     const responseKucing = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}`, {
       headers: {
@@ -15,13 +15,16 @@ const render = async () => {
       }
     })
     if (responseKucing.status == 200) {
-      console.log(responseKucing)
       name.value = responseKucing.data.data.name
+      if (responseKucing.data.data.status_adopt == 'adopted') {
+        router.push('/user/list-form-adopt')
+      }
     }
   } catch (error) {
     console.log(error)
   }
 }
+
 const userId = ref({})
 const renderUser = async () => {
   try {
@@ -39,6 +42,27 @@ const renderUser = async () => {
   }
 }
 
+const dataHistoryUser = ref([])
+
+const renderHistoryUserAdopt = async () => {
+  try {
+    const responseListAdoptUser = await axios.get(
+      `http://127.0.0.1:8000/api/adoptions?status=approve`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    if (responseListAdoptUser.status == 200) {
+      console.log(responseListAdoptUser.data.data)
+      dataHistoryUser.value = responseListAdoptUser.data.data
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const dataAdopter = reactive({
   name_adopter: '',
   phone_adopter: '',
@@ -49,6 +73,7 @@ const dataAdopter = reactive({
   user_id: userId
 })
 
+const router = useRouter()
 const sendForm = async () => {
   try {
     const responseSend = await axios.post(`http://127.0.0.1:8000/api/adoptions`, dataAdopter, {
@@ -65,6 +90,9 @@ const sendForm = async () => {
       dataAdopter.address_adopter = ''
       dataAdopter.email = ''
       dataAdopter.description = ''
+      setTimeout(() => {
+        router.push('/user/list-form-adopt')
+      }, 2000)
     }
   } catch (error) {
     const containerAlert = document.querySelector('.alert-message')
@@ -73,9 +101,37 @@ const sendForm = async () => {
   }
 }
 
-onMounted(() => {
-  renderUser()
-  render()
+const autoFillInput = async () => {
+  try {
+    const responseHistoryAdopt = await axios.get(
+      `http://127.0.0.1:8000/api/adoptions/checkHistoryUserAdopt`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    if (responseHistoryAdopt.status == 200) {
+      console.log(responseHistoryAdopt.data.data)
+    }
+    if (responseHistoryAdopt.data.data) {
+      dataAdopter.name_adopter = responseHistoryAdopt.data.data.name_adopter
+      dataAdopter.phone_adopter = responseHistoryAdopt.data.data.phone_adopter
+      dataAdopter.address_adopter = responseHistoryAdopt.data.data.address_adopter
+      dataAdopter.email = responseHistoryAdopt.data.data.email
+    }
+  } catch (error) {
+    const containerAlert = document.querySelector('.alert-message')
+    containerAlert.innerHTML = `<p style="color:red;"> Lengkapi semua field pada form adopsi</p>`
+    console.log(error)
+  }
+}
+
+onMounted(async () => {
+  await renderDataKucing()
+  await renderUser()
+  await autoFillInput()
+  await renderHistoryUserAdopt()
 })
 </script>
 <template>
@@ -103,7 +159,9 @@ onMounted(() => {
       <textarea name="" id="" cols="50" rows="10" v-model="dataAdopter.description"></textarea>
 
       <div class="container-button">
-        <button type="button" @click="sendForm()">Kirim Form</button>
+        <button type="button" @click="sendForm()">
+          <i class="fa-regular fa-paper-plane fa-xl"></i> Kirim Form
+        </button>
       </div>
     </div>
   </main>
@@ -120,6 +178,8 @@ main {
   color: black;
   width: 100%;
   padding: 10px 20px;
+  max-width: 1200px;
+  margin: 50px auto 0 auto;
   .container-form {
     display: flex;
     flex-direction: column;
@@ -143,7 +203,7 @@ main {
       width: 100%;
       justify-content: flex-end;
       button {
-        padding: 5px;
+        padding: 10px;
         background-color: #ffd482;
         border-radius: 5px;
         cursor: pointer;
