@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 import { stateLogin } from '../store.js'
 
@@ -33,6 +33,14 @@ const checkUserLogin = async () => {
   }
 }
 
+watch(stateLogin, async () => {
+  token = localStorage.getItem('token')
+  if (token) {
+    checkUserLogin()
+  }
+  console.log('menjalankan watch')
+})
+
 const router = useRouter()
 const logOutUser = async () => {
   try {
@@ -59,9 +67,14 @@ const logOutUser = async () => {
     console.log(error)
   }
 }
+const currentDate = new Date().toISOString()
 
 onMounted(() => {
-  checkUserLogin()
+  console.log('OnMountedDijalankan')
+  console.log(currentDate)
+  if (token) {
+    checkUserLogin()
+  }
 })
 </script>
 
@@ -111,15 +124,7 @@ onMounted(() => {
         <li>
           <router-link to="/about">About </router-link>
         </li>
-        <div class="login-register" v-if="stateLogin.login == false">
-          <li>
-            <router-link to="/login">Login </router-link>
-          </li>
-          <li>
-            <router-link to="/register">Register </router-link>
-          </li>
-        </div>
-        <div class="login-register" v-else>
+        <div class="login-register" v-if="stateLogin.login == true">
           <li>
             <router-link to="/user/chat">Chat </router-link>
           </li>
@@ -128,6 +133,14 @@ onMounted(() => {
           </li>
           <li>
             <a @click="logOutUser()">Logout</a>
+          </li>
+        </div>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
           </li>
         </div>
       </ul>
@@ -148,15 +161,7 @@ onMounted(() => {
         <li>
           <router-link to="/about">About </router-link>
         </li>
-        <div class="login-register" v-if="stateLogin.login == false">
-          <li>
-            <router-link to="/login">Login </router-link>
-          </li>
-          <li>
-            <router-link to="/register">Register </router-link>
-          </li>
-        </div>
-        <div class="login-register" v-else>
+        <div class="login-register" v-if="stateLogin.login == true">
           <li>
             <router-link to="/admin/chat">Chat </router-link>
           </li>
@@ -168,6 +173,14 @@ onMounted(() => {
           </li>
           <li>
             <a @click="logOutUser()">Logout </a>
+          </li>
+        </div>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
           </li>
         </div>
       </ul>
@@ -222,15 +235,7 @@ onMounted(() => {
         <li>
           <router-link to="/about">About </router-link>
         </li>
-        <div class="login-register" v-if="stateLogin.login == false">
-          <li>
-            <router-link to="/login">Login </router-link>
-          </li>
-          <li>
-            <router-link to="/register">Register </router-link>
-          </li>
-        </div>
-        <div class="login-register" v-else>
+        <div class="login-register" v-if="stateLogin.login == true">
           <li>
             <router-link to="/user/chat">Chat </router-link>
           </li>
@@ -239,6 +244,14 @@ onMounted(() => {
           </li>
           <li>
             <a to="" @click="logOutUser()">Logout </a>
+          </li>
+        </div>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
           </li>
         </div>
       </ul>
@@ -259,15 +272,7 @@ onMounted(() => {
         <li>
           <router-link to="/about">About </router-link>
         </li>
-        <div class="login-register" v-if="stateLogin.login == false">
-          <li>
-            <router-link to="/login">Login </router-link>
-          </li>
-          <li>
-            <router-link to="/register">Register </router-link>
-          </li>
-        </div>
-        <div class="login-register" v-else>
+        <div class="login-register" v-if="stateLogin.login == true">
           <li>
             <router-link to="/admin/chat">Chat </router-link>
           </li>
@@ -279,6 +284,14 @@ onMounted(() => {
           </li>
           <li>
             <a @click="logOutUser()">Logout </a>
+          </li>
+        </div>
+        <div class="login-register" v-if="stateLogin.login == false">
+          <li>
+            <router-link to="/login">Login </router-link>
+          </li>
+          <li>
+            <router-link to="/register">Register </router-link>
           </li>
         </div>
       </ul>
