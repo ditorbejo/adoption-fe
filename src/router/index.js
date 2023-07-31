@@ -31,6 +31,7 @@ import DaftarListFormAdoptAdminView from '../views/DaftarListFormAdoptAdminView.
 import DaftarListFormAdoptRejectAdminView from '../views/DaftarListFormAdoptRejectAdminView.vue'
 import DaftarListHistoryAdoptAdminView from '../views/DaftarListHistoryAdoptAdminView.vue'
 import DaftarListBeritaAdminView from '../views/DaftarListBeritaAdminView.vue'
+import DaftarListFormAdoptByPetAdminView from '../views/DaftarListFormAdoptByPetAdminView.vue'
 
 import DaftarListKategoriUserView from '../views/DaftarListKategoriUserView.vue'
 import DaftarKucingByKategoriUserView from '../views/DaftarKucingByKategoriUserView.vue'
@@ -181,6 +182,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/admin/pets/:id/adoptions',
+      name: 'list-adoptions-by-pet-admin',
+      component: DaftarListFormAdoptByPetAdminView,
+      meta: {
+        roles : ['admin']
+      }
+    },
+    {
       path: '/admin/pets/edit/:id',
       name: 'edit-kucing-admin',
       component: EditKucingAdminView,
@@ -236,6 +245,7 @@ const router = createRouter({
         roles : ['user','admin']
       }
     },
+
     {
       path: '/admin/chat',
       name: 'halaman-chat-admin',
