@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const token = localStorage.getItem('token')
@@ -20,6 +20,7 @@ const render = async () => {
     console.log(error)
   }
 }
+
 const router = useRouter()
 function goToDetail(routePath) {
   router.push(routePath)
@@ -46,6 +47,69 @@ const getListForm = async (statusFormName) => {
   }
 }
 
+const getListFormNameAdopter = async (statusFormName) => {
+  formStatusName.value = statusFormName
+  try {
+    const responseForm = await axios.get(
+      `http://127.0.0.1:8000/api/adoptions?name_adopter=${listForm.name_adopter}&status=${statusFormName}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    if (responseForm.status == 200) {
+      console.log(responseForm.data.data)
+      forms.value = responseForm.data.data
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const listForm = reactive({
+  name_adopter: ''
+})
+
+const searchFormAdopt = async (namaAdopter) => {
+  try {
+    if (formStatusName.value != null) {
+      const responseListForm = await axios.get(
+        `http://127.0.0.1:8000/api/adoptions?name_adopter=${namaAdopter}&status=${formStatusName.value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      if (responseListForm.status == 200) {
+        console.log(responseListForm.data.data)
+        forms.value = responseListForm.data.data
+      }
+    } else {
+      const responseListForm = await axios.get(
+        `http://127.0.0.1:8000/api/adoptions?name_adopter=${namaAdopter}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      if (responseListForm.status == 200) {
+        console.log(responseListForm.data.data)
+        forms.value = responseListForm.data.data
+      }
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const removeFilterName = () => {
+  listForm.name_adopter = ''
+  formStatusName.value = null
+  render()
+}
 onMounted(() => {
   render()
 })
@@ -54,7 +118,7 @@ onMounted(() => {
   <main>
     <h1>List Adopt Kucing</h1>
 
-    <div class="container-filter">
+    <div class="container-filter" v-if="listForm.name_adopter == ''">
       <p class="judul-status-form">Status Form Filter</p>
       <p class="filter-status-name" v-if="formStatusName != null">{{ formStatusName }}</p>
       <div class="box-filter">
@@ -62,6 +126,31 @@ onMounted(() => {
         <button class="button-approve" @click="getListForm('approve')">Approve</button>
         <button class="button-reject" @click="getListForm('reject')">Reject</button>
         <button class="button-unavailable" @click="getListForm('unavailable')">Unavailable</button>
+      </div>
+    </div>
+
+    <div class="container-filter" v-if="listForm.name_adopter">
+      <p class="judul-status-form">Filter With Name</p>
+      <p class="filter-status-name" v-if="formStatusName != null">{{ formStatusName }}</p>
+      <div class="box-filter">
+        <button class="button-review" @click="getListFormNameAdopter('review')">Review</button>
+        <button class="button-approve" @click="getListFormNameAdopter('approve')">Approve</button>
+        <button class="button-reject" @click="getListFormNameAdopter('reject')">Reject</button>
+        <button class="button-unavailable" @click="getListFormNameAdopter('unavailable')">
+          Unavailable
+        </button>
+      </div>
+    </div>
+
+    <div class="container-search-form">
+      <label for="">Search by Nama</label>
+      <div class="input-name-filter">
+        <input
+          type="text"
+          v-model="listForm.name_adopter"
+          @input="searchFormAdopt(listForm.name_adopter)"
+        />
+        <button @click="removeFilterName()"><i class="fa-solid fa-xmark fa-2xl"></i></button>
       </div>
     </div>
 
@@ -155,6 +244,29 @@ main {
       }
     }
   }
+  .container-search-form {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    label {
+      display: flex;
+      align-items: center;
+    }
+    .input-name-filter {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      input {
+        border-radius: 10px;
+        padding: 5px;
+      }
+      button {
+        padding: 5px;
+      }
+    }
+  }
   .list-form-kosong {
     margin-top: 5%;
     background-color: #ffd482;
@@ -177,7 +289,7 @@ main {
       border-radius: 10px;
       p {
         padding: 5px;
-        background-color: #d9d9d9;
+        background-color: #f3f3f3;
         border-radius: 10px;
       }
       .status-adopt {
