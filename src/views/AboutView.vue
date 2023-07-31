@@ -2,6 +2,17 @@
 const openNewPage = (url) => {
   window.open(url, '_blank')
 }
+import icons from '../assets/images/icons.json'
+
+const icon = icons.icons
+console.log(icon)
+const mapIcon = icon.map((item) => {
+  return {
+    src: '../assets/images/' + item.src,
+    sizes: item.sizes
+  }
+})
+console.log(mapIcon)
 </script>
 
 <template>
@@ -24,6 +35,14 @@ const openNewPage = (url) => {
 
     <div class="container-maps">
       <h2>Lokasi Cattery Lorem Ipsum</h2>
+      <div>
+        <p>
+          <i class="fa-solid fa-map-location fa-2xl"></i>
+          Perum Grand Sutomo Blok D Nomer 17 Kel.Tlogopatut, Kec.Gresik, Kabupaten Gresik, Jawa
+          Timur, Indonesia, 61111
+        </p>
+      </div>
+
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d832.2053166803381!2d112.64285954894085!3d-7.165484127898073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd80069bc464435%3A0xfddabac4baeed1cd!2sPerum.Grand%20Soetomo!5e0!3m2!1sen!2sus!4v1690265592599!5m2!1sen!2sus"
         class="lokasi-cattery"
@@ -62,6 +81,36 @@ const openNewPage = (url) => {
         Instagram: Catless.us
       </p>
     </div>
+
+    <h2>Link Social Media</h2>
+
+    <div class="container-card">
+      <div class="card-detail">
+        <div class="icon">
+          <i class="fa-brands fa-square-facebook fa-2xl"></i>
+        </div>
+        <p>Facebook</p>
+      </div>
+      <div class="card-detail">
+        <div class="icon">
+          <i class="fa-brands fa-tiktok fa-2xl"></i>
+        </div>
+        <p>Tiktok</p>
+      </div>
+      <div class="card-detail">
+        <div class="icon">
+          <i class="fa-brands fa-whatsapp fa-2xl"></i>
+        </div>
+        <p>Whatsapp</p>
+      </div>
+      <div class="card-detail">
+        <div class="icon">
+          <i class="fa-brands fa-instagram fa-2xl"></i>
+        </div>
+        <p>Instagram</p>
+      </div>
+    </div>
+    <div></div>
   </main>
 </template>
 
@@ -96,8 +145,8 @@ main {
     flex-direction: column;
     gap: 10px;
     .lokasi-cattery {
-      padding: 10px;
-      background-color: #bff878;
+      padding: 5px;
+      background-color: #ffd482;
       width: 100%;
       height: 600px;
     }
@@ -119,6 +168,43 @@ main {
     display: flex;
     flex-direction: column;
     gap: 5px;
+  }
+
+  .container-card {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+    .card-detail {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ffd482;
+      width: 100%;
+      gap: 10px;
+      .icon {
+        padding: 20px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  main {
+    .container-card {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-card {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 }
 </style>
