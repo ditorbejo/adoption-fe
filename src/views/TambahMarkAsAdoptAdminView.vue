@@ -42,6 +42,51 @@ const renderUser = async () => {
     console.log(error)
   }
 }
+const checkAutoFillForm = ref(false)
+const setAutoFill = (kondisi) => {
+  checkAutoFillForm.value = kondisi
+  if (checkAutoFillForm.value == false) {
+    dataAdopter.name_adopter = ''
+    dataAdopter.phone_adopter = ''
+    dataAdopter.address_adopter = ''
+    dataAdopter.email = ''
+    dataAdopter.description = ''
+  }
+}
+
+const dataHistoryAdopter = ref([])
+
+const autoFillInput = async () => {
+  try {
+    const responseHistoryAdopt = await axios.get(
+      `http://127.0.0.1:8000/api/adoptions/checkHistoryUserAdopt`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    if (responseHistoryAdopt.status == 200) {
+      console.log(responseHistoryAdopt.data.data)
+      dataHistoryAdopter.value = responseHistoryAdopt.data.data
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const handleSelectName = () => {
+  const cariUser = dataHistoryAdopter.value.find(
+    (user) => user.name_adopter === dataAdopter.name_adopter
+  )
+  console.log(cariUser)
+  if (cariUser) {
+    dataAdopter.name_adopter = cariUser.name_adopter
+    dataAdopter.phone_adopter = cariUser.phone_adopter
+    dataAdopter.address_adopter = cariUser.address_adopter
+    dataAdopter.email = cariUser.email
+  }
+}
 
 const dataAdopter = reactive({
   name_adopter: '',
@@ -53,6 +98,7 @@ const dataAdopter = reactive({
   user_id: userId
 })
 const formId = ref()
+
 const markAsAdopt = async () => {
   try {
     const responseForm = await axios.post(
@@ -82,9 +128,10 @@ const markAsAdopt = async () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   renderUser()
   render()
+  await autoFillInput()
 })
 </script>
 <template>
@@ -94,10 +141,34 @@ onMounted(() => {
       <div class="container-nama-kucing">
         <p>{{ name }}</p>
       </div>
+
+      <div class="container-check-form" v-if="dataHistoryAdopter.length != 0">
+        <p>Apakah anda melakukan adopsi sebelumnya ?</p>
+        <div class="container-button-check">
+          <button @click="setAutoFill(false)">Belum</button>
+          <button @click="setAutoFill(true)">Sudah</button>
+        </div>
+      </div>
       <div class="alert-message"></div>
 
       <label for="">Nama Calon Adopter</label>
-      <input type="text" name="" id="" v-model="dataAdopter.name_adopter" />
+      <select
+        v-model="dataAdopter.name_adopter"
+        @change="handleSelectName()"
+        v-if="checkAutoFillForm == true"
+      >
+        <option value="">Pilih Adopter Sebelumnya</option>
+        <option v-for="option in dataHistoryAdopter" :value="option.name_adopter" :key="option.id">
+          {{ option.name_adopter }} ({{ option.email }}) Adopt At {{ option.updated_at }}
+        </option>
+      </select>
+      <input
+        type="text"
+        name=""
+        id=""
+        v-model="dataAdopter.name_adopter"
+        v-if="checkAutoFillForm == false"
+      />
 
       <label for="">Email Calon Adopter</label>
       <input type="email" name="" id="" v-model="dataAdopter.email" />
@@ -141,6 +212,10 @@ main {
       padding: 5px;
       border-radius: 5px;
     }
+    select,
+    option {
+      padding: 10px;
+    }
     .container-nama-kucing {
       background-color: #ffae11;
       padding: 5px;
@@ -149,6 +224,16 @@ main {
       p {
         display: flex;
         justify-content: center;
+      }
+    }
+    .container-check-form {
+      .container-button-check {
+        display: flex;
+        gap: 10px;
+        button {
+          padding: 5px;
+          border-radius: 10px;
+        }
       }
     }
     .container-button {
