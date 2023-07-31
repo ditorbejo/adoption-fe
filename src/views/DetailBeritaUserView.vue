@@ -36,7 +36,10 @@ onMounted(() => {
       <p class="title">{{ announcement.title }}</p>
 
       <div class="container-description">
-        <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
+        <div class="container-image">
+          <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
+        </div>
+
         <p>Isi Berita:</p>
         <div class="description-detail">
           <textarea
@@ -71,7 +74,8 @@ main {
   .container-detail {
     display: flex;
     flex-direction: column;
-    background-color: #ffd482;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border: 2px solid #ffd482;
     border-radius: 10px;
     padding: 20px;
     gap: 10px;
@@ -84,13 +88,17 @@ main {
       display: flex;
       flex-direction: column;
       gap: 5px;
-      img {
-        width: 100%;
-        max-height: 300px;
-        object-fit: fill;
-        border-radius: 10px;
-        padding: 10px;
-        background-color: #f79327;
+      .container-image {
+        display: flex;
+        justify-content: center;
+        img {
+          width: 300px;
+          height: 300px;
+          object-fit: fill;
+          border-radius: 10px;
+          padding: 10px;
+          background-color: #f79327;
+        }
       }
       .description-detail {
         overflow: hidden;

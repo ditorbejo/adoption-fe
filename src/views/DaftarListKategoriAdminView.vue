@@ -108,7 +108,7 @@ main {
   }
   .box-list {
     display: flex;
-    background-color: #ffd482;
+    border: 2px solid #ffd482;
     align-items: center;
     justify-content: center;
     padding: 10px;

@@ -79,14 +79,14 @@ onUnmounted(() => {
               <p class="jam-pesan">{{ message.created_at }}</p>
               <p class="user-dan-role" for="">{{ message.user_name }} {{ message.role }}</p>
             </div>
-            <p class="isi-pesan-user"> {{ message.message }}</p>
+            <p class="isi-pesan-user">{{ message.message }}</p>
           </div>
           <div class="container-chat" v-else>
             <div class="container-detail-user">
               <p class="jam-pesan">{{ message.created_at }}</p>
               <p class="user-dan-role" for="">{{ message.user_name }} {{ message.role }}</p>
             </div>
-            <p class="isi-pesan-admin"> {{ message.message }}</p>
+            <p class="isi-pesan-admin">{{ message.message }}</p>
           </div>
         </div>
       </div>
@@ -110,6 +110,7 @@ main {
   background-color: white;
   color: black;
   width: 100%;
+  height: 100vh;
   padding: 10px 20px;
   max-width: 1200px;
   margin: 50px auto 0 auto;

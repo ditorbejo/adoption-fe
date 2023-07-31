@@ -86,10 +86,10 @@ main {
     flex-direction: column;
     gap: 10px;
     .container-category {
-      background-color: #ffd482;
+      border: 2px solid #ffd482;
       display: flex;
       justify-content: center;
-      padding: 5px;
+      padding: 10px;
       border-radius: 5px;
       cursor: pointer;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,

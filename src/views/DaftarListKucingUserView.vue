@@ -98,6 +98,7 @@ main {
     .container-detail {
       display: flex;
       flex-direction: column;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
       background-color: #ffd482;
       padding: 10px;
       gap: 5px;
@@ -114,6 +115,7 @@ main {
         align-items: center;
         justify-content: center;
         border-radius: 5px;
+        padding: 5px;
         font-size: medium;
         text-transform: capitalize;
       }

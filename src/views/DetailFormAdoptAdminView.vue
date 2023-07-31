@@ -69,8 +69,10 @@ onMounted(() => {
       <p>{{ dataForm.pet_name }}</p>
     </div>
 
-    <div class="container-image-kucing">
-      <img :src="`http://127.0.0.1:8000${dataForm.pet_image}`" alt="" />
+    <div class="container-image">
+      <div class="container-image-kucing">
+        <img :src="`http://127.0.0.1:8000${dataForm.pet_image}`" alt="" />
+      </div>
     </div>
 
     <div class="container-button-detail-kucing">
@@ -194,19 +196,24 @@ main {
       background-color: #ffae11;
     }
   }
-  .container-image-kucing {
+  .container-image {
     display: flex;
-    background-color: #ffae11;
-    padding: 10px;
-    margin-top: 5%;
-    border-radius: 10px;
-    img {
-      object-fit: fill;
-      width: 100%;
-      height: 300px;
+    justify-content: center;
+    .container-image-kucing {
+      display: flex;
+      background-color: #ffae11;
+      padding: 10px;
+      margin-top: 5%;
       border-radius: 10px;
+      img {
+        object-fit: fill;
+        width: 300px;
+        height: 300px;
+        border-radius: 10px;
+      }
     }
   }
+
   .container-button-detail-kucing {
     margin-top: 5%;
     display: flex;
@@ -263,7 +270,7 @@ main {
       background-color: #9bb05d;
     }
     .status-adopt-adopted {
-      background-color: red;
+      background-color: rgb(255, 253, 188);
     }
     .status-form-review {
       background-color: #afb1b6;

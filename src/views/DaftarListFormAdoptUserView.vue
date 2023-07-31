@@ -187,7 +187,7 @@ main {
       border-radius: 10px;
       p {
         padding: 5px;
-        background-color: #d9d9d9;
+        background-color: #f3f3f3;
         border-radius: 10px;
       }
       .status-adopt {

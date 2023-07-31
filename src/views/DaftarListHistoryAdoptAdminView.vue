@@ -110,7 +110,7 @@ main {
     border-radius: 10px;
     p {
       padding: 5px;
-      background-color: #d9d9d9;
+      background-color: #f3f3f3;
       border-radius: 10px;
     }
     .status-adopt {
@@ -121,7 +121,7 @@ main {
     }
     .status-adopt-adopted {
       display: flex;
-      background-color: red;
+      background-color: rgb(255, 253, 188);
       justify-content: center;
       text-transform: capitalize;
     }

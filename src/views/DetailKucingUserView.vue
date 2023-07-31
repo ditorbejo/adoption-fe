@@ -88,7 +88,7 @@ onMounted(() => {
       <p>{{ pets.color }}</p>
 
       <label for="">Categories</label>
-      <p>{{ pets.categories_id }}</p>
+      <p>{{ pets.categories_name }}</p>
 
       <label for="">Date Birth</label>
       <p>{{ pets.format_date_birth }}</p>

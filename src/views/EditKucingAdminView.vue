@@ -135,7 +135,10 @@ onMounted(() => {
     <h1>Edit Kucing</h1>
 
     <div class="container-edit">
-      <img :src="`http://127.0.0.1:8000${image}`" alt="" />
+      <div class="container-image">
+        <img :src="`http://127.0.0.1:8000${image}`" alt="" />
+      </div>
+
       <div class="alert-message"></div>
 
       <div class="container-input">
@@ -203,9 +206,19 @@ main {
     display: flex;
     flex-direction: column;
     margin-top: 5%;
-    img {
-      max-height: 300px;
+    .container-image {
+      display: flex;
+      justify-content: center;
+      img {
+        width: 300px;
+        height: 300px;
+        object-fit: fill;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: #f79327;
+      }
     }
+
     .container-input {
       display: flex;
       flex-direction: column;

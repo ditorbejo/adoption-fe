@@ -147,15 +147,15 @@ main {
       gap: 5px;
       overflow: auto;
       scroll-behavior: smooth;
-      height: 600px;
+      height: 100vh;
       .message {
         background-color: #f79540;
-        padding: 10px;
+        padding: 5px;
         border-radius: 10px;
         border: 1px solid;
         .container-chat {
           border-radius: 5px;
-          padding: 10px;
+          padding: 5px;
           .container-detail-user {
             display: flex;
             justify-content: space-between;

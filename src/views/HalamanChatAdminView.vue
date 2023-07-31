@@ -115,8 +115,13 @@ onUnmounted(() => {
 
         <div class="list-chat" v-for="user in listUserMessage" :key="user.id">
           <div class="user-box" @click="fetchMessages(user.id)">
-            <p>{{ user.name }} {{ user.role }}</p>
-            <p>{{ user.email }}</p>
+            <div class="container-name">
+              <div class="detail-name">
+                <p class="role">{{ user.role }}</p>
+                <p class="name">{{ user.name }}</p>
+              </div>
+              <p class="email">Email: {{ user.email }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -163,6 +168,7 @@ main {
   background-color: white;
   color: black;
   width: 100%;
+  height: 100vh;
   padding: 10px 20px;
   max-width: 1200px;
   margin: 50px auto 0 auto;
@@ -181,12 +187,29 @@ main {
         gap: 10px;
         background-color: #f79327;
         border: 1px;
-        padding: 10px;
+        padding: 5px;
         .user-box {
           background-color: bisque;
           padding: 10px;
-          p {
+        }
+        .container-name {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          .detail-name {
+            display: flex;
+            flex-direction: row;
             text-transform: capitalize;
+            p {
+              width: 100%;
+              border: 1px solid #f79540;
+              padding: 10px;
+            }
+          }
+          .email {
+            padding: 5px;
+            width: 100%;
+            border: 1px solid #f79540;
           }
         }
       }
@@ -205,7 +228,6 @@ main {
         padding: 10px;
         display: flex;
         justify-content: center;
-        background-color: #fffec4;
         border: 1px solid #f79327;
         margin: 10px 0;
         text-transform: capitalize;
@@ -216,15 +238,15 @@ main {
         gap: 5px;
         overflow: auto;
         scroll-behavior: smooth;
-        height: 600px;
+        height: 100vh;
         .message {
           background-color: #f79540;
-          padding: 10px;
+          padding: 5px;
           border-radius: 10px;
           border: 1px solid;
           .container-chat {
             border-radius: 5px;
-            padding: 10px;
+            padding: 5px;
             .container-detail-user {
               display: flex;
               flex-direction: row;

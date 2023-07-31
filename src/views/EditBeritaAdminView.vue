@@ -86,7 +86,9 @@ onMounted(() => {
       <div class="container-judul-image">
         <p>{{ title }}</p>
 
-        <img :src="`http://127.0.0.1:8000${image}`" alt="" />
+        <div class="container-image">
+          <img :src="`http://127.0.0.1:8000${image}`" alt="" />
+        </div>
       </div>
 
       <div class="container-rename">
@@ -133,10 +135,17 @@ main {
         display: flex;
         justify-content: center;
       }
-      img {
-        width: 100%;
-        max-height: 300px;
-        object-fit: fill;
+      .container-image {
+        display: flex;
+        justify-content: center;
+        img {
+          width: 300px;
+          height: 300px;
+          object-fit: fill;
+          border-radius: 10px;
+          padding: 10px;
+          background-color: #f79327;
+        }
       }
     }
     .container-rename {
