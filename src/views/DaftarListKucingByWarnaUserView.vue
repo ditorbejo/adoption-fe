@@ -7,26 +7,14 @@ const token = localStorage.getItem('token')
 const listWarna = ref([])
 const renderKucing = async () => {
   try {
-    const responseRenderWarna = await axios.get(
-      'http://127.0.0.1:8000/api/pets?status_adopt=ready',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseRenderWarna = await axios.get('http://127.0.0.1:8000/api/getAllColor', {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseRenderWarna.status == 200) {
-      const mapColor = responseRenderWarna.data.data.map((item) => {
-        return {
-          color: item.color
-        }
-      })
-      const uniqueColor = mapColor.filter(
-        (obj, index, self) =>
-          index === self.findIndex((item) => item.id === obj.id && item.color === obj.color)
-      )
-      listWarna.value = uniqueColor
-      console.log(listWarna.value)
+      listWarna.value = responseRenderWarna.data.data
+      console.log(responseRenderWarna.data.data)
     }
   } catch (error) {
     console.log(error)
@@ -156,6 +144,7 @@ main {
     .list-kucing-by-color {
       display: flex;
       flex-direction: column;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
       background-color: #ffd482;
       padding: 10px;
       border-radius: 10px;
