@@ -15,8 +15,8 @@ async function submit() {
   try {
     const responseLogin = await axios.post('http://127.0.0.1:8000/api/auth/login', this.loginData)
     localStorage.setItem('token', responseLogin.data.token)
-    router.push('/')
     stateLogin.login = true
+    router.push('/')
   } catch (error) {
     const ContainerAlert = document.querySelector('.alert-message')
     ContainerAlert.innerHTML =
