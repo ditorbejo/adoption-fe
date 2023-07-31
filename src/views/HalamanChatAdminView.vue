@@ -238,7 +238,7 @@ main {
         gap: 5px;
         overflow: auto;
         scroll-behavior: smooth;
-        height: 100vh;
+        margin-bottom: 200px;
         .message {
           background-color: #f79540;
           padding: 5px;
