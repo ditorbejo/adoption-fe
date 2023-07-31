@@ -99,6 +99,7 @@ main {
     .container-detail {
       display: flex;
       flex-direction: column;
+      
       background-color: #ffd482;
       padding: 10px;
       border-radius: 10px;

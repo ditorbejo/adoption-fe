@@ -95,9 +95,11 @@ main {
     gap: 10px;
 
     .box-list {
-      background-color: #ffd482;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+      border: 2px solid #ffd482;
       border-radius: 10px;
       padding: 20px;
+      cursor: pointer;
       .title-berita {
         display: flex;
         justify-content: center;
