@@ -42,27 +42,6 @@ const renderUser = async () => {
   }
 }
 
-const dataHistoryUser = ref([])
-
-const renderHistoryUserAdopt = async () => {
-  try {
-    const responseListAdoptUser = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?status=approve`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-    if (responseListAdoptUser.status == 200) {
-      console.log(responseListAdoptUser.data.data)
-      dataHistoryUser.value = responseListAdoptUser.data.data
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 const dataAdopter = reactive({
   name_adopter: '',
   phone_adopter: '',
@@ -101,6 +80,20 @@ const sendForm = async () => {
   }
 }
 
+const checkAutoFillForm = ref(false)
+const setAutoFill = (kondisi) => {
+  checkAutoFillForm.value = kondisi
+  if (checkAutoFillForm.value == false) {
+    dataAdopter.name_adopter = ''
+    dataAdopter.phone_adopter = ''
+    dataAdopter.address_adopter = ''
+    dataAdopter.email = ''
+    dataAdopter.description = ''
+  }
+}
+
+const dataHistoryAdopter = ref([])
+
 const autoFillInput = async () => {
   try {
     const responseHistoryAdopt = await axios.get(
@@ -113,17 +106,23 @@ const autoFillInput = async () => {
     )
     if (responseHistoryAdopt.status == 200) {
       console.log(responseHistoryAdopt.data.data)
-    }
-    if (responseHistoryAdopt.data.data) {
-      dataAdopter.name_adopter = responseHistoryAdopt.data.data.name_adopter
-      dataAdopter.phone_adopter = responseHistoryAdopt.data.data.phone_adopter
-      dataAdopter.address_adopter = responseHistoryAdopt.data.data.address_adopter
-      dataAdopter.email = responseHistoryAdopt.data.data.email
+      dataHistoryAdopter.value = responseHistoryAdopt.data.data
     }
   } catch (error) {
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;"> Lengkapi semua field pada form adopsi</p>`
     console.log(error)
+  }
+}
+
+const handleSelectName = () => {
+  const cariUser = dataHistoryAdopter.value.find(
+    (user) => user.name_adopter === dataAdopter.name_adopter
+  )
+  console.log(cariUser)
+  if (cariUser) {
+    dataAdopter.name_adopter = cariUser.name_adopter
+    dataAdopter.phone_adopter = cariUser.phone_adopter
+    dataAdopter.address_adopter = cariUser.address_adopter
+    dataAdopter.email = cariUser.email
   }
 }
 
@@ -131,7 +130,6 @@ onMounted(async () => {
   await renderDataKucing()
   await renderUser()
   await autoFillInput()
-  await renderHistoryUserAdopt()
 })
 </script>
 <template>
@@ -141,10 +139,37 @@ onMounted(async () => {
       <div class="container-nama-kucing">
         <p>{{ name }}</p>
       </div>
+      <div class="container-check-form" v-if="dataHistoryAdopter.length != 0">
+        <p>
+          Apakah anda melakukan adopsi sebelumnya ?
+          <span v-if="checkAutoFillForm == false">Belum</span>
+          <span v-if="checkAutoFillForm == true">Sudah</span>
+        </p>
+        <div class="container-button-check">
+          <button @click="setAutoFill(false)">Belum</button>
+          <button @click="setAutoFill(true)">Sudah</button>
+        </div>
+      </div>
       <div class="alert-message"></div>
 
       <label for="">Nama Calon Adopter</label>
-      <input type="text" name="" id="" v-model="dataAdopter.name_adopter" />
+      <select
+        v-model="dataAdopter.name_adopter"
+        @change="handleSelectName()"
+        v-if="checkAutoFillForm == true"
+      >
+        <option value="">Pilih Adopter Sebelumnya</option>
+        <option v-for="option in dataHistoryAdopter" :value="option.name_adopter" :key="option.id">
+          {{ option.name_adopter }} ({{ option.email }}) Adopt At {{ option.updated_at }}
+        </option>
+      </select>
+      <input
+        type="text"
+        name=""
+        id=""
+        v-model="dataAdopter.name_adopter"
+        v-if="checkAutoFillForm == false"
+      />
 
       <label for="">Email Calon Adopter</label>
       <input type="email" name="" id="" v-model="dataAdopter.email" />
@@ -188,6 +213,10 @@ main {
       padding: 5px;
       border-radius: 5px;
     }
+    select,
+    option {
+      padding: 10px;
+    }
     .container-nama-kucing {
       background-color: #ffae11;
       padding: 5px;
@@ -196,6 +225,17 @@ main {
       p {
         display: flex;
         justify-content: center;
+      }
+    }
+
+    .container-check-form {
+      .container-button-check {
+        display: flex;
+        gap: 10px;
+        button {
+          padding: 5px;
+          border-radius: 10px;
+        }
       }
     }
     .container-button {
