@@ -216,6 +216,7 @@ main {
     padding: 10px;
     border-radius: 10px;
     textarea {
+      resize: none;
       padding: 10px;
     }
   }

@@ -125,7 +125,7 @@ main {
       gap: 5px;
       overflow: auto;
       scroll-behavior: smooth;
-      height: 600px;
+      height: 100vh;
       .message {
         background-color: #f79540;
         padding: 10px;

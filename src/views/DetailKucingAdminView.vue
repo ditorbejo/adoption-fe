@@ -159,7 +159,9 @@ onMounted(() => {
   <main>
     <h1>Detail Kucing</h1>
     <div class="container-detail">
-      <img class="gambar-utama" :src="`http://127.0.0.1:8000${pets.image}`" alt="" />
+      <div class="container-image">
+        <img class="gambar-utama" :src="`http://127.0.0.1:8000${pets.image}`" alt="" />
+      </div>
 
       <label for="">Album Photo</label>
       <div class="container-album" v-if="pets.status_adopt == 'ready'">
@@ -302,13 +304,18 @@ main {
       padding: 5px;
       border-radius: 5px;
     }
-    .gambar-utama {
-      padding: 10px;
-      background-color: #f79327;
-      width: 300px;
-      max-height: 300px;
-      object-fit: fill;
+    .container-image {
+      display: flex;
+      justify-content: center;
+      .gambar-utama {
+        padding: 10px;
+        background-color: #f79327;
+        width: 300px;
+        max-height: 300px;
+        object-fit: fill;
+      }
     }
+
     .gender {
       text-transform: capitalize;
     }
