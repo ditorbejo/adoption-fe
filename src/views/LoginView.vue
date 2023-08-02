@@ -1,6 +1,5 @@
 <script setup>
-import { reactive } from 'vue'
-import axios from 'axios'
+import { reactive, ref ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 import { stateLogin } from '../../store.js'
 
@@ -8,19 +7,27 @@ const loginData = reactive({
   email: '',
   password: ''
 })
-
+const axios = inject('axios')
 const router = useRouter()
-
+const alert = ref('')
 async function submit() {
   try {
-    const responseLogin = await axios.post('http://127.0.0.1:8000/api/auth/login', this.loginData)
+    const responseLogin = await axios.post('/api/auth/login', this.loginData)
     localStorage.setItem('token', responseLogin.data.token)
     stateLogin.login = true
     router.push('/')
+    alert.value = ''
   } catch (error) {
-    const ContainerAlert = document.querySelector('.alert-message')
-    ContainerAlert.innerHTML =
-      '<p style="color:red;">Email atau password salah atau Isi semua field yang tersedia</p>'
+    console.log(error)
+    const status = error.response.status
+    if(status == 422){
+      alert.value = error.response.data.message
+    }else{
+      alert.value = error
+    }
+    // const ContainerAlert = document.querySelector('.alert-message')
+    // ContainerAlert.innerHTML =
+    //   '<p style="color:red;">Email atau password salah atau Isi semua field yang tersedia</p>'
   }
 }
 </script>
@@ -29,7 +36,9 @@ async function submit() {
   <main class="login">
     <h1>Login</h1>
     <p>Mohon login untuk melanjutkan</p>
-    <div class="alert-message"></div>
+    <div class="alert-message" v-if="alert != ''">
+    {{ alert }}
+    </div>
     <div class="container-form">
       <form action="">
         <label for="email">Email</label>

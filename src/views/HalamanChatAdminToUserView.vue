@@ -1,9 +1,9 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref ,inject} from 'vue'
 import { useRoute } from 'vue-router'
 import Pusher from 'pusher-js'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const messages = ref([])
 const route = useRoute()
@@ -11,7 +11,7 @@ const userId = route.params.id
 
 const fetchMessages = async () => {
   try {
-    const responseMessages = await axios.get(`http://127.0.0.1:8000/api/messages/${userId}`, {
+    const responseMessages = await axios.get(`/api/messages/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -32,7 +32,7 @@ const dataMessage = reactive({
 const sendToUser = async () => {
   try {
     const responseMessages = await axios.post(
-      `http://127.0.0.1:8000/api/messages/${userId}`,
+      `/api/messages/${userId}`,
       dataMessage,
       {
         headers: {

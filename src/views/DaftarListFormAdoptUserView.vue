@@ -1,14 +1,14 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const forms = ref({})
 const userId = ref({})
 const render = async () => {
   try {
-    const responseUser = await axios.get(`http://127.0.0.1:8000/api/user`, {
+    const responseUser = await axios.get(`/api/user`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -18,7 +18,7 @@ const render = async () => {
       userId.value = responseUser.data.id
     }
     const responseListAdopt = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?user_id=${userId.value}`,
+      `/api/adoptions?user_id=${userId.value}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -43,7 +43,7 @@ const getListForm = async (statusFormName) => {
   formStatusName.value = statusFormName
   try {
     const responseForm = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?status=${statusFormName}&user_id=${userId.value}`,
+      `/api/adoptions?status=${statusFormName}&user_id=${userId.value}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -60,7 +60,7 @@ const getListForm = async (statusFormName) => {
 }
 
 onMounted(async () => {
-  render()
+  await render()
 })
 </script>
 <template>

@@ -1,8 +1,9 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import { useRoute } from 'vue-router'
 import router from '../router'
+
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const route = useRoute()
 const itemId = route.params.id
@@ -16,6 +17,7 @@ const date_birth = ref({})
 const weight = ref({})
 const description = ref({})
 const image = ref({})
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 
 const dataKucing = reactive({
   name: name,
@@ -30,7 +32,7 @@ const dataKucing = reactive({
 })
 const getDataCategory = async () => {
   try {
-    const responseCategory = await axios.get('http://127.0.0.1:8000/api/categories', {
+    const responseCategory = await axios.get('/api/categories', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -48,7 +50,7 @@ function handleFileChange() {
 
 const render = async () => {
   try {
-    const responseKucing = await axios.get(`http://127.0.0.1:8000/api/pets/${itemId}}`, {
+    const responseKucing = await axios.get(`/api/pets/${itemId}}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -101,7 +103,7 @@ const simpanEdit = async () => {
   }
 
   try {
-    const responseSimpan = await axios.post(`http://127.0.0.1:8000/api/pets/${itemId}}`, formData, {
+    const responseSimpan = await axios.post(`/api/pets/${itemId}}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -136,7 +138,7 @@ onMounted(() => {
 
     <div class="container-edit">
       <div class="container-image">
-        <img :src="`http://127.0.0.1:8000${image}`" alt="" />
+        <img :src="`${imageUrl}${image}`" alt="" />
       </div>
 
       <div class="alert-message"></div>

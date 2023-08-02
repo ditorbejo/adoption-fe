@@ -1,7 +1,7 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import { useRoute } from 'vue-router'
+
 const title = ref({})
 const image = ref({})
 const renameTitle = ref({})
@@ -13,12 +13,14 @@ const dataBerita = reactive({
   description: renameDescription
 })
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const route = useRoute()
 const itemId = route.params.id
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 const render = async () => {
   try {
-    const responseBerita = await axios.get(`http://127.0.0.1:8000/api/announcements/${itemId}}`, {
+    const responseBerita = await axios.get(`/api/announcements/${itemId}}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -53,7 +55,7 @@ const simpanEdit = async () => {
 
   try {
     const responseBerita = await axios.post(
-      `http://127.0.0.1:8000/api/announcements/${itemId}}`,
+      `/api/announcements/${itemId}}`,
       formData,
       {
         headers: {
@@ -87,7 +89,7 @@ onMounted(() => {
         <p>{{ title }}</p>
 
         <div class="container-image">
-          <img :src="`http://127.0.0.1:8000${image}`" alt="" />
+          <img :src="`${imageUrl}${image}`" alt="" />
         </div>
       </div>
 

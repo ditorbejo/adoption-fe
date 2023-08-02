@@ -1,8 +1,8 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const route = useRoute()
 const router = useRouter()
@@ -15,7 +15,7 @@ const dataEdit = reactive({
 })
 const render = async () => {
   try {
-    const responseEdit = await axios.get(`http://127.0.0.1:8000/api/categories/${itemId}}`, {
+    const responseEdit = await axios.get(`/api/categories/${itemId}}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -32,7 +32,7 @@ const render = async () => {
 const simpanEdit = async () => {
   try {
     const responseSimpan = await axios.put(
-      `http://127.0.0.1:8000/api/categories/${itemId}}`,
+      `/api/categories/${itemId}}`,
       dataEdit,
       {
         headers: {

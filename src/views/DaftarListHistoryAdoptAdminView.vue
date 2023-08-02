@@ -1,14 +1,14 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const forms = ref({})
 const render = async () => {
   try {
     const responseListAdopt = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?status=approve`,
+      `/api/adoptions?status=approve`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -16,7 +16,7 @@ const render = async () => {
       }
     )
     const responseHistoryAdopt = await axios.get(
-      `http://127.0.0.1:8000/api/pets?status_adopt=adopted`,
+      `/api/pets?status_adopt=adopted`,
       {
         headers: {
           Authorization: `Bearer ${token}`

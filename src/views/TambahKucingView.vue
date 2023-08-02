@@ -1,8 +1,8 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
-import axios from 'axios'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import router from '../router';
 
+const axios = inject('axios')
 const options = ref([])
 const dataTambahKucing = reactive({
   name: '',
@@ -35,7 +35,7 @@ async function submit() {
   formData.append('weight', dataTambahKucing.weight)
   formData.append('description', dataTambahKucing.description)
   try {
-    const responseTambahKucing = await axios.post('http://127.0.0.1:8000/api/pets', formData, {
+    const responseTambahKucing = await axios.post('/api/pets', formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -63,7 +63,7 @@ async function submit() {
 
 const getDataCategory = async () => {
   try {
-    const responseCategory = await axios.get('http://127.0.0.1:8000/api/categories', {
+    const responseCategory = await axios.get('/api/categories', {
       headers: {
         Authorization: `Bearer ${token}`
       }

@@ -1,8 +1,8 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import { useRoute } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const forms = ref({})
 const route = useRoute()
@@ -11,7 +11,7 @@ const petName = ref(null)
 
 const renderDetailPet = async () => {
   try {
-    const responsePetDetail = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}`, {
+    const responsePetDetail = await axios.get(`/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -28,7 +28,7 @@ const renderDetailPet = async () => {
 const renderAdoptions = async () => {
   try {
     const responseListAdopt = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?pet_id=${petId}&status=review`,
+      `/api/adoptions?pet_id=${petId}&status=review`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -50,7 +50,7 @@ const listForm = reactive({
 const searchFormAdopt = async (namaAdopter) => {
   try {
     const responseListForm = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?pet_id=${petId}&name_adopter=${namaAdopter}&status=review`,
+      `/api/adoptions?pet_id=${petId}&name_adopter=${namaAdopter}&status=review`,
       {
         headers: {
           Authorization: `Bearer ${token}`

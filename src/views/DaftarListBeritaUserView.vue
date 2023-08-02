@@ -1,13 +1,15 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const announcements = ref({})
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 const render = async () => {
   try {
-    const responseBerita = await axios.get('http://127.0.0.1:8000/api/announcements', {
+    const responseBerita = await axios.get('/api/announcements', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -47,7 +49,7 @@ onMounted(() => {
         <p class="title-berita">{{ announcement.title }}</p>
 
         <div class="container-description">
-          <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
+          <img :src="`${imageUrl}${announcement.image}`" alt="" />
           <textarea
             name=""
             id=""

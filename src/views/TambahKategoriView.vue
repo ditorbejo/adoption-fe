@@ -1,8 +1,8 @@
 <script setup>
-import { reactive } from 'vue'
-import axios from 'axios'
+import { reactive ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const dataKategori = reactive({
   namecategory: ''
 })
@@ -13,7 +13,7 @@ const token = localStorage.getItem('token')
 async function submit() {
   try {
     const responseTambahKategori = await axios.post(
-      'http://127.0.0.1:8000/api/categories',
+      '/api/categories',
       dataKategori,
       {
         headers: {

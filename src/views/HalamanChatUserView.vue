@@ -1,17 +1,19 @@
 <script setup>
-import axios from 'axios'
 import Pusher from 'pusher-js'
-import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref ,inject} from 'vue'
+import { useRoute } from 'vue-router';
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const userId = ref()
 const userRole = ref()
 const userName = ref()
 const messages = ref([])
+const route = useRoute()
 
 const renderUserId = async () => {
   try {
-    const responseUser = await axios.get('http://127.0.0.1:8000/api/user', {
+    const responseUser = await axios.get('/api/user', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -28,7 +30,7 @@ const renderUserId = async () => {
 
 const fetchMessages = async () => {
   try {
-    const responseMessages = await axios.get('http://127.0.0.1:8000/api/messages', {
+    const responseMessages = await axios.get('/api/messages', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -49,7 +51,7 @@ const dataMessage = reactive({
 const sendMessage = async () => {
   try {
     const responseSendMessage = await axios.post(
-      'http://127.0.0.1:8000/api/messages',
+      '/api/messages',
       dataMessage,
       {
         headers: {
@@ -66,15 +68,31 @@ const sendMessage = async () => {
   }
 }
 
+const petName = ref('')
+const fetchPetDetail = async (petId) => {
+  try {
+    const responseDetailKucing = await axios.get(`/api/pets/${petId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (responseDetailKucing.status == 200) {
+      console.log(responseDetailKucing.data.data)
+      petName.value = responseDetailKucing.data.data.name
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY
 const pusherCluster = import.meta.env.VITE_PUSHER_CLUSTER
-
+let channel
 const pusher = new Pusher(pusherAppKey, { cluster: pusherCluster })
 
 onMounted(async () => {
   await renderUserId()
   fetchMessages()
-  var channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
+  channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
   channel.bind('chat-Cattery', (data) => {
     console.log(data.resourceData)
     messages.value.push(data.resourceData)
@@ -83,10 +101,17 @@ onMounted(async () => {
   channel.bind('pusher:subscription_succeeded', () => {
     console.log('Subscribe berhasil')
   })
+
+  const petId = route.query.petId
+  if(petId){
+    await fetchPetDetail(petId)
+    dataMessage.message =  `Halo saya ingin bertanya untuk kucing ${petName.value}`
+  }
 })
 onUnmounted(() => {
-  var channelDestroy = pusher.unsubscribe(`lorem-ipsum-chat-${userId.value}`)
-  channelDestroy.unbind('chat-Cattery')
+  channel.unbind('chat-Cattery')
+  pusher.unsubscribe(`lorem-ipsum-chat-${userId.value}`)
+  
 })
 </script>
 

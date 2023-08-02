@@ -1,8 +1,8 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const route = useRoute()
 const router = useRouter()
 const petId = route.params.id
@@ -10,7 +10,7 @@ const token = localStorage.getItem('token')
 const name = ref()
 const render = async () => {
   try {
-    const responseKucing = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}`, {
+    const responseKucing = await axios.get(`/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -29,7 +29,7 @@ const render = async () => {
 const userId = ref({})
 const renderUser = async () => {
   try {
-    const responseUser = await axios.get(`http://127.0.0.1:8000/api/user`, {
+    const responseUser = await axios.get(`/api/user`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -59,7 +59,7 @@ const dataHistoryAdopter = ref([])
 const autoFillInput = async () => {
   try {
     const responseHistoryAdopt = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions/checkHistoryUserAdopt`,
+      `/api/adoptions/checkHistoryUserAdopt`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -102,7 +102,7 @@ const formId = ref()
 const markAsAdopt = async () => {
   try {
     const responseForm = await axios.post(
-      `http://127.0.0.1:8000/api/adoptions/adopt`,
+      `/api/adoptions/adopt`,
       dataAdopter,
       {
         headers: {
