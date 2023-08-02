@@ -241,10 +241,9 @@ main {
         scroll-behavior: smooth;
         margin-bottom: 200px;
         .message {
-          background-color: #f79540;
+          border: 2px solid#f79540;
           padding: 5px;
           border-radius: 10px;
-          border: 1px solid;
           .container-chat {
             border-radius: 5px;
             padding: 5px;
@@ -270,13 +269,13 @@ main {
             display: flex;
             padding: 10px;
             justify-content: flex-end;
-            background-color: #ffe569;
+            background-color: #fdfdfd;
           }
           .isi-pesan-admin {
             display: flex;
             padding: 10px;
             justify-content: flex-start;
-            background-color: #ffe569;
+            background-color: #fff1aa;
           }
         }
       }
