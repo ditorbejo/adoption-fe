@@ -1,8 +1,9 @@
 <script setup>
-import axios from 'axios'
 import Pusher from 'pusher-js'
-import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref,inject } from 'vue'
 
+
+const axios = inject('axios')
 const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY
 const pusherCluster = import.meta.env.VITE_PUSHER_CLUSTER
 
@@ -14,7 +15,7 @@ const token = localStorage.getItem('token')
 
 const renderUserChat = async () => {
   try {
-    const responseUser = await axios.get('http://127.0.0.1:8000/api/getAllUser', {
+    const responseUser = await axios.get('/api/getAllUser', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -35,7 +36,7 @@ const dataMessage = reactive({
 const sendMessage = async (userId) => {
   try {
     const responseSendMessage = await axios.post(
-      `http://127.0.0.1:8000/api/messages/${userId}`,
+      `/api/messages/${userId}`,
       dataMessage,
       {
         headers: {
@@ -56,7 +57,7 @@ const fetchMessages = async (user_id) => {
   try {
     userId.value = user_id
     pusher.unsubscribe(`lorem-ipsum-chat-${userId.value}`)
-    const responseMessages = await axios.get(`http://127.0.0.1:8000/api/messages/${user_id}`, {
+    const responseMessages = await axios.get(`/api/messages/${user_id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

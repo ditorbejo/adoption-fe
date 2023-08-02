@@ -1,13 +1,14 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const listWarna = ref([])
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 const renderKucing = async () => {
   try {
-    const responseRenderWarna = await axios.get('http://127.0.0.1:8000/api/getAllColor', {
+    const responseRenderWarna = await axios.get('/api/getAllColor', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -25,7 +26,7 @@ const listKucingByWarna = ref([])
 const renderKucingByColor = async (warnaKucing) => {
   try {
     const responseRenderKucing = await axios.get(
-      `http://127.0.0.1:8000/api/pets?color=${warnaKucing}&&status_adopt=ready`,
+      `/api/pets?color=${warnaKucing}&&status_adopt=ready`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -72,7 +73,7 @@ onMounted(() => {
         :key="pet.id"
         @click="goToDetail(`/pets/${pet.id}`)"
       >
-        <img :src="`http://127.0.0.1:8000${pet.image}`" alt="" />
+        <img :src="`${imageUrl}${pet.image}`" alt="" />
 
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>

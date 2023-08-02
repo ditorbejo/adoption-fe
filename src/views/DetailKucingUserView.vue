@@ -1,16 +1,17 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const token = localStorage.getItem('token')
+const axios = inject('axios')
 const route = useRoute()
 const router = useRouter()
 const petId = route.params.id
 const pets = ref({})
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 const render = async () => {
   try {
-    const responseDetailKucing = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}`, {
+    const responseDetailKucing = await axios.get(`/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -27,7 +28,7 @@ const images = ref({})
 
 const fetchAlbum = async () => {
   try {
-    const responseAlbum = await axios.get(`http://127.0.0.1:8000/api/galleries?pet_id=${petId}`, {
+    const responseAlbum = await axios.get(`/api/galleries?pet_id=${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -46,7 +47,7 @@ function goToFormAdopt(routePath) {
 }
 
 const askQuestion = () => {
-  router.push('/user/chat')
+  router.push(`/user/chat?petId=${petId}`)
 }
 
 onMounted(() => {
@@ -60,13 +61,13 @@ onMounted(() => {
     <h1>Detail Kucing User</h1>
 
     <div class="container-detail">
-      <img class="gambar-utama" :src="`http://127.0.0.1:8000${pets.image}`" alt="" />
+      <img class="gambar-utama" :src="`${imageUrl}${pets.image}`" alt="" />
 
       <label for="">Album Photo</label>
       <div class="container-album">
         <div class="container-gambar" v-if="images.length != 0">
           <div class="container-loop-gambar" v-for="image in images" :key="image.id">
-            <img class="gambar-album" :src="`http://127.0.0.1:8000${image.image}`" alt="" />
+            <img class="gambar-album" :src="`${imageUrl}${image.image}`" alt="" />
           </div>
         </div>
 

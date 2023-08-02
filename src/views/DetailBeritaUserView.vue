@@ -1,15 +1,16 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRoute } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const announcement = ref({})
 const route = useRoute()
 const itemId = route.params.id
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 const render = async () => {
   try {
-    const responseBerita = await axios.get(`http://127.0.0.1:8000/api/announcements/${itemId}`, {
+    const responseBerita = await axios.get(`/api/announcements/${itemId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -37,7 +38,7 @@ onMounted(() => {
 
       <div class="container-description">
         <div class="container-image">
-          <img :src="`http://127.0.0.1:8000${announcement.image}`" alt="" />
+          <img :src="`${imageUrl}${announcement.image}`" alt="" />
         </div>
 
         <p>Isi Berita:</p>

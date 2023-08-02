@@ -1,17 +1,18 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const route = useRoute()
 const router = useRouter()
 const petId = route.params.id
 const pets = ref({})
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 
 const render = async () => {
   try {
-    const responsePets = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}`, {
+    const responsePets = await axios.get(`/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -28,7 +29,7 @@ const render = async () => {
 
 const goToDelete = async () => {
   try {
-    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/pets/${petId}`, {
+    const responseDelete = await axios.delete(`/api/pets/${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -66,7 +67,7 @@ const removeFile = (id) => {
 const images = ref()
 const fetchAlbum = async () => {
   try {
-    const responseAlbum = await axios.get(`http://127.0.0.1:8000/api/galleries?pet_id=${petId}`, {
+    const responseAlbum = await axios.get(`/api/galleries?pet_id=${petId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -82,7 +83,7 @@ const fetchAlbum = async () => {
 const listFormAdoptions = ref({})
 const renderFormAdopt = async () => {
   try {
-    const renderFormAdopt = await axios.get(`http://127.0.0.1:8000/api/pets/${petId}/adoptions`, {
+    const renderFormAdopt = await axios.get(`/api/pets/${petId}/adoptions`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -108,7 +109,7 @@ const simpanAlbum = async () => {
     const formData = new FormData()
     formData.append('pet_id', petId)
     formData.append('image', inputFile.file)
-    return axios.post(`http://127.0.0.1:8000/api/galleries`, formData, {
+    return axios.post(`/api/galleries`, formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -125,7 +126,7 @@ const simpanAlbum = async () => {
 }
 const hapusGambar = async (imageId) => {
   try {
-    const responseDelete = await axios.delete(`http://127.0.0.1:8000/api/galleries/${imageId}`, {
+    const responseDelete = await axios.delete(`/galleries/${imageId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -178,7 +179,7 @@ onMounted(() => {
 
         <div class="container-gambar">
           <div class="container-loop-gambar" v-for="image in images" :key="image.id">
-            <img class="gambar-album" :src="`http://127.0.0.1:8000${image.image}`" alt="" />
+            <img class="gambar-album" :src="`${imageUrl}${image.image}`" alt="" />
             <button type="button" @click="hapusGambar(image.id)">Hapus</button>
           </div>
         </div>
@@ -187,7 +188,7 @@ onMounted(() => {
       <div class="container-album" v-else>
         <div class="container-gambar">
           <div class="container-loop-gambar" v-for="image in images" :key="image.id">
-            <img class="gambar-album" :src="`http://127.0.0.1:8000${image.image}`" alt="" />
+            <img class="gambar-album" :src="`${imageUrl}${image.image}`" alt="" />
           </div>
         </div>
       </div>

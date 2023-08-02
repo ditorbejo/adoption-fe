@@ -1,9 +1,9 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch ,inject} from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 import { stateLogin } from '../store.js'
 
+const axios = inject('axios')
 const navbarMenuOpen = ref(false)
 
 const toggleNavbar = () => {
@@ -19,7 +19,7 @@ const roleUser = ref('guest')
 const checkUserLogin = async () => {
   console.log('checkUserLoginBerjalan')
   try {
-    const loginResponse = await axios.get('http://127.0.0.1:8000/api/auth/role', {
+    const loginResponse = await axios.get('/api/auth/role', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -45,7 +45,7 @@ const router = useRouter()
 const logOutUser = async () => {
   try {
     const responseLogout = await axios.post(
-      `http://127.0.0.1:8000/api/logout`,
+      `/api/logout`,
       {
         undefined
       },

@@ -1,8 +1,9 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const route = useRoute()
 const itemId = route.params.id
@@ -10,7 +11,7 @@ const pets = ref({})
 const render = async () => {
   try {
     const responsePetsByCategory = await axios.get(
-      `http://127.0.0.1:8000/api/pets?categories_id=${itemId}&status_adopt=ready`,
+      `/api/pets?categories_id=${itemId}&status_adopt=ready`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -26,6 +27,7 @@ const render = async () => {
   }
 }
 const router = useRouter()
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 
 function goToDetail(routePath) {
   router.push(routePath)
@@ -51,7 +53,7 @@ onMounted(() => {
         :key="pet.id"
         @click="goToDetail(`/pets/${pet.id}`)"
       >
-        <img :src="`http://127.0.0.1:8000${pet.image}`" alt="" />
+        <img :src="`${imageUrl}${pet.image}`" alt="" />
 
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>

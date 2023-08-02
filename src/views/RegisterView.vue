@@ -1,8 +1,8 @@
 <script setup>
-import axios from 'axios'
-import { reactive } from 'vue'
+import { reactive ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const formsRegister = reactive({
   name: '',
   email: '',
@@ -14,7 +14,7 @@ const router = useRouter()
 async function submit() {
   try {
     const responseRegister = await axios.post(
-      'http://127.0.0.1:8000/api/auth/register',
+      '/api/auth/register',
       this.formsRegister
     )
     if (responseRegister.status == 200) {

@@ -1,13 +1,14 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const forms = ref({})
 const render = async () => {
   try {
-    const responseListAdopt = await axios.get(`http://127.0.0.1:8000/api/adoptions?status=review`, {
+    const responseListAdopt = await axios.get(`/api/adoptions?status=review`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -31,7 +32,7 @@ const getListForm = async (statusFormName) => {
   formStatusName.value = statusFormName
   try {
     const responseForm = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?status=${statusFormName}`,
+      `/api/adoptions?status=${statusFormName}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -51,7 +52,7 @@ const getListFormNameAdopter = async (statusFormName) => {
   formStatusName.value = statusFormName
   try {
     const responseForm = await axios.get(
-      `http://127.0.0.1:8000/api/adoptions?name_adopter=${listForm.name_adopter}&status=${statusFormName}`,
+      `/api/adoptions?name_adopter=${listForm.name_adopter}&status=${statusFormName}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -75,7 +76,7 @@ const searchFormAdopt = async (namaAdopter) => {
   try {
     if (formStatusName.value != null) {
       const responseListForm = await axios.get(
-        `http://127.0.0.1:8000/api/adoptions?name_adopter=${namaAdopter}&status=${formStatusName.value}`,
+        `/api/adoptions?name_adopter=${namaAdopter}&status=${formStatusName.value}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -88,7 +89,7 @@ const searchFormAdopt = async (namaAdopter) => {
       }
     } else {
       const responseListForm = await axios.get(
-        `http://127.0.0.1:8000/api/adoptions?name_adopter=${namaAdopter}`,
+        `/api/adoptions?name_adopter=${namaAdopter}`,
         {
           headers: {
             Authorization: `Bearer ${token}`

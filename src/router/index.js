@@ -45,7 +45,7 @@ import HalamanChatAdminView from '../views/HalamanChatAdminView.vue'
 import HalamanChatUserView from '../views/HalamanChatUserView.vue'
 import HalamanChatAdminToUserView from '../views/HalamanChatAdminToUserView.vue'
 import AboutView from '../views/AboutView.vue'
-import axios from 'axios'
+import { inject } from 'vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -364,12 +364,13 @@ const router = createRouter({
 })
 
 router.beforeEach(async(to,from)=>{
+  const axios = inject('axios')
   let role = 'guest';
   const isAunthenticated = localStorage.getItem('token')!== null;
   if(isAunthenticated){
     const token  = localStorage.getItem('token');
     try{
-      const roleResponse = await axios.get('http://127.0.0.1:8000/api/auth/role',{
+      const roleResponse = await axios.get('/api/auth/role',{
         headers : {
           Authorization: `Bearer ${token}`
         }

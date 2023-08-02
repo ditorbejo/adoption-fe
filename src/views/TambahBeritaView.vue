@@ -1,8 +1,8 @@
 <script setup>
-import { reactive } from 'vue'
-import axios from 'axios'
+import { reactive ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const dataBerita = reactive({
   title: '',
   description: ''
@@ -20,7 +20,7 @@ async function submit() {
   formData.append('title', dataBerita.title)
   formData.append('description', dataBerita.description)
   try {
-    const responseBerita = await axios.post('http://127.0.0.1:8000/api/announcements', formData, {
+    const responseBerita = await axios.post('/api/announcements', formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }

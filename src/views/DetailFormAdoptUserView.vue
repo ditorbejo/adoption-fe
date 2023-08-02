@@ -1,16 +1,18 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRoute } from 'vue-router'
 import router from '../router'
 
+
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const route = useRoute()
 const formId = route.params.id
 const dataForm = ref({})
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 const render = async () => {
   try {
-    const responseDetail = await axios.get(`http://127.0.0.1:8000/api/adoptions/${formId}`, {
+    const responseDetail = await axios.get(`/api/adoptions/${formId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -40,7 +42,7 @@ onMounted(() => {
 
     <div class="container-image">
       <div class="container-image-kucing">
-        <img :src="`http://127.0.0.1:8000${dataForm.pet_image}`" alt="" />
+        <img :src="`${imageUrl}${dataForm.pet_image}`" alt="" />
       </div>
     </div>
 

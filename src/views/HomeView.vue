@@ -1,14 +1,15 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref ,inject} from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
+const imageUrl = import.meta.env.VITE_BACKEND_URL
 
 const nameUser = ref()
 const renderUser = async () => {
   try {
-    const responseRenderUser = await axios.get('http://127.0.0.1:8000/api/user', {
+    const responseRenderUser = await axios.get('/api/user', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -25,7 +26,7 @@ const renderUser = async () => {
 const categories = ref({})
 const renderCategory = async () => {
   try {
-    const responseCategory = await axios.get(`http://127.0.0.1:8000/api/categories`, {
+    const responseCategory = await axios.get(`/api/categories`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -46,7 +47,7 @@ const goToListCategory = (routePath) => {
 const pets = ref({})
 const renderPets = async () => {
   try {
-    const responsePets = await axios.get(`http://127.0.0.1:8000/api/pets/home`, {
+    const responsePets = await axios.get(`/api/pets/home`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -65,7 +66,7 @@ const goToListSemuaKucing = (routePath) => {
 const countPetReadyAdopt = ref(0)
 const renderPetsReadyAdopt = async () => {
   try {
-    const responsePetsReady = await axios.get(`http://127.0.0.1:8000/api/pets?status_adopt=ready`, {
+    const responsePetsReady = await axios.get(`/api/pets?status_adopt=ready`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -83,7 +84,7 @@ const countPetAdoptedAdopt = ref(0)
 const renderPetsAdopted = async () => {
   try {
     const responsePetsAdopted = await axios.get(
-      `http://127.0.0.1:8000/api/pets?status_adopt=Adopted`,
+      `/api/pets?status_adopt=Adopted`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -177,7 +178,7 @@ onMounted(() => {
         :key="pet.id"
         @click="goToDetailKucing(`/pets/${pet.id}`)"
       >
-        <img :src="`http://127.0.0.1:8000${pet.image}`" alt="" />
+        <img :src="`${imageUrl}${pet.image}`" alt="" />
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>
         <p>Category: {{ pet.categories_name }}</p>

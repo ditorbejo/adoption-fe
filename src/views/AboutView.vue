@@ -82,7 +82,7 @@ console.log(mapIcon)
       </p>
     </div>
 
-    <h2>Link Social Media</h2>
+    <h2>Social Media</h2>
 
     <div class="container-card">
       <div class="card-detail">
@@ -130,6 +130,9 @@ main {
   .container-logo {
     display: flex;
     justify-content: center;
+    img{
+      max-width: 100%;
+    }
   }
   .container-deskripsi {
     display: flex;

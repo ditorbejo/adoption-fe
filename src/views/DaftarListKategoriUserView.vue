@@ -1,13 +1,13 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,inject } from 'vue'
 import { useRouter } from 'vue-router'
 
+const axios = inject('axios')
 const token = localStorage.getItem('token')
 const categories = ref({})
 const render = async () => {
   try {
-    const responseCategory = await axios.get(`http://127.0.0.1:8000/api/categories`, {
+    const responseCategory = await axios.get(`/api/categories`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
