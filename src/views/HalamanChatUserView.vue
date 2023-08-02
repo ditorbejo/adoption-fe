@@ -167,7 +167,7 @@ main {
             }
             .jam-pesan {
               width: 100%;
-              background-color: #f8ff21;
+              background-color: #fee45e;
               padding: 5px;
             }
           }

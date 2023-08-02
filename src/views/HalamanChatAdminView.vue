@@ -189,7 +189,7 @@ main {
         border: 1px;
         padding: 5px;
         .user-box {
-          background-color: bisque;
+          background-color: rgb(252, 252, 252);
           padding: 10px;
         }
         .container-name {
@@ -259,7 +259,7 @@ main {
               }
               .jam-pesan {
                 width: 100%;
-                background-color: #f8ff21;
+                background-color: #fee45e;
                 padding: 5px;
               }
             }

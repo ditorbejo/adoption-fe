@@ -49,7 +49,8 @@ const simpanEdit = async () => {
   } catch (error) {
     console.log(error)
     const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = '<p style="color:red">Kategori ras kucing tidak boleh sama atau tidak boleh kosong</p>'
+    containerAlert.innerHTML =
+      '<p style="color:red">kategori ras kucing tidak boleh sama atau kosong</p>'
   }
 }
 

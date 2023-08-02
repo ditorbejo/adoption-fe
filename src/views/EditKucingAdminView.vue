@@ -109,7 +109,7 @@ const simpanEdit = async () => {
     if (responseSimpan.status == 200) {
       console.log(responseSimpan)
       const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Menyimpan Update Kucing</p>`
+      containerAlert.innerHTML = `<p style="color:green;"> Berhasil melakukan update data</p>`
       console.log(file)
       dataKucing.name = ''
       dataKucing.description = ''
