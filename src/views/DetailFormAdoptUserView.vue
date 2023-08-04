@@ -1,8 +1,7 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '../router'
-
 
 const axios = inject('axios')
 const token = localStorage.getItem('token')
@@ -27,6 +26,9 @@ const render = async () => {
 }
 const goToDetailKucing = (routePath) => {
   router.push(routePath)
+}
+const goToChatAdmin = () => {
+  router.push(`/user/chat?formId=${formId}`)
 }
 onMounted(() => {
   render()
@@ -93,7 +95,14 @@ onMounted(() => {
       <p class="status-form-unavailable" v-else>{{ dataForm.status }}</p>
     </div>
 
-    <div class="alasan-reject" v-if="dataForm.status == 'reject'">
+    <div class="button-chat">
+      <p>Chat Admin</p>
+      <div class="button-chat-container">
+        <button @click="goToChatAdmin()">Ask to Admin</button>
+      </div>
+    </div>
+
+    <div class="alasan-reject" v-if="dataForm.status == 'approve'">
       <label for="">Alasan Form Ditolak</label>
       <textarea name="" id="" cols="50" rows="10" v-model="dataForm.reject" disabled></textarea>
     </div>
@@ -210,8 +219,28 @@ main {
       background-color: red;
     }
   }
+
+  .button-chat {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    .button-chat-container {
+      button {
+        border: 2px solid #ffae11;
+        padding: 5px;
+        width: 100%;
+        border-radius: 5px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        cursor: pointer;
+      }
+      button:hover {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      }
+    }
+  }
   .alasan-reject {
-    margin-top: 5%;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     background-color: #d9d9d9;

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
+import { onMounted, reactive, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -96,37 +96,44 @@ const renderFormAdopt = async () => {
     console.log(error)
   }
 }
-
+const alert = ref('')
 const simpanAlbum = async () => {
-  const someFileIsNull = inputFiles.some((inputFile) => {
-    return inputFile.file == null
-  })
-  if (someFileIsNull) {
-    console.log('ada file input yang kosong')
-    return
-  }
-  const imageUploadPromises = inputFiles.map((inputFile) => {
-    const formData = new FormData()
-    formData.append('pet_id', petId)
-    formData.append('image', inputFile.file)
-    return axios.post(`/api/galleries`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+  try {
+    const someFileIsNull = inputFiles.some((inputFile) => {
+      return inputFile.file == null
     })
-  })
-  const imageUploadResponses = await Promise.all(imageUploadPromises)
-  imageUploadResponses.forEach((response) => {
-    if (response.status == 200) {
-      console.log('berhasil menyimpan gambar')
+    if (someFileIsNull) {
+      console.log('ada file input yang kosong')
+      alert.value = 'ADA FILE KOSONG'
+      return
     }
-    inputFiles.shift()
-  })
-  fetchAlbum()
+    const imageUploadPromises = inputFiles.map((inputFile) => {
+      const formData = new FormData()
+      formData.append('pet_id', petId)
+      formData.append('image', inputFile.file)
+      return axios.post(`/api/galleries`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    })
+    const imageUploadResponses = await Promise.all(imageUploadPromises)
+    imageUploadResponses.forEach((response) => {
+      if (response.status == 200) {
+        console.log('berhasil menyimpan gambar')
+      }
+      inputFiles.shift()
+    })
+    fetchAlbum()
+  } catch (error) {
+    console.log(error)
+    alert.value = 'FILE HARUS IMAGE'
+  }
+  alert.value = ''
 }
 const hapusGambar = async (imageId) => {
   try {
-    const responseDelete = await axios.delete(`/galleries/${imageId}`, {
+    const responseDelete = await axios.delete(`/api/galleries/${imageId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -165,6 +172,9 @@ onMounted(() => {
       </div>
 
       <label for="">Album Photo</label>
+      <div class="alert-message-gagal" v-if="alert != ''">
+        <p>{{ alert }}</p>
+      </div>
       <div class="container-album" v-if="pets.status_adopt == 'ready'">
         <button class="btn-tambah-gambar" type="button" @click="tambahUpload()">
           Tambah Gambar
@@ -270,7 +280,7 @@ onMounted(() => {
         Edit Kucing
       </button>
 
-      <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete Kucing</button>
+      <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete</button>
     </div>
 
     <div class="container-button" v-else></div>
@@ -338,6 +348,15 @@ main {
       justify-content: center;
       background-color: red;
       text-transform: capitalize;
+    }
+    .alert-message-gagal {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(255, 0, 0);
+      padding: 5px;
+      p {
+        background-color: rgb(255, 0, 0);
+      }
     }
     .container-album {
       display: flex;

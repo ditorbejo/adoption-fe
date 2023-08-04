@@ -52,7 +52,7 @@ onMounted(() => {
 
 <template>
   <main>
-    <h1>Detail Kategori Ras Kucing</h1>
+    <h1>Detail Kategori Kucing</h1>
     <div class="container-detail">
       <p class="label-nama">Nama Ras Kucing</p>
       <p class="nama-category">{{ nama }}</p>

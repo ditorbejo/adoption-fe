@@ -1,7 +1,6 @@
 <script setup>
-import { onMounted, ref ,inject } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
 
 const axios = inject('axios')
 const token = localStorage.getItem('token')
@@ -55,8 +54,8 @@ const goToRejectForm = (routePath) => {
 const goToDetailKucing = (routePath) => {
   router.push(routePath)
 }
-const goToChatUser = (routePath) => {
-  router.push(routePath)
+const goToChatUser = () => {
+  router.push(`/admin/chat/${dataForm.value.user_id}?formId=${formId}`)
 }
 
 onMounted(() => {
@@ -157,11 +156,7 @@ onMounted(() => {
 
     <div class="container-button" v-else>
       <p>Fitur Form</p>
-      <button
-        class="btn-chat"
-        type="button"
-        @click="goToChatUser(`/admin/chat/${dataForm.user_id}`)"
-      >
+      <button class="btn-chat" type="button" @click="goToChatUser()">
         <i class="fa-solid fa-message fa-xl" style="color: #000000"></i>
         Chat
       </button>
@@ -315,12 +310,15 @@ main {
       opacity: 80%;
     }
     .btn-chat {
+      border: 2px solid #ffffff;
       background-color: #f7de78;
     }
     .btn-accept {
+      border: 2px solid #ffffff;
       background-color: rgb(160, 255, 160);
     }
     .btn-delete {
+      border: 2px solid #ffffff;
       background-color: red;
     }
   }

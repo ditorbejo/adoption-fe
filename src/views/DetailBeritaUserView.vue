@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
 
 const axios = inject('axios')
@@ -97,8 +97,7 @@ main {
           height: 300px;
           object-fit: fill;
           border-radius: 10px;
-          padding: 10px;
-          background-color: #f79327;
+          border: 2px solid #f79327;
         }
       }
       .description-detail {
