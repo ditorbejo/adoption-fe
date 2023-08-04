@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -34,7 +34,7 @@ onMounted(() => {
     <h1>List Form Adopt Reject</h1>
 
     <div class="list-form-kosong" v-if="forms.length == 0">
-      <p>Belum ada form adopsi kucing</p>
+      <p>BELUM ADA FORM ADOPSI</p>
     </div>
 
     <div class="container-list" v-else>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -34,14 +34,14 @@ onMounted(() => {
 
 <template>
   <main>
-    <h1>List Kategori Ras Kucing</h1>
+    <h1>List Kategori Kucing</h1>
 
     <button class="button-tambah-kategori" @click="goToTambahKategori('/admin/tambah-kategori')">
       Tambah Kategori Ras
     </button>
 
     <div class="list-form-kosong" v-if="categories.length == 0">
-      <p>Belum ada kategori kucing</p>
+      <p>DATA BELUM DITAMBAHKAN</p>
     </div>
 
     <div class="container-list" v-else>

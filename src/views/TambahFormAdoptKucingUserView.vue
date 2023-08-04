@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
+import { onMounted, reactive, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -53,7 +53,11 @@ const dataAdopter = reactive({
 })
 
 const router = useRouter()
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
 const sendForm = async () => {
+  sendingFormLoading.value = true
   try {
     const responseSend = await axios.post(`/api/adoptions`, dataAdopter, {
       headers: {
@@ -62,8 +66,8 @@ const sendForm = async () => {
     })
     if (responseSend.status == 200) {
       console.log(responseSend.data.data.id)
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Form Adopsi</p>`
+      alert.value = ''
+      alertSukses.value = 'SUKSES MENAMBAHKAN FORM ADOPT'
       dataAdopter.name_adopter = ''
       dataAdopter.phone_adopter = ''
       dataAdopter.address_adopter = ''
@@ -71,12 +75,23 @@ const sendForm = async () => {
       dataAdopter.description = ''
       setTimeout(() => {
         router.push('/user/list-form-adopt')
-      }, 2000)
+      }, 1000)
     }
+    sendingFormLoading.value = false
   } catch (error) {
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;"> Lengkapi semua field pada form adopsi</p>`
     console.log(error)
+    if (error.response.status == 422) {
+      if (
+        dataAdopter.name_adopter == '' ||
+        dataAdopter.phone_adopter == '' ||
+        dataAdopter.address_adopter == '' ||
+        dataAdopter.email == '' ||
+        dataAdopter.description == ''
+      ) {
+        alert.value = 'ISI SEMUA FIELD FORM'
+      }
+    }
+    sendingFormLoading.value = false
   }
 }
 
@@ -96,14 +111,11 @@ const dataHistoryAdopter = ref([])
 
 const autoFillInput = async () => {
   try {
-    const responseHistoryAdopt = await axios.get(
-      `/api/adoptions/checkHistoryUserAdopt`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseHistoryAdopt = await axios.get(`/api/adoptions/checkHistoryUserAdopt`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseHistoryAdopt.status == 200) {
       console.log(responseHistoryAdopt.data.data)
       dataHistoryAdopter.value = responseHistoryAdopt.data.data
@@ -150,7 +162,13 @@ onMounted(async () => {
           <button @click="setAutoFill(true)">Sudah</button>
         </div>
       </div>
-      <div class="alert-message"></div>
+
+      <div class="alert-message-gagal" v-if="alert != ''">
+        <p>{{ alert }}</p>
+      </div>
+      <div class="alert-message-sukses" v-if="alertSukses != ''">
+        <p>{{ alertSukses }}</p>
+      </div>
 
       <label for="">Nama Calon Adopter</label>
       <select
@@ -181,11 +199,21 @@ onMounted(async () => {
       <input type="text" name="" id="" v-model="dataAdopter.phone_adopter" />
 
       <label for="">Mengapa ingin mengadopsi kucing tersebut</label>
-      <textarea name="" id="" cols="50" rows="10" v-model="dataAdopter.description"></textarea>
+      <textarea
+        class="description"
+        name=""
+        id=""
+        cols="50"
+        rows="10"
+        v-model="dataAdopter.description"
+      ></textarea>
 
       <div class="container-button">
-        <button type="button" @click="sendForm()">
+        <button type="button" @click="sendForm()" v-if="sendingFormLoading == false">
           <i class="fa-regular fa-paper-plane fa-xl"></i> Kirim Form
+        </button>
+        <button type="button" @click="sendForm()" v-if="sendingFormLoading == true" disabled>
+          <i class="fa-solid fa-spinner fa-spin fa-xl"></i> Mengirim
         </button>
       </div>
     </div>
@@ -217,6 +245,9 @@ main {
     option {
       padding: 10px;
     }
+    .description {
+      padding: 5px;
+    }
     .container-nama-kucing {
       background-color: #ffae11;
       padding: 5px;
@@ -238,11 +269,23 @@ main {
         }
       }
     }
+    .alert-message-sukses {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(196, 255, 48);
+      padding: 5px;
+    }
+    .alert-message-gagal {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(255, 0, 0);
+      padding: 5px;
+    }
     .container-button {
       display: flex;
-      width: 100%;
       justify-content: flex-end;
       button {
+        width: 40%;
         padding: 10px;
         background-color: #ffd482;
         border-radius: 5px;

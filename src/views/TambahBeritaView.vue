@@ -1,5 +1,5 @@
 <script setup>
-import { reactive ,inject} from 'vue'
+import { reactive, inject, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -13,8 +13,11 @@ let file = null
 const handleFileChange = (event) => {
   file = event.target.files[0]
 }
-
-async function submit() {
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
+const submit = async () => {
+  sendingFormLoading.value = true
   const formData = new FormData()
   formData.append('image', file)
   formData.append('title', dataBerita.title)
@@ -26,15 +29,23 @@ async function submit() {
       }
     })
     if (responseBerita.status == 200) {
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Berita</p>`
+      alert.value = ''
+      alertSukses.value = 'SUKSES MENAMBAHKAN BERITA'
       dataBerita.title = ''
       dataBerita.description = ''
+      setTimeout(() => {
+        router.push('/admin/list-berita')
+      }, 1000)
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;"> Isi semua field yang ada</p>`
+    if (error.response.status == 422) {
+      if (dataBerita.title == '' || dataBerita.description == '' || file == null) {
+        alert.value = 'ISI SEMUA FIELD FORM'
+      }
+    }
+    sendingFormLoading.value = false
   }
 }
 
@@ -51,7 +62,12 @@ function goToListBerita(routePath) {
     <div class="container-form">
       <p>Upload Thumbnail Berita</p>
 
-      <div class="alert-message"></div>
+      <div class="alert-message-gagal" v-if="alert != ''">
+        <p>{{ alert }}</p>
+      </div>
+      <div class="alert-message-sukses" v-if="alertSukses != ''">
+        <p>{{ alertSukses }}</p>
+      </div>
 
       <label class="label-image" for="img">Upload image</label>
       <input type="file" id="img" name="img" @change="handleFileChange" />
@@ -71,10 +87,15 @@ function goToListBerita(routePath) {
       </div>
 
       <div class="container-button">
-        <button id="button" type="submit" @click="submit()">Tambah Berita</button>
+        <button id="button" type="submit" @click="submit()" v-if="sendingFormLoading == false">
+          Tambah Berita
+        </button>
+        <button id="button" v-if="sendingFormLoading == true" disabled>
+          <i class="fa-solid fa-spinner fa-xl"></i>
+        </button>
       </div>
       <div class="container-button">
-        <button type="button" @click="goToListBerita('/admin/list-berita')">
+        <button class="button-back" type="button" @click="goToListBerita('/admin/list-berita')">
           Ke Halaman List Berita
         </button>
       </div>
@@ -132,7 +153,22 @@ main {
     .container-button {
       display: flex;
       justify-content: flex-end;
+      .button-back{
+        background-color: #EFEFF0;
+      }
     }
+  }
+  .alert-message-sukses {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(196, 255, 48);
+    padding: 5px;
+  }
+  .alert-message-gagal {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(255, 0, 0);
+    padding: 5px;
   }
 }
 </style>

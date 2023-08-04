@@ -1,7 +1,6 @@
 <script setup>
-import { onMounted, ref ,inject } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
-
 
 const axios = inject('axios')
 const token = localStorage.getItem('token')
@@ -43,7 +42,7 @@ onMounted(() => {
     </button>
 
     <div class="list-form-kosong" v-if="announcements.length == 0">
-      <p>Belum ada berita informasi cattery</p>
+      <p>DATA BELUM DITAMBAHKAN</p>
     </div>
 
     <div class="container-list">
@@ -66,6 +65,9 @@ onMounted(() => {
             v-model="announcement.description"
             disabled
           ></textarea>
+        </div>
+        <div class="detail-berita-button">
+          <button @click="goDetail(`/announcements/${announcement.id}`)">Detail Berita</button>
         </div>
       </div>
     </div>
@@ -152,8 +154,7 @@ main {
         flex-direction: column;
         gap: 10px;
         img {
-          padding: 10px;
-          background-color: #f79327;
+          border: 2px solid #f79327;
           width: 100%;
           height: 300px;
           object-fit: fill;
@@ -164,6 +165,14 @@ main {
           width: 100%;
           overflow: hidden;
           resize: none;
+        }
+      }
+      .detail-berita-button {
+        margin-top: 5px;
+        button {
+          width: 100%;
+          padding: 5px;
+          border: 1px solid #ffd482;
         }
       }
     }

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
+import { onMounted, reactive, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -58,14 +58,11 @@ const dataHistoryAdopter = ref([])
 
 const autoFillInput = async () => {
   try {
-    const responseHistoryAdopt = await axios.get(
-      `/api/adoptions/checkHistoryUserAdopt`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseHistoryAdopt = await axios.get(`/api/adoptions/checkHistoryUserAdopt`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseHistoryAdopt.status == 200) {
       console.log(responseHistoryAdopt.data.data)
       dataHistoryAdopter.value = responseHistoryAdopt.data.data
@@ -98,33 +95,46 @@ const dataAdopter = reactive({
   user_id: userId
 })
 const formId = ref()
-
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
 const markAsAdopt = async () => {
+  sendingFormLoading.value = true
   try {
-    const responseForm = await axios.post(
-      `/api/adoptions/adopt`,
-      dataAdopter,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseForm = await axios.post(`/api/adoptions/adopt`, dataAdopter, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseForm.status == 200) {
       console.log(responseForm.data.data)
       formId.value = responseForm.data.data.id
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mark as Adopt Kucing</p>`
+      alert.value = ''
+      alertSukses.value = 'SUKSES MARK AS ADOPT'
       dataAdopter.name_adopter = ''
       dataAdopter.phone_adopter = ''
       dataAdopter.address_adopter = ''
       dataAdopter.email = ''
       dataAdopter.description = ''
+      setTimeout(() => {
+        router.push(`/admin/list-history-adopt`)
+      }, 1000)
     }
+    sendingFormLoading.value = false
   } catch (error) {
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;"> Isi semua field yang ada</p>`
     console.log(error)
+    if (error.response.status == 422) {
+      if (
+        dataAdopter.name_adopter == '' ||
+        dataAdopter.phone_adopter == '' ||
+        dataAdopter.address_adopter == '' ||
+        dataAdopter.email == '' ||
+        dataAdopter.description == ''
+      ) {
+        alert.value = 'ISI SEMUA FIELD FORM'
+      }
+    }
+    sendingFormLoading.value = false
   }
 }
 
@@ -149,7 +159,13 @@ onMounted(async () => {
           <button @click="setAutoFill(true)">Sudah</button>
         </div>
       </div>
-      <div class="alert-message"></div>
+
+      <div class="alert-message-gagal" v-if="alert != ''">
+        <p>{{ alert }}</p>
+      </div>
+      <div class="alert-message-sukses" v-if="alertSukses != ''">
+        <p>{{ alertSukses }}</p>
+      </div>
 
       <label for="">Nama Calon Adopter</label>
       <select
@@ -183,8 +199,11 @@ onMounted(async () => {
       <textarea name="" id="" cols="50" rows="10" v-model="dataAdopter.description"></textarea>
 
       <div class="container-button">
-        <button type="button" @click="markAsAdopt()">
+        <button type="button" @click="markAsAdopt()" v-if="sendingFormLoading == false">
           <i class="fa-regular fa-paper-plane fa-xl"></i> Mark As Adopt
+        </button>
+        <button type="button" v-if="sendingFormLoading == true" disabled>
+          <i class="fa-solid fa-spinner fa-xl"></i>
         </button>
       </div>
     </div>
@@ -236,11 +255,23 @@ main {
         }
       }
     }
+    .alert-message-sukses {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(196, 255, 48);
+      padding: 5px;
+    }
+    .alert-message-gagal {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(255, 0, 0);
+      padding: 5px;
+    }
     .container-button {
       display: flex;
-      width: 100%;
       justify-content: flex-end;
       button {
+        width: 40%;
         padding: 10px;
         background-color: #ffd482;
         border-radius: 5px;

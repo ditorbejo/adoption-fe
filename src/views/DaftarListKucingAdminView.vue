@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref,inject } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -43,7 +43,7 @@ onMounted(async () => {
     </button>
 
     <div class="list-form-kosong" v-if="pets.length == 0">
-      <p>Belum ada kucing yang ditambahkan</p>
+      <p>KUCING BELUM DITAMBAHKAN</p>
     </div>
 
     <div class="container-list" v-else>
@@ -142,13 +142,20 @@ main {
       padding: 10px;
       gap: 5px;
       border-radius: 10px;
+      cursor: pointer;
       img {
         border-radius: 10px;
         width: 100%;
         height: 300px;
         object-fit: fill;
       }
+      p {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-weight: bolder;
+      }
       .status-adopt {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
         background-color: #85a675;
         display: flex;
         align-items: center;

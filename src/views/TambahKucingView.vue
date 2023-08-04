@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
-import router from '../router';
+import { onMounted, reactive, ref, inject } from 'vue'
+import router from '../router'
 
 const axios = inject('axios')
 const options = ref([])
@@ -22,7 +22,11 @@ const handleFileChange = (event) => {
   file = event.target.files[0]
 }
 
-async function submit() {
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
+const submit = async () => {
+  sendingFormLoading.value = true
   const formData = new FormData()
   formData.append('image', file)
   formData.append('name', dataTambahKucing.name)
@@ -41,8 +45,8 @@ async function submit() {
       }
     })
     if (responseTambahKucing.status == 200) {
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Kucing</p>`
+      alert.value = ''
+      alertSukses.value = 'SUKSES MENAMBAHKAN KUCING'
       dataTambahKucing.name = ''
       dataTambahKucing.gender = ''
       dataTambahKucing.status_adopt = ''
@@ -52,12 +56,30 @@ async function submit() {
       dataTambahKucing.date_birth = ''
       dataTambahKucing.weight = ''
       dataTambahKucing.description = ''
-      router.push('/admin/list-kucing')
+      setTimeout(() => {
+        router.push('/admin/list-kucing')
+      }, 1000)
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;"> Isi semua field yang ada</p>`
+    if (error.response.status == 422) {
+      if (
+        file == null ||
+        dataTambahKucing.name == '' ||
+        dataTambahKucing.gender == '' ||
+        dataTambahKucing.status_adopt == '' ||
+        dataTambahKucing.certificate == '' ||
+        dataTambahKucing.color == '' ||
+        dataTambahKucing.categories_id == '' ||
+        dataTambahKucing.date_birth == '' ||
+        dataTambahKucing.weight == '' ||
+        dataTambahKucing.description == ''
+      ) {
+        alert.value = 'ISI SEMUA FIELD FORM'
+      }
+    }
+    sendingFormLoading.value = false
   }
 }
 
@@ -81,10 +103,15 @@ onMounted(() => {
 
 <template>
   <main class="tambah-kucing">
-    <h1>Form Tambah Kucing</h1>
+    <h1>Tambah Kucing</h1>
 
     <div class="container-form">
-      <div class="alert-message"></div>
+      <div class="alert-message-gagal" v-if="alert != ''">
+        <p>{{ alert }}</p>
+      </div>
+      <div class="alert-message-sukses" v-if="alertSukses != ''">
+        <p>{{ alertSukses }}</p>
+      </div>
 
       <label for="name">Nama Kucing</label>
       <input type="text" placeholder="Masukkan Nama Kucing" v-model="dataTambahKucing.name" />
@@ -124,13 +151,25 @@ onMounted(() => {
       <input type="text" placeholder="Weight" v-model="dataTambahKucing.weight" />
 
       <label for="description">Description</label>
-      <textarea name="" id="" cols="50" rows="10" v-model="dataTambahKucing.description"></textarea>
+      <textarea
+        class="description"
+        name=""
+        id=""
+        cols="50"
+        rows="10"
+        v-model="dataTambahKucing.description"
+      ></textarea>
 
       <label for="">Upload Image</label>
       <input type="file" id="img" name="img" @change="handleFileChange" />
 
       <div class="button-container">
-        <button type="button" @click="submit()">Tambah Kucing</button>
+        <button type="button" @click="submit()" v-if="sendingFormLoading == false">
+          Tambah Kucing
+        </button>
+        <button type="button" v-if="sendingFormLoading == true" disabled>
+          <i class="fa-solid fa-spinner fa-xl"></i>
+        </button>
       </div>
     </div>
   </main>
@@ -154,7 +193,23 @@ main {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    input {
+    .alert-message-sukses {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(196, 255, 48);
+      padding: 5px;
+    }
+    .alert-message-gagal {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(255, 0, 0);
+      padding: 5px;
+    }
+    input,
+    select {
+      padding: 5px;
+    }
+    .description {
       padding: 5px;
     }
   }
@@ -162,6 +217,7 @@ main {
     display: flex;
     justify-content: flex-end;
     button {
+      width: 40%;
       padding: 10px;
       background-color: #ffd482;
       border-radius: 10px;

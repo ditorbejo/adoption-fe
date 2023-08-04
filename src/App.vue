@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch ,inject} from 'vue'
+import { onMounted, ref, watch, inject } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 import { stateLogin } from '../store.js'
 
@@ -405,6 +405,8 @@ header {
       }
       a {
         text-decoration: none;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-weight: bolder;
         color: black;
         cursor: pointer;
       }

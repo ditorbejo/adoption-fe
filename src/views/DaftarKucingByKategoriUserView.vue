@@ -1,7 +1,6 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
 
 const axios = inject('axios')
 const token = localStorage.getItem('token')
@@ -26,6 +25,23 @@ const render = async () => {
     console.log(error)
   }
 }
+
+const nameCategory = ref('')
+const renderCategoryName = async () => {
+  try {
+    const responseCategory = await axios.get(`/api/categories/${itemId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (responseCategory.status == 200) {
+      console.log(responseCategory.data.data)
+      nameCategory.value = responseCategory.data.data.namecategory
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 const router = useRouter()
 const imageUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -34,16 +50,17 @@ function goToDetail(routePath) {
 }
 
 onMounted(() => {
+  renderCategoryName()
   render()
 })
 </script>
 
 <template>
   <main>
-    <h1>Daftar Kucing by Category</h1>
+    <h1>{{ nameCategory }}</h1>
 
     <div class="list-kucing-kosong" v-if="pets.length == 0">
-      <p>Tidak ada kucing yang tersedia</p>
+      <p>DATA BELUM DITAMBAHKAN</p>
     </div>
 
     <div class="container-list" v-else>
@@ -101,7 +118,7 @@ main {
     .container-detail {
       display: flex;
       flex-direction: column;
-      
+      cursor: pointer;
       background-color: #ffd482;
       padding: 10px;
       border-radius: 10px;
@@ -112,8 +129,14 @@ main {
         object-fit: fill;
         border-radius: 10px;
       }
+      p {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-weight: bolder;
+      }
       .status-adopt-ready {
         background-color: #85a675;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
         display: flex;
         align-items: center;
         justify-content: center;

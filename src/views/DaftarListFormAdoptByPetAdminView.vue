@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
-import { useRoute } from 'vue-router'
+import { onMounted, reactive, ref, inject } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const axios = inject('axios')
 const token = localStorage.getItem('token')
@@ -27,14 +27,11 @@ const renderDetailPet = async () => {
 
 const renderAdoptions = async () => {
   try {
-    const responseListAdopt = await axios.get(
-      `/api/adoptions?pet_id=${petId}&status=review`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseListAdopt = await axios.get(`/api/adoptions?pet_id=${petId}&status=review`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseListAdopt.status == 200) {
       forms.value = responseListAdopt.data.data
       console.log(responseListAdopt.data.data)
@@ -70,6 +67,11 @@ const removeFilterName = () => {
   listForm.name_adopter = ''
   renderAdoptions()
 }
+
+const router = useRouter()
+const goToDetail = (routePath) => {
+  router.push(routePath)
+}
 onMounted(() => {
   renderDetailPet()
   renderAdoptions()
@@ -78,7 +80,7 @@ onMounted(() => {
 
 <template>
   <main>
-    <h1>Daftar List Form Adopsi By Pet</h1>
+    <h1>List Form Adopt By Pet</h1>
     <p class="name-pet">{{ petName }}</p>
 
     <div class="container-search-form">
@@ -94,7 +96,7 @@ onMounted(() => {
     </div>
 
     <div class="list-form-kosong" v-if="forms.length == 0">
-      <p>Belum ada form adopsi kucing</p>
+      <p>BELUM ADA FORM ADOPSI</p>
     </div>
 
     <div class="container-list" v-else>
@@ -217,6 +219,8 @@ main {
           padding: 5px;
           border-radius: 5px;
           cursor: pointer;
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+          font-weight: bolder;
           box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
             rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
         }

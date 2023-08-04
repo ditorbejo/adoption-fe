@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
+import { onMounted, reactive, ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '../router'
 
@@ -77,7 +77,11 @@ const render = async () => {
 }
 const options = ref([])
 
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
 const simpanEdit = async () => {
+  sendingFormLoading.value = true
   const formData = new FormData()
   if (file == null) {
     formData.append('name', dataKucing.name)
@@ -101,7 +105,6 @@ const simpanEdit = async () => {
     formData.append('certificate', dataKucing.certificate)
     formData.append('gender', dataKucing.gender)
   }
-
   try {
     const responseSimpan = await axios.post(`/api/pets/${itemId}}`, formData, {
       headers: {
@@ -110,8 +113,8 @@ const simpanEdit = async () => {
     })
     if (responseSimpan.status == 200) {
       console.log(responseSimpan)
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Berhasil melakukan update data</p>`
+      alert.value = ''
+      alertSukses.value = 'SUKSES'
       console.log(file)
       dataKucing.name = ''
       dataKucing.description = ''
@@ -119,12 +122,26 @@ const simpanEdit = async () => {
       dataKucing.weight = ''
       dataKucing.date_birth = ''
       dataKucing.certificate = ''
-      router.push(`/admin/pets/${itemId}`)
+      setTimeout(() => {
+        router.push(`/admin/pets/${itemId}`)
+      }, 1000)
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;">Field tidak boleh ada yang kosong selain image</p>`
+    if (error.response.status == 422) {
+      if (
+        dataKucing.name == '' ||
+        dataKucing.description == '' ||
+        dataKucing.color == '' ||
+        dataKucing.weight == '' ||
+        dataKucing.date_birth == '' ||
+        dataKucing.certificate == ''
+      ) {
+        alert.value = 'ISI SEMUA FIELD FORM'
+      }
+    }
+    sendingFormLoading.value = false
   }
 }
 onMounted(() => {
@@ -141,7 +158,12 @@ onMounted(() => {
         <img :src="`${imageUrl}${image}`" alt="" />
       </div>
 
-      <div class="alert-message"></div>
+      <div class="alert-message-gagal" v-if="alert != ''">
+        <p>{{ alert }}</p>
+      </div>
+      <div class="alert-message-sukses" v-if="alertSukses != ''">
+        <p>{{ alertSukses }}</p>
+      </div>
 
       <div class="container-input">
         <label for="">Nama</label>
@@ -179,18 +201,30 @@ onMounted(() => {
         <input type="text" v-model="dataKucing.weight" />
 
         <label for="">Description</label>
-        <textarea name="" id="" cols="50" rows="10" v-model="dataKucing.description"></textarea>
+        <textarea
+          class="description"
+          name=""
+          id=""
+          cols="50"
+          rows="10"
+          v-model="dataKucing.description"
+        ></textarea>
 
         <input type="file" id="img" name="img" @change="handleFileChange" />
       </div>
 
       <div class="container-button">
-        <button class="button" @click="simpanEdit()">Simpan</button>
+        <button class="button" @click="simpanEdit()" v-if="sendingFormLoading == false">
+          Simpan
+        </button>
+        <button class="button" v-if="sendingFormLoading == true" disabled>
+          <i class="fa-solid fa-spinner fa-xl"></i>
+        </button>
       </div>
     </div>
   </main>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;
@@ -220,22 +254,45 @@ main {
         background-color: #f79327;
       }
     }
+    .alert-message-sukses {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      background-color: rgb(196, 255, 48);
+      padding: 5px;
+    }
+    .alert-message-gagal {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      background-color: rgb(255, 0, 0);
+      padding: 5px;
+    }
 
     .container-input {
       display: flex;
       flex-direction: column;
-      input {
+      input,
+      select {
         padding: 5px;
         border-radius: 5px;
+      }
+      .description {
+        padding: 5px;
       }
     }
     .container-button {
       margin-top: 5%;
+      display: flex;
+      justify-content: flex-end;
       button {
-        padding: 5px;
-        width: 100%;
-        border-radius: 5px;
+        width: 30%;
+        padding: 10px;
         background-color: #ffd482;
+        border-radius: 10px;
+      }
+      button:hover {
+        opacity: 70%;
       }
     }
   }

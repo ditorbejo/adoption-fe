@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -7,22 +7,16 @@ const token = localStorage.getItem('token')
 const forms = ref({})
 const render = async () => {
   try {
-    const responseListAdopt = await axios.get(
-      `/api/adoptions?status=approve`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseListAdopt = await axios.get(`/api/adoptions?status=approve`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
-    const responseHistoryAdopt = await axios.get(
-      `/api/pets?status_adopt=adopted`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    })
+    const responseHistoryAdopt = await axios.get(`/api/pets?status_adopt=adopted`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseListAdopt.status == 200) {
       forms.value = responseListAdopt.data.data
     }
@@ -47,7 +41,7 @@ onMounted(() => {
     <h1>History Adopt Kucing</h1>
 
     <div class="list-form-kosong" v-if="forms.length == 0">
-      <p>Belum ada history adopsi kucing</p>
+      <p>BELUM ADA ADOPSI KUCING</p>
     </div>
 
     <div class="container-list">

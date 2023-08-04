@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
+import { onMounted, reactive, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -29,28 +29,34 @@ const render = async () => {
   }
 }
 
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
 const simpanEdit = async () => {
+  sendingFormLoading.value = true
   try {
-    const responseSimpan = await axios.put(
-      `/api/categories/${itemId}}`,
-      dataEdit,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseSimpan = await axios.put(`/api/categories/${itemId}}`, dataEdit, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseSimpan.status == 200) {
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = '<p style="color:green">Berhasil mengubah kategori ras kucing</p>'
-      const inputNama = document.querySelector('.input-nama-category')
-      inputNama.value = ''
+      alert.value = ''
+      alertSukses.value = 'SUKSES'
+      dataEdit.namecategory = ''
+      router.push(`/admin/category/${itemId}`)
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML =
-      '<p style="color:red">kategori ras kucing tidak boleh sama atau kosong</p>'
+    if (error.response.status == 422) {
+      if (dataEdit.namecategory == '') {
+        alert.value = 'ISI SEMUA FIELD FORM'
+      } else {
+        alert.value = 'NAMA KATEGORI TELAH ADA'
+      }
+    }
+    sendingFormLoading.value = false
   }
 }
 
@@ -64,10 +70,15 @@ onMounted(() => {
 
 <template>
   <main>
-    <h1>Edit Kategori Ras Kucing</h1>
+    <h1>Edit Kategori Kucing</h1>
 
     <div class="container-detail">
-      <div class="alert-message"></div>
+      <div class="alert-message-gagal" v-if="alert != ''">
+        <p>{{ alert }}</p>
+      </div>
+      <div class="alert-message-sukses" v-if="alertSukses != ''">
+        <p>{{ alertSukses }}</p>
+      </div>
 
       <p class="label-nama">Nama Ras Kucing Saat ini</p>
       <p class="nama-category">{{ nama }}</p>
@@ -76,7 +87,17 @@ onMounted(() => {
     </div>
 
     <div class="container-edit-delete">
-      <button type="button" class="btn-edit" @click="simpanEdit()">Simpan Edit</button>
+      <button
+        type="button"
+        class="btn-edit"
+        @click="simpanEdit()"
+        v-if="sendingFormLoading == false"
+      >
+        Simpan Edit
+      </button>
+      <button type="button" class="btn-edit" v-if="sendingFormLoading == true" disabled>
+        <i class="fa-solid fa-spinner fa-xl"></i>
+      </button>
       <button type="button" class="btn-kembali" @click="backToDetail(`/admin/category/${itemId}`)">
         Kembali
       </button>
@@ -105,6 +126,19 @@ main {
     display: flex;
     flex-direction: column;
     gap: 2px;
+
+    .alert-message-sukses {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(196, 255, 48);
+      padding: 5px;
+    }
+    .alert-message-gagal {
+      display: flex;
+      justify-content: center;
+      background-color: rgb(255, 0, 0);
+      padding: 5px;
+    }
     .nama-category,
     .input-nama-category {
       border-style: solid;

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
+import { onMounted, reactive, ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '../router'
 
@@ -27,29 +27,34 @@ const renderForm = async () => {
   }
 }
 
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
 const submitFormReject = async () => {
+  sendingFormLoading.value = true
   try {
-    const responseReject = await axios.post(
-      `/api/adoptions/${formId}/reject`,
-      dataFormReject,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseReject = await axios.post(`/api/adoptions/${formId}/reject`, dataFormReject, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseReject.status == 200) {
       console.log(responseReject)
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Mendaftarkan Form Adopsi</p>`
+      alert.value = ''
+      alertSukses.value = 'SUKSES MENOLAK FORM'
       setTimeout(() => {
         router.push(`/admin/adoptions/${formId}`)
-      })
+      }, 1000)
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;">Isi field alasan menolak form</p>`
+    if (error.response.status == 422) {
+      if (dataFormReject.reject == '') {
+        alert.value = 'ISI SEMUA FIELD FORM'
+      }
+    }
+    sendingFormLoading.value = false
   }
 }
 
@@ -81,6 +86,7 @@ onMounted(() => {
 
       <label for="">Mengapa ingin mengadopsi kucing tersebut</label>
       <textarea
+        class="description"
         name=""
         id=""
         cols="50"
@@ -90,7 +96,12 @@ onMounted(() => {
       ></textarea>
     </div>
 
-    <div class="alert-message"></div>
+    <div class="alert-message-gagal" v-if="alert != ''">
+      <p>{{ alert }}</p>
+    </div>
+    <div class="alert-message-sukses" v-if="alertSukses != ''">
+      <p>{{ alertSukses }}</p>
+    </div>
 
     <div class="container-alasan">
       <label for="">Alasan Form Ini Ditolak</label>
@@ -102,7 +113,12 @@ onMounted(() => {
         v-model="dataFormReject.reject"
         required
       ></textarea>
-      <button @click="submitFormReject()">Kirim Form</button>
+      <button @click="submitFormReject()" v-if="sendingFormLoading == false">
+        <i class="fa-regular fa-paper-plane fa-xl"></i> Kirim
+      </button>
+      <button v-if="sendingFormLoading == true" disabled>
+        <i class="fa-solid fa-spinner fa-xl"></i>
+      </button>
     </div>
   </main>
 </template>
@@ -121,6 +137,9 @@ main {
   padding: 10px 20px;
   margin: 50px auto 0 auto;
   max-width: 1200px;
+  .description {
+    padding: 5px;
+  }
 
   .container-nama-kucing {
     margin-top: 5%;
@@ -161,6 +180,20 @@ main {
       border-radius: 5px;
       text-transform: capitalize;
     }
+  }
+  .alert-message-sukses {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(196, 255, 48);
+    padding: 5px;
+  }
+  .alert-message-gagal {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(255, 0, 0);
+    padding: 5px;
   }
   .container-alasan {
     margin-top: 5%;

@@ -1,12 +1,13 @@
 <script setup>
-import { onMounted, reactive, ref ,inject} from 'vue'
-import { useRoute } from 'vue-router'
+import { onMounted, reactive, ref, inject } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const title = ref({})
 const image = ref({})
 const renameTitle = ref({})
 const renameImage = ref({})
 const renameDescription = ref({})
+const router = useRouter()
 const dataBerita = reactive({
   title: renameTitle,
   image: renameImage,
@@ -42,7 +43,11 @@ const handleFileChange = (event) => {
   file = event.target.files[0]
 }
 
+const alert = ref('')
+const alertSukses = ref('')
+const sendingFormLoading = ref(false)
 const simpanEdit = async () => {
+  sendingFormLoading.value = true
   const formData = new FormData()
   if (file == null) {
     formData.append('title', dataBerita.title)
@@ -54,27 +59,34 @@ const simpanEdit = async () => {
   }
 
   try {
-    const responseBerita = await axios.post(
-      `/api/announcements/${itemId}}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseBerita = await axios.post(`/api/announcements/${itemId}}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseBerita.status == 200) {
-      const containerAlert = document.querySelector('.alert-message')
-      containerAlert.innerHTML = `<p style="color:green;"> Telah Berhasil Menyimpan Update Berita</p>`
+      alert.value = ''
+      alertSukses.value = 'SUKSES'
       dataBerita.title = ''
       dataBerita.description = ''
-      console.log(file)
+      setTimeout(() => {
+        router.push(`/admin/announcements/${itemId}`)
+      }, 1000)
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
-    const containerAlert = document.querySelector('.alert-message')
-    containerAlert.innerHTML = `<p style="color:red;">Field tidak boleh kosong kecuali image</p>`
+    if (error.response.status == 422) {
+      if (dataBerita.title == '' || dataBerita.description == '') {
+        alert.value = 'ISI SEMUA FIELD FORM KECUALI IMAGE'
+      }
+    }
+    sendingFormLoading.value = false
   }
+}
+
+const goToDetailBerita = () => {
+  router.push(`/admin/announcements/${itemId}`)
 }
 onMounted(() => {
   render()
@@ -94,7 +106,12 @@ onMounted(() => {
       </div>
 
       <div class="container-rename">
-        <div class="alert-message"></div>
+        <div class="alert-message-gagal" v-if="alert != ''">
+          <p>{{ alert }}</p>
+        </div>
+        <div class="alert-message-sukses" v-if="alertSukses != ''">
+          <p>{{ alertSukses }}</p>
+        </div>
         <label class="label-image" for="img">Upload image</label>
         <input type="file" id="img" name="img" @change="handleFileChange" />
         <label for="">Judul Berita</label>
@@ -104,7 +121,17 @@ onMounted(() => {
       </div>
 
       <div class="container-button">
-        <button type="button" @click="simpanEdit()">Simpan Edit</button>
+        <div class="container-button-send">
+          <button type="button" @click="simpanEdit()" v-if="sendingFormLoading == false">
+            Simpan Edit
+          </button>
+          <button type="button" v-if="sendingFormLoading == true" disabled>
+            <i class="fa-solid fa-spinner fa-xl"></i>
+          </button>
+        </div>
+        <div class="container-button-back">
+          <button type="button" @click="goToDetailBerita()">Kembali</button>
+        </div>
       </div>
     </div>
   </main>
@@ -128,7 +155,8 @@ main {
     flex-direction: column;
     gap: 10px;
     .container-judul-image {
-      background-color: #ffd482;
+      border: 2px solid #ffd482;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       padding: 10px;
@@ -145,20 +173,43 @@ main {
           height: 300px;
           object-fit: fill;
           border-radius: 10px;
-          padding: 10px;
-          background-color: #f79327;
+          border: 2px solid #f79327;
         }
       }
     }
     .container-rename {
+      .alert-message-sukses {
+        display: flex;
+        justify-content: center;
+        background-color: rgb(196, 255, 48);
+        padding: 5px;
+      }
+      .alert-message-gagal {
+        display: flex;
+        justify-content: center;
+        background-color: rgb(255, 0, 0);
+        padding: 5px;
+      }
       display: flex;
       flex-direction: column;
     }
     .container-button {
       display: flex;
+      gap: 5px;
+      flex-direction: column;
+      .container-button-send,
+      .container-button-back {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .container-button-back {
+        button {
+          background-color: #fefefe;
+        }
+      }
       button {
         padding: 5px;
-        width: 100%;
+        width: 40%;
         border-radius: 5px;
         background-color: #ffd482;
       }

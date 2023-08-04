@@ -9,14 +9,11 @@ const pets = ref({})
 const imageUrl = import.meta.env.VITE_BACKEND_URL
 const render = async () => {
   try {
-    const responsePetsByCategory = await axios.get(
-      `/api/pets?status_adopt=ready`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responsePetsByCategory = await axios.get(`/api/pets?status_adopt=ready`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responsePetsByCategory.status == 200) {
       console.log(responsePetsByCategory.data.data)
       pets.value = responsePetsByCategory.data.data
@@ -40,7 +37,7 @@ onMounted(() => {
     <h1>List Kucing</h1>
 
     <div class="list-form-kosong" v-if="pets.length == 0">
-      <p>Kucing Belum Ditambahkan</p>
+      <p>KUCING BELUM DITAMBAHKAN</p>
     </div>
 
     <div class="container-list" v-else>
@@ -104,6 +101,7 @@ main {
       background-color: #ffd482;
       padding: 10px;
       gap: 5px;
+      cursor: pointer;
       border-radius: 10px;
       img {
         border-radius: 10px;
@@ -111,8 +109,14 @@ main {
         height: 300px;
         object-fit: fill;
       }
+      p {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-weight: bolder;
+      }
       .status-adopt {
         background-color: #85a675;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
         display: flex;
         align-items: center;
         justify-content: center;

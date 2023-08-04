@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref ,inject} from 'vue'
+import { reactive, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { stateLogin } from '../../store.js'
 
@@ -20,14 +20,12 @@ async function submit() {
   } catch (error) {
     console.log(error)
     const status = error.response.status
-    if(status == 422){
-      alert.value = error.response.data.message
-    }else{
-      alert.value = error
+    if (status == 422) {
+      alert.value = 'ISI SEMUA FIELD FORM'
     }
-    // const ContainerAlert = document.querySelector('.alert-message')
-    // ContainerAlert.innerHTML =
-    //   '<p style="color:red;">Email atau password salah atau Isi semua field yang tersedia</p>'
+    if (status == 401) {
+      alert.value = 'EMAIL ATAU PASSWORD SALAH'
+    }
   }
 }
 </script>
@@ -37,7 +35,7 @@ async function submit() {
     <h1>Login</h1>
     <p>Mohon login untuk melanjutkan</p>
     <div class="alert-message" v-if="alert != ''">
-    {{ alert }}
+      <p class="alert-error">{{ alert }}</p>
     </div>
     <div class="container-form">
       <form action="">
@@ -48,6 +46,7 @@ async function submit() {
           type="email"
           placeholder="Masukkan email anda"
           v-model="loginData.email"
+          required
         />
         <label for="password">Password</label>
         <input
@@ -56,6 +55,7 @@ async function submit() {
           type="password"
           placeholder="Masukkan password anda"
           v-model="loginData.password"
+          required
         />
         <div class="container-button">
           <button type="button" @click="submit()">Login</button>
@@ -86,6 +86,12 @@ main {
   margin: 50px auto 0 auto;
   h1 {
     margin-bottom: 10px;
+  }
+  .alert-message {
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    background-color: red;
   }
   p {
     margin-bottom: 10px;
