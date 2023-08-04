@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, reactive, ref ,inject} from 'vue'
+import { onMounted, onUnmounted, reactive, ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import Pusher from 'pusher-js'
 
@@ -17,7 +17,6 @@ const fetchMessages = async () => {
       }
     })
     if (responseMessages.status == 200) {
-      //   console.log(responseMessages.data.data)
       messages.value = responseMessages.data.data
       console.log(responseMessages.data.data)
     }
@@ -29,20 +28,41 @@ const fetchMessages = async () => {
 const dataMessage = reactive({
   message: ''
 })
+
+const sendingFormLoading = ref(false)
 const sendToUser = async () => {
+  sendingFormLoading.value = true
   try {
-    const responseMessages = await axios.post(
-      `/api/messages/${userId}`,
-      dataMessage,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseMessages = await axios.post(`/api/messages/${userId}`, dataMessage, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseMessages.status == 200) {
       console.log('berhasil ditambahkan')
       dataMessage.message = ''
+    }
+    sendingFormLoading.value = false
+  } catch (error) {
+    console.log(error)
+    sendingFormLoading.value = false
+  }
+}
+const nameAdopter = ref('')
+const petName = ref('')
+const statusAdopt = ref('')
+const fetchDetailForm = async (formId) => {
+  try {
+    const responseDetailForm = await axios.get(`/api/adoptions/${formId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (responseDetailForm.status == 200) {
+      console.log(responseDetailForm.data.data)
+      nameAdopter.value = responseDetailForm.data.data.name_adopter
+      petName.value = responseDetailForm.data.data.pet_name
+      statusAdopt.value = responseDetailForm.data.data.status_adopt
     }
   } catch (error) {
     console.log(error)
@@ -51,10 +71,9 @@ const sendToUser = async () => {
 
 const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY
 const pusherCluster = import.meta.env.VITE_PUSHER_CLUSTER
-
 const pusher = new Pusher(pusherAppKey, { cluster: pusherCluster })
 
-onMounted(() => {
+onMounted(async () => {
   fetchMessages()
   var channel = pusher.subscribe(`lorem-ipsum-chat-${userId}`)
   channel.bind('chat-Cattery', (data) => {
@@ -62,10 +81,20 @@ onMounted(() => {
     messages.value.push(data.resourceData)
     console.log(messages.value)
   })
+
+  const formId = route.query.formId
+  if (formId) {
+    await fetchDetailForm(formId)
+    if (statusAdopt.value == 'ready') {
+      dataMessage.message = `Halo kak ${nameAdopter.value}, Apakah kucing yang ingin diadopsi ${petName.value} ?`
+    }
+    if (statusAdopt.value == 'adopted') {
+      dataMessage.message = `Halo kak ${nameAdopter.value}, Apakah kucing yang diadopsi ${petName.value} ?`
+    }
+  }
 })
 onUnmounted(() => {
-  var channel = pusher.unsubscribe(`lorem-ipsum-chat-${userId}`)
-  channel.unbind('chat-Cattery')
+  pusher.unsubscribe(`lorem-ipsum-chat-${userId}`)
 })
 </script>
 <template>
@@ -93,7 +122,12 @@ onUnmounted(() => {
 
       <div class="box-text">
         <textarea name="" id="" cols="30" rows="3" v-model="dataMessage.message"></textarea>
-        <button type="button" @click="sendToUser()">Kirim</button>
+        <button type="button" @click="sendToUser()" v-if="sendingFormLoading == false">
+          <i class="fa-regular fa-paper-plane fa-xl"></i>
+        </button>
+        <button type="button" disabled v-if="sendingFormLoading == true">
+          <i class="fa-solid fa-spinner fa-xl"></i>
+        </button>
       </div>
     </div>
   </main>
@@ -175,6 +209,7 @@ main {
       width: 100%;
       background-color: #d0daee;
       textarea {
+        padding: 10px;
         width: 80%;
       }
       button {

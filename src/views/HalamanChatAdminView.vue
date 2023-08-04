@@ -1,7 +1,6 @@
 <script setup>
 import Pusher from 'pusher-js'
-import { onMounted, onUnmounted, reactive, ref,inject } from 'vue'
-
+import { onMounted, onUnmounted, reactive, ref, inject } from 'vue'
 
 const axios = inject('axios')
 const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY
@@ -33,26 +32,27 @@ const dataMessage = reactive({
   message: ''
 })
 
+const sendingFormLoading = ref(false)
 const sendMessage = async (userId) => {
+  sendingFormLoading.value = true
   try {
-    const responseSendMessage = await axios.post(
-      `/api/messages/${userId}`,
-      dataMessage,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseSendMessage = await axios.post(`/api/messages/${userId}`, dataMessage, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseSendMessage.status == 200) {
       console.log('berhasil ditambahkan')
       dataMessage.message = ''
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
   }
+  sendingFormLoading.value = false
 }
 const roleUserName = ref()
+let channel
 const fetchMessages = async (user_id) => {
   try {
     userId.value = user_id
@@ -69,7 +69,7 @@ const fetchMessages = async (user_id) => {
       const firstFilteredData = filterRoleUser.find(() => true)
       roleUserName.value = firstFilteredData.user_name
 
-      var channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
+      channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
       channel.bind('chat-Cattery', (data) => {
         console.log(data.resourceData)
         messages.value.push(data.resourceData)
@@ -100,8 +100,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   listUserMessage.value.forEach((user) => {
-    var channelDestroy = pusher.unsubscribe(`lorem-ipsum-chat-${user.user_id}`)
-    channelDestroy.unbind('chat-Cattery')
+    pusher.unsubscribe(`lorem-ipsum-chat-${user.user_id}`)
   })
 })
 </script>
@@ -113,6 +112,10 @@ onUnmounted(() => {
     <div class="container-chat">
       <div class="list-user-chat" v-if="userId == null">
         <p>List User Chat</p>
+
+        <div class="alert-message" v-if="listUserMessage.length == 0">
+          <p>BELUM ADA PERTANYAAN USER</p>
+        </div>
 
         <div class="list-chat" v-for="user in listUserMessage" :key="user.id">
           <div class="user-box" @click="fetchMessages(user.id)">
@@ -151,7 +154,12 @@ onUnmounted(() => {
         </div>
         <div class="box-text">
           <textarea name="" id="" cols="30" rows="3" v-model="dataMessage.message"></textarea>
-          <button type="button" @click="sendMessage(userId)">Kirim</button>
+          <button type="button" @click="sendMessage(userId)" v-if="sendingFormLoading == false">
+            <i class="fa-regular fa-paper-plane fa-xl"></i>
+          </button>
+          <button type="button" v-if="sendingFormLoading == true" disabled>
+            <i class="fa-solid fa-spinner fa-xl"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -182,6 +190,13 @@ main {
       padding: 10px;
       width: 100%;
       border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .alert-message {
+        background-color: #fee45e;
+        padding: 10px;
+      }
       .list-chat {
         display: flex;
         flex-direction: column;
@@ -223,6 +238,8 @@ main {
       .button-back {
         padding: 10px;
         border-radius: 10px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
         background-color: #fffec4;
       }
       .judul-box-chat {
@@ -289,6 +306,7 @@ main {
         width: 100%;
         background-color: #d0daee;
         textarea {
+          padding: 10px;
           width: 80%;
         }
         button {

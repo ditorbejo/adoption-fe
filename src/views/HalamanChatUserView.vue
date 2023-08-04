@@ -1,7 +1,7 @@
 <script setup>
 import Pusher from 'pusher-js'
-import { onMounted, onUnmounted, reactive, ref ,inject} from 'vue'
-import { useRoute } from 'vue-router';
+import { onMounted, onUnmounted, reactive, ref, inject } from 'vue'
+import { useRoute } from 'vue-router'
 
 const axios = inject('axios')
 const token = localStorage.getItem('token')
@@ -36,7 +36,6 @@ const fetchMessages = async () => {
       }
     })
     if (responseMessages.status == 200) {
-      //   console.log(responseMessages.data.data)
       messages.value = responseMessages.data.data
     }
   } catch (error) {
@@ -48,23 +47,23 @@ const dataMessage = reactive({
   message: ''
 })
 
+const sendingFormLoading = ref(false)
 const sendMessage = async () => {
+  sendingFormLoading.value = true
   try {
-    const responseSendMessage = await axios.post(
-      '/api/messages',
-      dataMessage,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responseSendMessage = await axios.post('/api/messages', dataMessage, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responseSendMessage.status == 200) {
       console.log('berhasil ditambahkan')
       dataMessage.message = ''
     }
+    sendingFormLoading.value = false
   } catch (error) {
     console.log(error)
+    sendingFormLoading.value = false
   }
 }
 
@@ -84,11 +83,31 @@ const fetchPetDetail = async (petId) => {
     console.log(error)
   }
 }
+
+const statusForm = ref('')
+const petNameForm = ref('')
+const fetchFormDetail = async (formId) => {
+  try {
+    const responseDetailForm = await axios.get(`/api/adoptions/${formId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (responseDetailForm.status == 200) {
+      console.log(responseDetailForm.data.data)
+      statusForm.value = responseDetailForm.data.data.status
+      petNameForm.value = responseDetailForm.data.data.pet_name
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY
 const pusherCluster = import.meta.env.VITE_PUSHER_CLUSTER
-let channel
 const pusher = new Pusher(pusherAppKey, { cluster: pusherCluster })
 
+let channel
 onMounted(async () => {
   await renderUserId()
   fetchMessages()
@@ -103,15 +122,28 @@ onMounted(async () => {
   })
 
   const petId = route.query.petId
-  if(petId){
+  if (petId) {
     await fetchPetDetail(petId)
-    dataMessage.message =  `Halo saya ingin bertanya untuk kucing ${petName.value}`
+    dataMessage.message = `Halo saya ingin bertanya untuk kucing ${petName.value}`
+  }
+
+  const formId = route.query.formId
+  if (formId) {
+    await fetchFormDetail(formId)
+    if (statusForm.value == 'review') {
+      dataMessage.message = `Halo mengapa status form adopsi untuk kucing ${petNameForm.value} masih ${statusForm.value} ya ? `
+    }
+    if (statusForm.value == 'approve') {
+      dataMessage.message = `Halo status form saya ${statusForm.value}, Terimakasih admin.`
+    }
+    if (statusForm.value == 'unavailable') {
+      dataMessage.message = `Halo mengapa status form adopsi untuk kucing ${petNameForm.value} sekarang ${statusForm.value} ya ? `
+    }
   }
 })
 onUnmounted(() => {
   channel.unbind('chat-Cattery')
   pusher.unsubscribe(`lorem-ipsum-chat-${userId.value}`)
-  
 })
 </script>
 
@@ -141,7 +173,12 @@ onUnmounted(() => {
 
       <div class="box-text">
         <textarea name="" id="" cols="30" rows="3" v-model="dataMessage.message"></textarea>
-        <button type="button" @click="sendMessage()">Kirim</button>
+        <button type="button" @click="sendMessage()" v-if="sendingFormLoading == false">
+          <i class="fa-regular fa-paper-plane fa-xl"></i>
+        </button>
+        <button type="button" v-if="sendingFormLoading == true" disabled>
+          <i class="fa-solid fa-spinner fa-xl"></i>
+        </button>
       </div>
     </div>
   </main>
@@ -221,6 +258,7 @@ main {
       width: 100%;
       background-color: #d0daee;
       textarea {
+        padding: 10px;
         width: 80%;
       }
       button {
