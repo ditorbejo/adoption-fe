@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -83,14 +83,11 @@ const renderPetsReadyAdopt = async () => {
 const countPetAdoptedAdopt = ref(0)
 const renderPetsAdopted = async () => {
   try {
-    const responsePetsAdopted = await axios.get(
-      `/api/pets?status_adopt=Adopted`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const responsePetsAdopted = await axios.get(`/api/pets?status_adopt=Adopted`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    )
+    })
     if (responsePetsAdopted.status == 200) {
       console.log(responsePetsAdopted.data.data.length)
       countPetAdoptedAdopt.value = responsePetsAdopted.data.data.length
@@ -226,20 +223,20 @@ onMounted(() => {
 
     <h2>Social Media</h2>
     <div class="container-card">
-      <div class="card-detail" @click="openNewPage('https://www.facebook.com/mami.cattery/')">
+      <div class="card-detail-sosmed" @click="openNewPage('https://www.facebook.com/catless/')">
         <div class="icon">
           <i class="fa-brands fa-square-facebook fa-2xl"></i>
         </div>
         <p>Facebook: @catless.us</p>
       </div>
-      <div class="card-detail" @click="openNewPage('https://www.tiktok.com/@miaumicattery')">
+      <div class="card-detail-sosmed" @click="openNewPage('https://www.tiktok.com/@catless')">
         <div class="icon">
           <i class="fa-brands fa-tiktok fa-2xl"></i>
         </div>
         <p>Tiktok: @catless.us</p>
       </div>
       <div
-        class="card-detail"
+        class="card-detail-sosmed"
         @click="openNewPage('https://api.whatsapp.com/send?phone=6281249742208')"
       >
         <div class="icon">
@@ -247,7 +244,7 @@ onMounted(() => {
         </div>
         <p>Whatsapp: 081249742208</p>
       </div>
-      <div class="card-detail" @click="openNewPage('https://www.instagram.com/catless.us/')">
+      <div class="card-detail-sosmed" @click="openNewPage('https://www.instagram.com/catless.us/')">
         <div class="icon">
           <i class="fa-brands fa-instagram fa-2xl"></i>
         </div>
@@ -369,6 +366,7 @@ main {
       box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
       padding: 10px;
       gap: 5px;
+      cursor: pointer;
       border-radius: 10px;
       img {
         border-radius: 10px;
@@ -376,7 +374,13 @@ main {
         height: 300px;
         object-fit: fill;
       }
+      p {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-weight: bolder;
+      }
       .status-adopt {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
         background-color: #85a675;
         display: flex;
         align-items: center;
@@ -415,6 +419,20 @@ main {
       border: 1px solid #ffd482;
       width: 100%;
       gap: 10px;
+      .icon {
+        padding: 20px;
+      }
+    }
+    .card-detail-sosmed {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ffd482;
+      width: 100%;
+      gap: 10px;
+      cursor: pointer;
       .icon {
         padding: 20px;
       }

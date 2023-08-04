@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref ,inject} from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -107,7 +107,7 @@ onMounted(() => {
           class="container-detail-kucing"
           v-for="pet in pets"
           :key="pet.id"
-          @click="goToDetailKucing(`/pets/${pet.id}`)"
+          @click="goToDetailKucing(`/admin/pets/${pet.id}`)"
         >
           <img :src="`${imageUrl}${pet.image}`" alt="" />
           <p>Nama: {{ pet.name }}</p>
@@ -134,6 +134,15 @@ onMounted(() => {
             <i class="fa-solid fa-cat fa-2xl"></i>
           </div>
           List Kucing
+        </button>
+      </div>
+
+      <div class="card-detail">
+        <button @click="goToHalamanList(`/admin/list-kategori`)">
+          <div class="icon">
+            <i class="fa-solid fa-shield-cat fa-2xl"></i>
+          </div>
+          List Kategori
         </button>
       </div>
 
@@ -248,6 +257,7 @@ main {
       grid-column-gap: 20px;
       grid-row-gap: 20px;
       .container-detail-kucing {
+        cursor: pointer;
         display: flex;
         flex-direction: column;
         background-color: #ffd482;
@@ -261,7 +271,13 @@ main {
           height: 300px;
           object-fit: fill;
         }
+        p {
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+          font-weight: bolder;
+        }
         .status-adopt {
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+            rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
           background-color: #85a675;
           display: flex;
           align-items: center;

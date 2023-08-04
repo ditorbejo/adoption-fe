@@ -84,26 +84,29 @@ console.log(mapIcon)
 
     <h2>Social Media</h2>
 
-    <div class="container-card">
+    <div class="container-card" @click="openNewPage('https://www.instagram.com/catless.us/')">
       <div class="card-detail">
         <div class="icon">
           <i class="fa-brands fa-square-facebook fa-2xl"></i>
         </div>
         <p>Facebook</p>
       </div>
-      <div class="card-detail">
+      <div class="card-detail" @click="openNewPage('https://www.tiktok.com/@catless')">
         <div class="icon">
           <i class="fa-brands fa-tiktok fa-2xl"></i>
         </div>
         <p>Tiktok</p>
       </div>
-      <div class="card-detail">
+      <div
+        class="card-detail"
+        @click="openNewPage('https://api.whatsapp.com/send?phone=6281249742208')"
+      >
         <div class="icon">
           <i class="fa-brands fa-whatsapp fa-2xl"></i>
         </div>
         <p>Whatsapp</p>
       </div>
-      <div class="card-detail">
+      <div class="card-detail" @click="openNewPage('https://www.instagram.com/catless.us/')">
         <div class="icon">
           <i class="fa-brands fa-instagram fa-2xl"></i>
         </div>
@@ -130,7 +133,7 @@ main {
   .container-logo {
     display: flex;
     justify-content: center;
-    img{
+    img {
       max-width: 100%;
     }
   }
@@ -179,6 +182,7 @@ main {
     margin-top: 10px;
     .card-detail {
       padding: 20px;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: center;
