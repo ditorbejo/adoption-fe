@@ -56,6 +56,10 @@ onMounted(() => {
   <main>
     <h1>Kucing Berdasarkan Warna</h1>
 
+    <div class="attention" v-if="listWarna.length != 0">
+      <p>Pilih salah satu warna</p>
+    </div>
+
     <div class="list-form-kosong" v-if="listWarna.length == 0">
       <p>KUCING BELUM DITAMBAHKAN</p>
     </div>
@@ -73,7 +77,9 @@ onMounted(() => {
         :key="pet.id"
         @click="goToDetail(`/pets/${pet.id}`)"
       >
-        <img :src="`${imageUrl}${pet.image}`" alt="" />
+        <div class="container-image">
+          <img :src="`${imageUrl}${pet.image}`" alt="" />
+        </div>
 
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>
@@ -98,6 +104,10 @@ main {
   padding: 10px 20px;
   max-width: 1200px;
   margin: 50px auto 0 auto;
+
+  .attention {
+    padding: 10px;
+  }
   .list-form-kosong {
     margin-top: 5%;
     background-color: #ffd482;
@@ -151,11 +161,16 @@ main {
       border-radius: 10px;
       cursor: pointer;
       gap: 5px;
-      img {
-        width: 100%;
-        height: 300px;
-        object-fit: fill;
-        border-radius: 10px;
+      .container-image {
+        display: flex;
+        padding: 5px;
+        justify-content: center;
+        img {
+          border-radius: 10px;
+          width: 100%;
+          height: 300px;
+          object-fit: cover;
+        }
       }
       p {
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -182,6 +197,16 @@ main {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(auto, 1fr);
+      .list-kucing-by-color {
+        .container-image {
+          img {
+            border-radius: 10px;
+            width: 100%;
+            height: 300px;
+            object-fit: fill;
+          }
+        }
+      }
     }
   }
 }
@@ -192,6 +217,16 @@ main {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(auto, 1fr);
+      .list-kucing-by-color {
+        .container-image {
+          img {
+            border-radius: 10px;
+            width: 100%;
+            height: 300px;
+            object-fit: fill;
+          }
+        }
+      }
     }
   }
 }

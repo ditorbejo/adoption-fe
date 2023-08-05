@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, inject } from 'vue'
+import { onMounted, ref, inject, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
@@ -27,6 +27,32 @@ const render = async () => {
     console.log(error)
   }
 }
+const listForm = reactive({
+  name_adopter: ''
+})
+const searchFormAdopt = async (namaAdopter) => {
+  try {
+    const responseListForm = await axios.get(
+      `/api/adoptions?name_adopter=${namaAdopter}&status=approve`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    if (responseListForm.status == 200) {
+      console.log(responseListForm.data.data)
+      forms.value = responseListForm.data.data
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const removeFilterName = () => {
+  listForm.name_adopter = ''
+}
+
 const router = useRouter()
 function goToDetail(routePath) {
   router.push(routePath)
@@ -40,11 +66,23 @@ onMounted(() => {
   <main>
     <h1>History Adopt Kucing</h1>
 
+    <div class="container-search-form">
+      <label for="">Search by Nama</label>
+      <div class="input-name-filter">
+        <input
+          type="text"
+          v-model="listForm.name_adopter"
+          @input="searchFormAdopt(listForm.name_adopter)"
+        />
+        <button @click="removeFilterName()"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+      </div>
+    </div>
+
     <div class="list-form-kosong" v-if="forms.length == 0">
       <p>BELUM ADA ADOPSI KUCING</p>
     </div>
 
-    <div class="container-list">
+    <div class="container-list" v-else>
       <div class="container-detail" v-for="form in forms" :key="form.id">
         <label>Nama Adopter</label>
         <p>{{ form.name_adopter }}</p>
@@ -81,6 +119,30 @@ main {
   padding: 10px 20px;
   margin: 50px auto 0 auto;
   max-width: 1200px;
+
+  .container-search-form {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    label {
+      display: flex;
+      align-items: center;
+    }
+    .input-name-filter {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      input {
+        border-radius: 10px;
+        padding: 5px;
+      }
+      button {
+        padding: 5px;
+      }
+    }
+  }
   .list-form-kosong {
     margin-top: 5%;
     background-color: #ffd482;
@@ -134,6 +196,29 @@ main {
       button:hover {
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       }
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  main {
+    .container-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
     }
   }
 }

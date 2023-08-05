@@ -102,7 +102,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="alasan-reject" v-if="dataForm.status == 'approve'">
+    <div class="alasan-reject" v-if="dataForm.status == 'reject'">
       <label for="">Alasan Form Ditolak</label>
       <textarea name="" id="" cols="50" rows="10" v-model="dataForm.reject" disabled></textarea>
     </div>

@@ -66,36 +66,20 @@ console.log(mapIcon)
         Check Member Cattery
       </button>
     </div>
-    <div class="container-social-media">
-      <h2>Social Media</h2>
-      <p>
-        <i class="fa-brands fa-whatsapp"></i>
-        WhatsApp: 081249742208
-      </p>
-      <p>
-        <i class="fa-brands fa-facebook"></i>
-        Facebook: 081249742208
-      </p>
-      <p>
-        <i class="fa-brands fa-instagram"></i>
-        Instagram: Catless.us
-      </p>
-    </div>
-
-    <h2>Social Media</h2>
+    <h2>Link Social Media</h2>
 
     <div class="container-card" @click="openNewPage('https://www.instagram.com/catless.us/')">
       <div class="card-detail">
         <div class="icon">
           <i class="fa-brands fa-square-facebook fa-2xl"></i>
         </div>
-        <p>Facebook</p>
+        <p>Facebook: @catless.us</p>
       </div>
       <div class="card-detail" @click="openNewPage('https://www.tiktok.com/@catless')">
         <div class="icon">
           <i class="fa-brands fa-tiktok fa-2xl"></i>
         </div>
-        <p>Tiktok</p>
+        <p>Tiktok: @catless.us</p>
       </div>
       <div
         class="card-detail"
@@ -104,13 +88,13 @@ console.log(mapIcon)
         <div class="icon">
           <i class="fa-brands fa-whatsapp fa-2xl"></i>
         </div>
-        <p>Whatsapp</p>
+        <p>Whatsapp: 081249742208</p>
       </div>
       <div class="card-detail" @click="openNewPage('https://www.instagram.com/catless.us/')">
         <div class="icon">
           <i class="fa-brands fa-instagram fa-2xl"></i>
         </div>
-        <p>Instagram</p>
+        <p>Instagram: @catless.us</p>
       </div>
     </div>
     <div></div>

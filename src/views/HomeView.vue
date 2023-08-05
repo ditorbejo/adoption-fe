@@ -104,6 +104,13 @@ const goToDetailKucing = (routePath) => {
   router.push(routePath)
 }
 
+const goToListKucing = (routePath) => {
+  router.push(routePath)
+}
+const goToListKucingAdopted = (routePath) => {
+  router.push(routePath)
+}
+
 const openNewPage = (url) => {
   window.open(url, '_blank')
 }
@@ -142,7 +149,7 @@ onMounted(() => {
 
     <h2>Total Kucing</h2>
     <div class="container-total-kucing">
-      <div class="detail-total-kucing">
+      <div class="detail-total-kucing" @click="goToListKucing('/list-kucing')">
         <div class="card-detail">
           <div class="icon">
             <i class="fa-solid fa-cat fa-2xl"></i>
@@ -151,7 +158,7 @@ onMounted(() => {
         <p>Kucing Tersedia</p>
         <p class="total-pet">{{ countPetReadyAdopt }}</p>
       </div>
-      <div class="detail-total-kucing">
+      <div class="detail-total-kucing" @click="goToListKucingAdopted('/list-kucing/adopted')">
         <div class="card-detail">
           <div class="icon">
             <i class="fa-solid fa-hand-holding-hand fa-2xl"></i>
@@ -175,7 +182,10 @@ onMounted(() => {
         :key="pet.id"
         @click="goToDetailKucing(`/pets/${pet.id}`)"
       >
-        <img :src="`${imageUrl}${pet.image}`" alt="" />
+        <div class="container-image">
+          <img :src="`${imageUrl}${pet.image}`" alt="" />
+        </div>
+
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>
         <p>Category: {{ pet.categories_name }}</p>
@@ -330,7 +340,8 @@ main {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: #ffd482;
+      border: 2px solid #ffd482;
+      cursor: pointer;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
       .total-pet {
         padding: 10px;
@@ -343,7 +354,6 @@ main {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border: 1px solid #ffd482;
         width: 100%;
         gap: 10px;
         .icon {
@@ -368,12 +378,18 @@ main {
       gap: 5px;
       cursor: pointer;
       border-radius: 10px;
-      img {
-        border-radius: 10px;
-        width: 100%;
-        height: 300px;
-        object-fit: fill;
+      .container-image {
+        display: flex;
+        padding: 5px;
+        justify-content: center;
+        img {
+          border-radius: 10px;
+          width: 100%;
+          height: 300px;
+          object-fit: cover;
+        }
       }
+
       p {
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         font-weight: bolder;
@@ -462,11 +478,13 @@ main {
       grid-column-gap: 20px;
       grid-row-gap: 20px;
       .container-detail-kucing {
-        img {
-          border-radius: 10px;
-          width: 100%;
-          height: 300px;
-          object-fit: fill;
+        .container-image {
+          img {
+            border-radius: 10px;
+            width: 100%;
+            height: 300px;
+            object-fit: fill;
+          }
         }
       }
     }
@@ -486,11 +504,13 @@ main {
       grid-column-gap: 20px;
       grid-row-gap: 20px;
       .container-detail-kucing {
-        img {
-          border-radius: 10px;
-          width: 100%;
-          height: 300px;
-          object-fit: fill;
+        .container-image {
+          img {
+            border-radius: 10px;
+            width: 100%;
+            height: 300px;
+            object-fit: fill;
+          }
         }
       }
     }

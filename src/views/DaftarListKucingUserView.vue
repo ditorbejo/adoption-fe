@@ -9,14 +9,14 @@ const pets = ref({})
 const imageUrl = import.meta.env.VITE_BACKEND_URL
 const render = async () => {
   try {
-    const responsePetsByCategory = await axios.get(`/api/pets?status_adopt=ready`, {
+    const responsePets = await axios.get(`/api/pets?status_adopt=ready`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    if (responsePetsByCategory.status == 200) {
-      console.log(responsePetsByCategory.data.data)
-      pets.value = responsePetsByCategory.data.data
+    if (responsePets.status == 200) {
+      console.log(responsePets.data.data)
+      pets.value = responsePets.data.data
     }
   } catch (error) {
     console.log(error)
@@ -35,6 +35,10 @@ onMounted(() => {
 <template>
   <main>
     <h1>List Kucing</h1>
+
+    <div class="attention" v-if="pets.length != 0">
+      <p>Pilih kucing untuk melihat detail kucing</p>
+    </div>
 
     <div class="list-form-kosong" v-if="pets.length == 0">
       <p>KUCING BELUM DITAMBAHKAN</p>
@@ -73,7 +77,11 @@ main {
   max-width: 1200px;
   margin: 50px auto 0 auto;
   h1 {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+  }
+
+  .attention {
+    padding: 10px;
   }
 
   .list-form-kosong {

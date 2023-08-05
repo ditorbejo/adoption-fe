@@ -134,7 +134,7 @@ main {
       justify-content: center;
       text-transform: capitalize;
       border-radius: 10px;
-      background-color: #ffd482;
+      border: 2px solid #ffd482;
     }
     .box-filter {
       display: flex;
@@ -241,6 +241,29 @@ main {
           box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         }
       }
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  main {
+    .container-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  main {
+    .container-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(auto, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
     }
   }
 }

@@ -172,6 +172,7 @@ main {
         button {
           width: 100%;
           padding: 5px;
+          background-color: rgb(255, 253, 188);
           border: 1px solid #ffd482;
         }
       }

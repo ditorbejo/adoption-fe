@@ -231,6 +231,8 @@ main {
               width: 100%;
               background-color: #fee45e;
               padding: 5px;
+              display: flex;
+              align-items: center;
             }
           }
         }

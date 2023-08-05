@@ -34,11 +34,15 @@ onMounted(() => {
   <main>
     <h1>List Kategori Kucing</h1>
 
+    <div class="attention" v-if="categories.length != 0">
+      <p>Pilih salah satu kategori</p>
+    </div>
+
     <div class="list-form-kosong" v-if="categories.length == 0">
       <p>DATA BELUM DITAMBAHKAN</p>
     </div>
 
-    <div class="container-list">
+    <div class="container-list" v-if="categories.length != 0">
       <div
         class="container-category"
         v-for="category in categories"
@@ -66,7 +70,11 @@ main {
   max-width: 1200px;
   margin: 50px auto 0 auto;
   h1 {
-    margin-bottom: 5%;
+    margin-bottom: 15px;
+  }
+
+  .attention {
+    padding: 10px;
   }
 
   .list-form-kosong {
