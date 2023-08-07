@@ -205,11 +205,11 @@ main {
           justify-content: center;
           gap: 5px;
           padding: 5px;
-          background-color: azure;
           img {
             width: 100%;
             height: 150px;
             object-fit: fill;
+            border: 2px solid #f79327;
           }
           button {
             width: 100%;
