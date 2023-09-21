@@ -36,6 +36,7 @@ import DaftarListFormAdoptByPetAdminView from '../views/DaftarListFormAdoptByPet
 import DaftarListKategoriUserView from '../views/DaftarListKategoriUserView.vue'
 import DaftarKucingByKategoriUserView from '../views/DaftarKucingByKategoriUserView.vue'
 import DaftarListKucingUserView from '../views/DaftarListKucingUserView.vue'
+import DaftarListKucingAdoptedView from '../views/DaftarListKucingAdoptedView.vue'
 import DaftarListKucingByWarnaUserView from '../views/DaftarListKucingByWarnaUserView.vue'
 import DaftarListFormAdoptUserView from '../views/DaftarListFormAdoptUserView.vue'
 import DaftarListBeritaUserView from '../views/DaftarListBeritaUserView.vue'
@@ -338,6 +339,14 @@ const router = createRouter({
       path: '/list-kucing',
       name: 'list-kucing-user',
       component: DaftarListKucingUserView,
+      meta: {
+        roles : ['admin','user','guest']
+      }
+    },
+    {
+      path: '/list-kucing/adopted',
+      name: 'list-kucing-adopted',
+      component: DaftarListKucingAdoptedView,
       meta: {
         roles : ['admin','user','guest']
       }

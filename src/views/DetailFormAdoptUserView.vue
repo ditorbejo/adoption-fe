@@ -216,7 +216,7 @@ main {
     }
 
     .status-form-unavailable {
-      background-color: red;
+      background-color: #dbff58;
     }
   }
 
