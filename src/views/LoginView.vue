@@ -12,7 +12,7 @@ const router = useRouter()
 const alert = ref('')
 async function submit() {
   try {
-    const responseLogin = await axios.post('/api/auth/login', this.loginData)
+    const responseLogin = await axios.post('/api/auth/login', loginData)
     localStorage.setItem('token', responseLogin.data.token)
     stateLogin.login = true
     router.push('/')
