@@ -92,7 +92,10 @@ onMounted(() => {
       <p class="status-form-approved" v-else-if="dataForm.status == 'approve'">
         {{ dataForm.status }}
       </p>
-      <p class="status-form-unavailable" v-else>{{ dataForm.status }}</p>
+      <p class="status-form-unavailable" v-else-if="dataForm.status == 'unavailable'">
+        {{ dataForm.status }}
+      </p>
+      <p class="status-form-reject" v-else>{{ dataForm.status }}</p>
     </div>
 
     <div class="button-chat">
@@ -217,6 +220,9 @@ main {
 
     .status-form-unavailable {
       background-color: #dbff58;
+    }
+    .status-form-reject {
+      background-color: red;
     }
   }
 

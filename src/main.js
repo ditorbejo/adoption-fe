@@ -10,4 +10,6 @@ const app = createApp(App)
 app.use(router)
 app.use(axios, {baseURL:import.meta.env.VITE_BACKEND_URL})
 
+console.log(import.meta.env.VITE_BACKEND_URL)
+
 app.mount('#app')
