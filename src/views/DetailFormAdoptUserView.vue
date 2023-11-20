@@ -95,7 +95,9 @@ onMounted(() => {
       <p class="status-form-unavailable" v-else-if="dataForm.status == 'unavailable'">
         {{ dataForm.status }}
       </p>
-      <p class="status-form-reject" v-else>{{ dataForm.status }}</p>
+      <p class="status-form-reject" v-else-if="dataForm.status == 'reject'">
+        {{ dataForm.status }}
+      </p>
     </div>
 
     <div class="button-chat">
