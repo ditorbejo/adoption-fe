@@ -81,7 +81,9 @@ onMounted(() => {
 <template>
   <header>
     <div class="container-home">
-      <router-link class="home" to="/"> LoremIpsum </router-link>
+      <p class="loremIpsumHome">
+        <router-link class="home" to="/"> LoremIpsum </router-link>
+      </p>
     </div>
     <button aria-label="navigasi" class="hamburger-button" @click="toggleNavbar()">
       <svg
@@ -365,6 +367,7 @@ header {
   }
   .container-home a {
     font-size: large;
+    font-weight: 900;
   }
   .nav-open {
     display: flex;
@@ -384,10 +387,12 @@ header {
       justify-content: center;
       background-color: #ffae11;
       width: 50%;
+      gap: 5px;
       height: 100vh;
       transform: translate(100%, 0);
       .login-register {
         display: flex;
+        gap: 5px;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -397,17 +402,28 @@ header {
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-        width: 100%;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        width: 80%;
         a {
           color: #f24c3d;
         }
+      }
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        padding: 10%;
+        border: 1px solid black;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
       }
       a {
         text-decoration: none;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         font-weight: bolder;
         color: black;
+        font-weight: 900;
+        font-size: larger;
         cursor: pointer;
       }
     }

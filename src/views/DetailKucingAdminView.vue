@@ -367,7 +367,7 @@ main {
       button {
         display: flex;
         justify-content: center;
-        width: 40%;
+        width: 100%;
         background-color: #85a675;
         padding: 2px;
         border-radius: 5px;
