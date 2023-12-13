@@ -168,7 +168,7 @@ onMounted(() => {
     <h1>Detail Kucing</h1>
     <div class="container-detail">
       <div class="container-image">
-        <img class="gambar-utama" :src="`http://127.0.0.1:8000${pets.image}`" alt="" />
+        <img class="gambar-utama" :src="`${imageUrl}${pets.image}`" alt="" />
       </div>
 
       <label for="">Album Photo</label>
