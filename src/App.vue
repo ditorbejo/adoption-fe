@@ -27,9 +27,7 @@ const checkUserLogin = async () => {
       stateLogin.login = true
       roleUser.value = loginResponse.data.role
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 
 watch(stateLogin, async () => {
@@ -37,7 +35,6 @@ watch(stateLogin, async () => {
   if (token) {
     checkUserLogin()
   }
-
 })
 
 const router = useRouter()
@@ -55,21 +52,16 @@ const logOutUser = async () => {
       }
     )
     if (responseLogout.status == 200) {
-
       stateLogin.login = false
 
       router.push('/login')
       localStorage.clear()
       token = null
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 
-
 onMounted(() => {
-
   if (token) {
     checkUserLogin()
   }
@@ -453,6 +445,9 @@ header {
     justify-content: space-between;
     align-items: center;
     .hamburger-button {
+      display: none;
+    }
+    .nav-open {
       display: none;
     }
     .nav {
