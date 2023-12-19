@@ -15,11 +15,11 @@ const renderUser = async () => {
       }
     })
     if (responseRenderUser.status == 200) {
-      console.log(responseRenderUser.data)
+
       nameUser.value = responseRenderUser.data.name
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -32,11 +32,11 @@ const renderCategory = async () => {
       }
     })
     if (responseCategory.status == 200) {
-      console.log(responseCategory.data.data)
+
       categories.value = responseCategory.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const router = useRouter()
@@ -53,11 +53,11 @@ const renderPets = async () => {
       }
     })
     if (responsePets.status == 200) {
-      console.log(responsePets.data.data)
+
       pets.value = responsePets.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const goToListSemuaKucing = (routePath) => {
@@ -72,11 +72,11 @@ const renderPetsReadyAdopt = async () => {
       }
     })
     if (responsePetsReady.status == 200) {
-      console.log(responsePetsReady.data.data.length)
+
       countPetReadyAdopt.value = responsePetsReady.data.data.length
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -89,11 +89,11 @@ const renderPetsAdopted = async () => {
       }
     })
     if (responsePetsAdopted.status == 200) {
-      console.log(responsePetsAdopted.data.data.length)
+
       countPetAdoptedAdopt.value = responsePetsAdopted.data.data.length
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -189,7 +189,7 @@ onMounted(() => {
         <p>Nama: {{ pet.name }}</p>
         <p>Color: {{ pet.color }}</p>
         <p>Category: {{ pet.categories_name }}</p>
-        <P class="status-adopt">{{ pet.status_adopt }}</P>
+        <p class="status-adopt">{{ pet.status_adopt }}</p>
       </div>
     </div>
     <button class="button-list-kucing" @click="goToListSemuaKucing('/list-kucing')">

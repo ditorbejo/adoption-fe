@@ -16,11 +16,11 @@ const render = async () => {
       }
     })
     if (responseBerita.status == 200) {
-      console.log(responseBerita.data.data)
+
       announcement.value = responseBerita.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 

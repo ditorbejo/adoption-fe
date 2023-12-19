@@ -16,11 +16,11 @@ const render = async () => {
       }
     })
     if (responseDetail.status == 200) {
-      console.log(responseDetail.data.data)
+  
       dataForm.value = responseDetail.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -38,12 +38,10 @@ const acceptForm = async () => {
       }
     )
     if (responseAccept.status == 200) {
-      console.log(responseAccept)
-      console.log('Berhasil melakukan adopsi')
       router.push('/admin/list-history-adopt')
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 

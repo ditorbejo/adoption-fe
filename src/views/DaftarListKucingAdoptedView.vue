@@ -3,7 +3,7 @@ import { inject, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const axios = inject('axios')
-console.log(axios)
+
 const token = localStorage.getItem('token')
 const pets = ref({})
 const imageUrl = import.meta.env.VITE_BACKEND_URL
@@ -15,11 +15,11 @@ const render = async () => {
       }
     })
     if (responsePets.status == 200) {
-      console.log(responsePets.data.data)
+
       pets.value = responsePets.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const router = useRouter()

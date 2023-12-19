@@ -18,7 +18,7 @@ async function submit() {
     router.push('/')
     alert.value = ''
   } catch (error) {
-    console.log(error)
+
     const status = error.response.status
     if (status == 422) {
       alert.value = 'ISI SEMUA FIELD FORM'

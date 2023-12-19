@@ -26,7 +26,7 @@ const submit = async () => {
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+
     if (formsRegister.name == '' || formsRegister.email == '' || formsRegister.password == '') {
       alert.value = 'ISI SEMUA FIELD FORM'
     } else if (error.response.data.message == 'The password must be at least 8 characters.') {

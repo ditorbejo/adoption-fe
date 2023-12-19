@@ -15,10 +15,10 @@ const renderKucing = async () => {
     })
     if (responseRenderWarna.status == 200) {
       listWarna.value = responseRenderWarna.data.data
-      console.log(responseRenderWarna.data.data)
+
     }
   } catch (error) {
-    console.log(error)
+   
   }
 }
 
@@ -34,11 +34,11 @@ const renderKucingByColor = async (warnaKucing) => {
       }
     )
     if (responseRenderKucing.status == 200) {
-      console.log(responseRenderKucing.data.data)
+
       listKucingByWarna.value = responseRenderKucing.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 

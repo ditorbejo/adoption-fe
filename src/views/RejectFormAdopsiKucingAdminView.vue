@@ -19,11 +19,9 @@ const renderForm = async () => {
       }
     })
     if (responseDetail.status == 200) {
-      console.log(responseDetail.data.data)
       dataForm.value = responseDetail.data.data
     }
   } catch (error) {
-    console.log(error)
   }
 }
 

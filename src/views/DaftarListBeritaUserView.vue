@@ -14,11 +14,11 @@ const render = async () => {
       }
     })
     if (responseBerita.status == 200) {
-      console.log(responseBerita.data.data)
+     
       announcements.value = responseBerita.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const router = useRouter()

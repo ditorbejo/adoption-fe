@@ -39,7 +39,7 @@ const getDataCategory = async () => {
     })
     options.value = responseCategory.data.data
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -56,7 +56,7 @@ const render = async () => {
       }
     })
     if (responseKucing.status == 200) {
-      console.log(responseKucing.data.data)
+   
       name.value = responseKucing.data.data.name
       gender.value = responseKucing.data.data.gender
       status_adopt.value = responseKucing.data.data.status_adopt
@@ -72,7 +72,7 @@ const render = async () => {
       router.push('/')
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const options = ref([])
@@ -112,10 +112,10 @@ const simpanEdit = async () => {
       }
     })
     if (responseSimpan.status == 200) {
-      console.log(responseSimpan)
+  
       alert.value = ''
       alertSukses.value = 'SUKSES'
-      console.log(file)
+
       dataKucing.name = ''
       dataKucing.description = ''
       dataKucing.color = ''
@@ -128,7 +128,7 @@ const simpanEdit = async () => {
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+    
     if (error.response.status == 422) {
       if (
         dataKucing.name == '' ||

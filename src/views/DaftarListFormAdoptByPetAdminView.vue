@@ -17,11 +17,11 @@ const renderDetailPet = async () => {
       }
     })
     if (responsePetDetail.status == 200) {
-      console.log(responsePetDetail.data.data)
+     
       petName.value = responsePetDetail.data.data.name
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 

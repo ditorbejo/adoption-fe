@@ -15,7 +15,7 @@ const getDataCategory = async () => {
     })
     categories.value = responseCategory.data.data
   } catch (error) {
-    console.log(error)
+
   }
 }
 const router = useRouter()

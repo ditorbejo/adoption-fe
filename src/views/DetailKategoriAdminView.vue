@@ -1,3 +1,4 @@
+<!-- eslint-disable no-empty -->
 <script setup>
 import { onMounted, ref ,inject} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -21,7 +22,7 @@ const render = async () => {
       nama.value = responseDetail.data.data.namecategory
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -33,11 +34,11 @@ const goToDelete = async () => {
       }
     })
     if (responseDelete.status == 200) {
-      console.log(responseDelete)
+  
       router.push('/admin/list-kategori')
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 

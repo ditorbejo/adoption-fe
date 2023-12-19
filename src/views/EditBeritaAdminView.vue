@@ -27,7 +27,7 @@ const render = async () => {
       }
     })
     if (responseBerita.status == 200) {
-      console.log(responseBerita)
+     
       title.value = responseBerita.data.data.title
       image.value = responseBerita.data.data.image
       renameDescription.value = responseBerita.data.data.description
@@ -35,7 +35,7 @@ const render = async () => {
       renameImage.value = responseBerita.data.data.image
     }
   } catch (error) {
-    console.log(error)
+   
   }
 }
 let file = null
@@ -75,7 +75,7 @@ const simpanEdit = async () => {
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+    
     if (error.response.status == 422) {
       if (dataBerita.title == '' || dataBerita.description == '') {
         alert.value = 'ISI SEMUA FIELD FORM KECUALI IMAGE'

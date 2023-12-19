@@ -5,14 +5,14 @@ const openNewPage = (url) => {
 import icons from '../assets/images/icons.json'
 
 const icon = icons.icons
-console.log(icon)
-const mapIcon = icon.map((item) => {
+
+ icon.map((item) => {
   return {
     src: '../assets/images/' + item.src,
     sizes: item.sizes
   }
 })
-console.log(mapIcon)
+
 </script>
 
 <template>

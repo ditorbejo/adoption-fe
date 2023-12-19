@@ -18,10 +18,10 @@ const fetchMessages = async () => {
     })
     if (responseMessages.status == 200) {
       messages.value = responseMessages.data.data
-      console.log(responseMessages.data.data)
+
     }
   } catch (error) {
-    console.log(error)
+  
   }
 }
 
@@ -39,12 +39,12 @@ const sendToUser = async () => {
       }
     })
     if (responseMessages.status == 200) {
-      console.log('berhasil ditambahkan')
+     
       dataMessage.message = ''
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+
     sendingFormLoading.value = false
   }
 }
@@ -59,13 +59,13 @@ const fetchDetailForm = async (formId) => {
       }
     })
     if (responseDetailForm.status == 200) {
-      console.log(responseDetailForm.data.data)
+
       nameAdopter.value = responseDetailForm.data.data.name_adopter
       petName.value = responseDetailForm.data.data.pet_name
       statusAdopt.value = responseDetailForm.data.data.status_adopt
     }
   } catch (error) {
-    console.log(error)
+  
   }
 }
 
@@ -77,9 +77,9 @@ onMounted(async () => {
   fetchMessages()
   var channel = pusher.subscribe(`lorem-ipsum-chat-${userId}`)
   channel.bind('chat-Cattery', (data) => {
-    console.log(data.resourceData)
+ 
     messages.value.push(data.resourceData)
-    console.log(messages.value)
+
   })
 
   const formId = route.query.formId

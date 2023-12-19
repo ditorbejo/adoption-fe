@@ -25,7 +25,7 @@ const render = async () => {
       rename.value = responseEdit.data.data.namecategory
     }
   } catch (error) {
-    console.log(error)
+    
   }
 }
 
@@ -48,7 +48,7 @@ const simpanEdit = async () => {
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+   
     if (error.response.status == 422) {
       if (dataEdit.namecategory == '') {
         alert.value = 'ISI SEMUA FIELD FORM'

@@ -14,10 +14,10 @@ const render = async () => {
     })
     if (responseListAdoptReject.status == 200) {
       forms.value = responseListAdoptReject.data.data
-      console.log(responseListAdoptReject.data.data)
+    
     }
   } catch (error) {
-    console.log(error)
+  
   }
 }
 const router = useRouter()

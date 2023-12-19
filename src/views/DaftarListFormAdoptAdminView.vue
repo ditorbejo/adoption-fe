@@ -14,10 +14,10 @@ const render = async () => {
     })
     if (responseListAdopt.status == 200) {
       forms.value = responseListAdopt.data.data
-      console.log(responseListAdopt.data.data)
+    
     }
   } catch (error) {
-    console.log(error)
+ 
   }
 }
 
@@ -36,11 +36,11 @@ const getListForm = async (statusFormName) => {
       }
     })
     if (responseForm.status == 200) {
-      console.log(responseForm.data.data)
+    
       forms.value = responseForm.data.data
     }
   } catch (error) {
-    console.log(error)
+   
   }
 }
 
@@ -56,11 +56,11 @@ const getListFormNameAdopter = async (statusFormName) => {
       }
     )
     if (responseForm.status == 200) {
-      console.log(responseForm.data.data)
+   
       forms.value = responseForm.data.data
     }
   } catch (error) {
-    console.log(error)
+  
   }
 }
 
@@ -80,7 +80,7 @@ const searchFormAdopt = async (namaAdopter) => {
         }
       )
       if (responseListForm.status == 200) {
-        console.log(responseListForm.data.data)
+      
         forms.value = responseListForm.data.data
       }
     } else {
@@ -90,12 +90,12 @@ const searchFormAdopt = async (namaAdopter) => {
         }
       })
       if (responseListForm.status == 200) {
-        console.log(responseListForm.data.data)
+   
         forms.value = responseListForm.data.data
       }
     }
   } catch (error) {
-    console.log(error)
+  
   }
 }
 

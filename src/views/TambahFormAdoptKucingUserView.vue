@@ -21,7 +21,7 @@ const renderDataKucing = async () => {
       }
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -34,11 +34,11 @@ const renderUser = async () => {
       }
     })
     if (responseUser.status == 200) {
-      console.log(responseUser.data.id)
+
       userId.value = responseUser.data.id
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -65,7 +65,7 @@ const sendForm = async () => {
       }
     })
     if (responseSend.status == 200) {
-      console.log(responseSend.data.data.id)
+
       alert.value = ''
       alertSukses.value = 'SUKSES MENAMBAHKAN FORM ADOPT'
       dataAdopter.name_adopter = ''
@@ -79,7 +79,7 @@ const sendForm = async () => {
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+
     if (error.response.status == 422) {
       if (
         dataAdopter.name_adopter == '' ||
@@ -117,11 +117,11 @@ const autoFillInput = async () => {
       }
     })
     if (responseHistoryAdopt.status == 200) {
-      console.log(responseHistoryAdopt.data.data)
+
       dataHistoryAdopter.value = responseHistoryAdopt.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -129,7 +129,7 @@ const handleSelectName = () => {
   const cariUser = dataHistoryAdopter.value.find(
     (user) => user.name_adopter === dataAdopter.name_adopter
   )
-  console.log(cariUser)
+
   if (cariUser) {
     dataAdopter.name_adopter = cariUser.name_adopter
     dataAdopter.phone_adopter = cariUser.phone_adopter

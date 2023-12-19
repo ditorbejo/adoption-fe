@@ -21,10 +21,10 @@ const renderUserChat = async () => {
     })
     if (responseUser.status == 200) {
       listUserMessage.value = responseUser.data.data
-      console.log(responseUser.data.data)
+    
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -42,12 +42,12 @@ const sendMessage = async (userId) => {
       }
     })
     if (responseSendMessage.status == 200) {
-      console.log('berhasil ditambahkan')
+   
       dataMessage.message = ''
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+  
   }
   sendingFormLoading.value = false
 }
@@ -64,23 +64,23 @@ const fetchMessages = async (user_id) => {
     })
     if (responseMessages.status == 200) {
       messages.value = responseMessages.data.data
-      console.log(responseMessages.data.data)
+
       const filterRoleUser = responseMessages.data.data.filter((user) => user.role == 'user')
       const firstFilteredData = filterRoleUser.find(() => true)
       roleUserName.value = firstFilteredData.user_name
 
       channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
       channel.bind('chat-Cattery', (data) => {
-        console.log(data.resourceData)
+     
         messages.value.push(data.resourceData)
-        console.log(messages.value)
+       
       })
       channel.bind('pusher:subscription_succeeded', () => {
-        console.log('Subscribe berhasil')
+      
       })
     }
   } catch (error) {
-    console.log(error)
+   
   }
 }
 

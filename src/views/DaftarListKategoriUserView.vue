@@ -13,11 +13,11 @@ const render = async () => {
       }
     })
     if (responseCategory.status == 200) {
-      console.log(responseCategory.data.data)
+ 
       categories.value = responseCategory.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const router = useRouter()

@@ -14,7 +14,7 @@ const render = async () => {
       }
     })
     if (responseUser.status == 200) {
-      console.log(responseUser.data.id)
+   
       userId.value = responseUser.data.id
     }
     const responseListAdopt = await axios.get(`/api/adoptions?user_id=${userId.value}`, {
@@ -24,10 +24,10 @@ const render = async () => {
     })
     if (responseListAdopt.status == 200) {
       forms.value = responseListAdopt.data.data
-      console.log(responseListAdopt.data.data)
+
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const router = useRouter()
@@ -48,11 +48,11 @@ const getListForm = async (statusFormName) => {
       }
     )
     if (responseForm.status == 200) {
-      console.log(responseForm.data.data)
+    
       forms.value = responseForm.data.data
     }
   } catch (error) {
-    console.log(error)
+  
   }
 }
 

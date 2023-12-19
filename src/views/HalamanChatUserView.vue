@@ -24,7 +24,7 @@ const renderUserId = async () => {
       userName.value = responseUser.data.name
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -39,7 +39,7 @@ const fetchMessages = async () => {
       messages.value = responseMessages.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -57,12 +57,12 @@ const sendMessage = async () => {
       }
     })
     if (responseSendMessage.status == 200) {
-      console.log('berhasil ditambahkan')
+
       dataMessage.message = ''
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
+
     sendingFormLoading.value = false
   }
 }
@@ -76,11 +76,11 @@ const fetchPetDetail = async (petId) => {
       }
     })
     if (responseDetailKucing.status == 200) {
-      console.log(responseDetailKucing.data.data)
+    
       petName.value = responseDetailKucing.data.data.name
     }
   } catch (error) {
-    console.log(error)
+ 
   }
 }
 
@@ -94,12 +94,12 @@ const fetchFormDetail = async (formId) => {
       }
     })
     if (responseDetailForm.status == 200) {
-      console.log(responseDetailForm.data.data)
+ 
       statusForm.value = responseDetailForm.data.data.status
       petNameForm.value = responseDetailForm.data.data.pet_name
     }
   } catch (error) {
-    console.log(error)
+ 
   }
 }
 
@@ -113,12 +113,12 @@ onMounted(async () => {
   fetchMessages()
   channel = pusher.subscribe(`lorem-ipsum-chat-${userId.value}`)
   channel.bind('chat-Cattery', (data) => {
-    console.log(data.resourceData)
+
     messages.value.push(data.resourceData)
-    console.log(messages.value)
+
   })
   channel.bind('pusher:subscription_succeeded', () => {
-    console.log('Subscribe berhasil')
+ 
   })
 
   const petId = route.query.petId

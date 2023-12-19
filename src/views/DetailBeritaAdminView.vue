@@ -17,11 +17,11 @@ const render = async () => {
       }
     })
     if (responseBerita.status == 200) {
-      console.log(responseBerita.data.data)
+    
       announcement.value = responseBerita.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -33,11 +33,11 @@ const goToDelete = async () => {
       }
     })
     if (responseDelete.status == 200) {
-      console.log(responseDelete.data.data)
+
       router.push('/admin/list-berita')
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 

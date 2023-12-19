@@ -372,7 +372,7 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async(to,from)=>{
+router.beforeEach(async(to)=>{
   const axios = inject('axios')
   let role = 'guest';
   const isAunthenticated = localStorage.getItem('token')!== null;
@@ -386,10 +386,10 @@ router.beforeEach(async(to,from)=>{
       });
       if(roleResponse.status == 200){
         role = roleResponse.data.role;
-        console.log(to.name)
+   
       }
     }catch(error){
-      console.log(error)
+   
     }
   }
   if(isAunthenticated &&  role == 'admin' && to.name === undefined){
@@ -408,19 +408,19 @@ router.beforeEach(async(to,from)=>{
     }
   }
   if(role == 'guest' && !to.meta.roles.includes('guest')){
-    console.log(to.name)
+   
     return {
       name: 'login'
     }
   }
   if(role == 'user' && !to.meta.roles.includes('user')){
-    console.log(to.name)
+
     return {
       name: 'home'
     }
   }
   if(role == 'admin' && !to.meta.roles.includes('admin')){
-    console.log(to.name)
+  
     return {
       name: 'homeAdmin'
     }

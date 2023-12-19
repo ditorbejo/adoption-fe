@@ -39,7 +39,6 @@ const submit = async () => {
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
     if (error.response.status == 422) {
       if (dataBerita.title == '' || dataBerita.description == '' || file == null) {
         alert.value = 'ISI SEMUA FIELD FORM'

@@ -17,7 +17,6 @@ let token = localStorage.getItem('token')
 
 const roleUser = ref('guest')
 const checkUserLogin = async () => {
-  console.log('checkUserLoginBerjalan')
   try {
     const loginResponse = await axios.get('/api/auth/role', {
       headers: {
@@ -29,7 +28,7 @@ const checkUserLogin = async () => {
       roleUser.value = loginResponse.data.role
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -38,7 +37,7 @@ watch(stateLogin, async () => {
   if (token) {
     checkUserLogin()
   }
-  console.log('menjalankan watch')
+
 })
 
 const router = useRouter()
@@ -56,22 +55,21 @@ const logOutUser = async () => {
       }
     )
     if (responseLogout.status == 200) {
-      console.log(responseLogout)
+
       stateLogin.login = false
-      console.log('Berhasil Logout')
+
       router.push('/login')
       localStorage.clear()
       token = null
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
-const currentDate = new Date().toISOString()
+
 
 onMounted(() => {
-  console.log('OnMountedDijalankan')
-  console.log(currentDate)
+
   if (token) {
     checkUserLogin()
   }
@@ -109,7 +107,7 @@ onMounted(() => {
     <div class="nav-open" v-if="navbarMenuOpen == true" @click="closeNavbar()">
       <ul class="list-navbar" v-if="roleUser == 'user'">
         <li>
-          <router-link to="/home">Home</router-link>
+          <router-link to="/">Home</router-link>
         </li>
         <li>
           <router-link to="/list-warna-kucing">Warna</router-link>
@@ -189,7 +187,7 @@ onMounted(() => {
 
       <ul class="list-navbar" v-if="roleUser == 'guest'">
         <li>
-          <router-link to="/home">Home </router-link>
+          <router-link to="/">Home </router-link>
         </li>
         <li>
           <router-link to="/list-warna-kucing">Warna </router-link>
@@ -220,7 +218,7 @@ onMounted(() => {
     <div class="nav" v-else>
       <ul class="list-navbar" v-if="roleUser == 'user'">
         <li>
-          <router-link to="/home">Home </router-link>
+          <router-link to="/">Home </router-link>
         </li>
         <li>
           <router-link to="/list-warna-kucing">Warna </router-link>
@@ -300,7 +298,7 @@ onMounted(() => {
 
       <ul class="list-navbar" v-if="roleUser == 'guest'">
         <li>
-          <router-link to="/home">Home </router-link>
+          <router-link to="/">Home </router-link>
         </li>
         <li>
           <router-link to="/list-warna-kucing">Warna </router-link>

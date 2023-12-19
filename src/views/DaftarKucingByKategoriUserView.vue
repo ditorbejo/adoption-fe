@@ -18,11 +18,11 @@ const render = async () => {
       }
     )
     if (responsePetsByCategory.status == 200) {
-      console.log(responsePetsByCategory.data.data)
+     
       pets.value = responsePetsByCategory.data.data
     }
   } catch (error) {
-    console.log(error)
+   
   }
 }
 
@@ -35,11 +35,11 @@ const renderCategoryName = async () => {
       }
     })
     if (responseCategory.status == 200) {
-      console.log(responseCategory.data.data)
+ 
       nameCategory.value = responseCategory.data.data.namecategory
     }
   } catch (error) {
-    console.log(error)
+  
   }
 }
 const router = useRouter()

@@ -14,11 +14,11 @@ const render = async () => {
       }
     })
     if (responsePets.status == 200) {
-      console.log(responsePets.data.data)
+ 
       pets.value = responsePets.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const router = useRouter()

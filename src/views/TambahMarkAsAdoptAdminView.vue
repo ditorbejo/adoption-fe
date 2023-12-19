@@ -16,14 +16,12 @@ const render = async () => {
       }
     })
     if (responseKucing.status == 200) {
-      console.log(responseKucing)
       name.value = responseKucing.data.data.name
       if (responseKucing.data.data.status_adopt == 'adopted') {
         router.push('/user/list-form-adopt')
       }
     }
   } catch (error) {
-    console.log(error)
   }
 }
 const userId = ref({})
@@ -35,11 +33,9 @@ const renderUser = async () => {
       }
     })
     if (responseUser.status == 200) {
-      console.log(responseUser.data.id)
       userId.value = responseUser.data.id
     }
   } catch (error) {
-    console.log(error)
   }
 }
 const checkAutoFillForm = ref(false)
@@ -68,7 +64,6 @@ const autoFillInput = async () => {
       dataHistoryAdopter.value = responseHistoryAdopt.data.data
     }
   } catch (error) {
-    console.log(error)
   }
 }
 
@@ -122,7 +117,6 @@ const markAsAdopt = async () => {
     }
     sendingFormLoading.value = false
   } catch (error) {
-    console.log(error)
     if (error.response.status == 422) {
       if (
         dataAdopter.name_adopter == '' ||

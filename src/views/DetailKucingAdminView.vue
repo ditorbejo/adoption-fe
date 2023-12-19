@@ -1,3 +1,4 @@
+<!-- eslint-disable no-empty -->
 <script setup>
 import { onMounted, reactive, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -18,12 +19,12 @@ const render = async () => {
       }
     })
     if (responsePets.status == 200) {
-      console.log(responsePets.data.data)
+
       pets.value = responsePets.data.data
     }
     fetchAlbum()
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -35,18 +36,18 @@ const goToDelete = async () => {
       }
     })
     if (responseDelete.status == 200) {
-      console.log(responseDelete)
+ 
       router.push('/admin/list-kucing')
     }
   } catch (error) {
-    console.log(error)
+ 
   }
 }
 
 const inputFiles = reactive([])
 let counter = 0
 const tambahUpload = () => {
-  console.log(inputFiles)
+
   const file = ref(null)
   inputFiles.push({
     file: file,
@@ -76,7 +77,7 @@ const fetchAlbum = async () => {
       images.value = responseAlbum.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
@@ -89,11 +90,11 @@ const renderFormAdopt = async () => {
       }
     })
     if (renderFormAdopt.status == 200) {
-      console.log(renderFormAdopt.data.data)
+  
       listFormAdoptions.value = renderFormAdopt.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const alert = ref('')
@@ -103,7 +104,7 @@ const simpanAlbum = async () => {
       return inputFile.file == null
     })
     if (someFileIsNull) {
-      console.log('ada file input yang kosong')
+
       alert.value = 'ADA FILE KOSONG'
       return
     }
@@ -120,29 +121,26 @@ const simpanAlbum = async () => {
     const imageUploadResponses = await Promise.all(imageUploadPromises)
     imageUploadResponses.forEach((response) => {
       if (response.status == 200) {
-        console.log('berhasil menyimpan gambar')
+        alert.value = 'BERHASIL MENYIMPAN GAMBAR'
       }
       inputFiles.shift()
     })
     fetchAlbum()
   } catch (error) {
-    console.log(error)
+
     alert.value = 'FILE HARUS IMAGE'
   }
   alert.value = ''
 }
 const hapusGambar = async (imageId) => {
   try {
-    const responseDelete = await axios.delete(`/api/galleries/${imageId}`, {
+    await axios.delete(`/api/galleries/${imageId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    if (responseDelete.status == 200) {
-      console.log(responseDelete)
-    }
   } catch (error) {
-    console.log(error)
+
   }
   fetchAlbum()
 }

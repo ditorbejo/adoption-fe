@@ -21,10 +21,10 @@ const render = async () => {
       forms.value = responseListAdopt.data.data
     }
     if (responseHistoryAdopt.status == 200) {
-      console.log(responseHistoryAdopt.data.data)
+
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const listForm = reactive({
@@ -41,11 +41,11 @@ const searchFormAdopt = async (namaAdopter) => {
       }
     )
     if (responseListForm.status == 200) {
-      console.log(responseListForm.data.data)
+   
       forms.value = responseListForm.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 

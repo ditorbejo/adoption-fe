@@ -1,3 +1,4 @@
+<!-- eslint-disable no-empty -->
 <script setup>
 import { onMounted, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -17,11 +18,11 @@ const render = async () => {
       }
     })
     if (responseDetailKucing.status == 200) {
-      console.log(responseDetailKucing.data.data)
+    
       pets.value = responseDetailKucing.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 const images = ref({})
@@ -34,11 +35,11 @@ const fetchAlbum = async () => {
       }
     })
     if (responseAlbum.status == 200) {
-      console.log(responseAlbum.data.data)
+
       images.value = responseAlbum.data.data
     }
   } catch (error) {
-    console.log(error)
+
   }
 }
 
