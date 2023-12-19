@@ -9,7 +9,8 @@ const icon = icons.icons
 const mapIcon = icon.map((item) => {
   return {
     src: './src/assets/images/' + item.src,
-    sizes: item.sizes
+    sizes: item.sizes,
+    "purpose": "any maskable"
   }
 })
 console.log(mapIcon)
