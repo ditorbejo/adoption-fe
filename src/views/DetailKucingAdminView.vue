@@ -19,13 +19,10 @@ const render = async () => {
       }
     })
     if (responsePets.status == 200) {
-
       pets.value = responsePets.data.data
     }
     fetchAlbum()
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 
 const goToDelete = async () => {
@@ -36,18 +33,14 @@ const goToDelete = async () => {
       }
     })
     if (responseDelete.status == 200) {
- 
       router.push('/admin/list-kucing')
     }
-  } catch (error) {
- 
-  }
+  } catch (error) {}
 }
 
 const inputFiles = reactive([])
 let counter = 0
 const tambahUpload = () => {
-
   const file = ref(null)
   inputFiles.push({
     file: file,
@@ -76,9 +69,7 @@ const fetchAlbum = async () => {
     if (responseAlbum.status == 200) {
       images.value = responseAlbum.data.data
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 
 const listFormAdoptions = ref({})
@@ -90,12 +81,9 @@ const renderFormAdopt = async () => {
       }
     })
     if (renderFormAdopt.status == 200) {
-  
       listFormAdoptions.value = renderFormAdopt.data.data
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 const alert = ref('')
 const simpanAlbum = async () => {
@@ -104,7 +92,6 @@ const simpanAlbum = async () => {
       return inputFile.file == null
     })
     if (someFileIsNull) {
-
       alert.value = 'ADA FILE KOSONG'
       return
     }
@@ -127,7 +114,6 @@ const simpanAlbum = async () => {
     })
     fetchAlbum()
   } catch (error) {
-
     alert.value = 'FILE HARUS IMAGE'
   }
   alert.value = ''
@@ -139,9 +125,7 @@ const hapusGambar = async (imageId) => {
         Authorization: `Bearer ${token}`
       }
     })
-  } catch (error) {
-
-  }
+  } catch (error) {}
   fetchAlbum()
 }
 
@@ -281,7 +265,9 @@ onMounted(() => {
       <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete</button>
     </div>
 
-    <div class="container-button" v-else></div>
+    <div class="container-button" v-else>
+      <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete</button>
+    </div>
   </main>
 </template>
 
