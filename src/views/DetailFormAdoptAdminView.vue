@@ -16,12 +16,9 @@ const render = async () => {
       }
     })
     if (responseDetail.status == 200) {
-  
       dataForm.value = responseDetail.data.data
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 
 const acceptForm = async () => {
@@ -40,9 +37,7 @@ const acceptForm = async () => {
     if (responseAccept.status == 200) {
       router.push('/admin/list-history-adopt')
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 
 const router = useRouter()
@@ -54,6 +49,18 @@ const goToDetailKucing = (routePath) => {
 }
 const goToChatUser = () => {
   router.push(`/admin/chat/${dataForm.value.user_id}?formId=${formId}`)
+}
+const cancelAdoption = async () => {
+  try {
+    const responseDelete = await axios.delete(`/api/adoptions/${formId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (responseDelete.status == 200) {
+      router.push('/admin/list-kucing')
+    }
+  } catch (error) {}
 }
 
 onMounted(() => {
@@ -157,6 +164,9 @@ onMounted(() => {
       <button class="btn-chat" type="button" @click="goToChatUser()">
         <i class="fa-solid fa-message fa-xl" style="color: #000000"></i>
         Chat
+      </button>
+      <button class="btn-cancel-adopt" type="button" @click="cancelAdoption()">
+        Cancel Adoption
       </button>
     </div>
 
@@ -318,6 +328,12 @@ main {
     .btn-delete {
       border: 2px solid #ffffff;
       background-color: red;
+    }
+    .btn-cancel-adopt {
+      border: 2px solid #ffffff;
+      background-color: red;
+      color: white;
+      font-weight: bolder;
     }
   }
 }

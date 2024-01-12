@@ -265,9 +265,7 @@ onMounted(() => {
       <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete</button>
     </div>
 
-    <div class="container-button" v-else>
-      <button class="btn-delete-kucing" type="button" @click="goToDelete()">Delete</button>
-    </div>
+    <div class="container-button" v-else></div>
   </main>
 </template>
 
